@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.zjxt.zxzf.mapper.DialecticalOrCureZJMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.zjxt.zxzf.entity.DialecticalOrCureZJ">
+        <id column="AcupointCode" property="acupointCode" jdbcType="VARCHAR"/>
+        <result column="InputCode" property="pinYinCode" jdbcType="VARCHAR"/>
+        <result column="MeridianName" property="meridianName" jdbcType="VARCHAR"/>
+        <result column="MeridianOrder" property="meridianOrder" jdbcType="VARCHAR"/>
+        <result column="PointX" property="pointX" jdbcType="VARCHAR"/>
+        <result column="PointY" property="pointY" jdbcType="VARCHAR"/>
+        <result column="PositionExplain" property="positionExplain" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getDrugSolution" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+            DrugCode AS AcupointCode,
+            DrugName AS AcupointName,
+            InputCode AS PinYinCode,
+            IFNULL(DrugMeridian, '01') AS MeridianCode,
+            MeridianOrder,
+            PType,
+            PointX,
+            PointY,
+            PositionExplain,
+            Gy_Meridian.MeridianName
+        FROM
+            Gy_DrugDict
+        LEFT JOIN Gy_Meridian ON Gy_Meridian.MeridianCode = Gy_DrugDict.DrugMeridian
+        WHERE
+            Gy_DrugDict.DrugCode = #{acupointCode}
+    </select>
+
+    <select id="getKaiXue" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT DISTINCT
+            IFNULL(a.DrugCode, '') AS AcupointCode,
+            IFNULL(a.DrugName, '') AS AcupointName,
+            IFNULL(a.PointX, 0) AS PointX,
+            IFNULL(a.PointY, 0) AS PointY,
+            IFNULL(a.PositionExplain, '') AS PositionExplain,
+            a.PType
+        FROM
+            Gy_DrugDict a,
+            Gy_GraphZJ b
+        WHERE
+            (
+                (
+                    a.DrugCode = b.fdC9
+                    AND fdC9f = '1'
+                )
+                OR (
+                    a.DrugCode = b.fdC11
+                    AND fdC11f = '1'
+                )
+                OR (
+                    a.DrugCode = b.fdC12
+                    AND fdC12f = '1'
+                )
+                OR (
+                    a.DrugCode = b.fdC13
+                    AND fdC13f = '1'
+                )
+                OR (
+                    a.DrugCode = b.fdC14
+                    AND fdC14f = '1'
+                )
+                OR (
+                    a.DrugCode = b.fdC15
+                    AND fdC15f = '1'
+                )
+                OR (
+                    a.DrugCode = b.fdC16
+                    AND fdC16f = '1'
+                )
+                OR (
+                    a.DrugCode = b.fdC17
+                    AND fdC17f = '1'
+                )
+                OR (
+                    a.DrugCode = b.fdC18
+                    AND fdC18f = '1'
+                )
+            )
+        AND a.DrugFlag = 1
+        AND b.fdC6 = #{fdC6}
+        AND (
+            b.fdC7 = #{fdC7}
+            OR b.fdC10 = #{fdC10}
+        )
+    </select>
+
+    <select id="getBiXue" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT DISTINCT
+            IFNULL(a.DrugCode, '') AS AcupointCode,
+            IFNULL(a.DrugName, '') AS AcupointName,
+            IFNULL(a.PointX, 0) AS PointX,
+            IFNULL(a.PointY, 0) AS PointY,
+            IFNULL(a.PositionExplain, '') AS PositionExplain,
+            a.PType
+        FROM
+            Gy_DrugDict a,
+            Gy_GraphZJ b
+        WHERE
+            (
+                (
+                    a.DrugCode = b.fdC9
+                    AND fdC9f = '2'
+                )
+                OR (
+                    a.DrugCode = b.fdC11
+                    AND fdC11f = '2'
+                )
+                OR (
+                    a.DrugCode = b.fdC12
+                    AND fdC12f = '2'
+                )
+                OR (
+                    a.DrugCode = b.fdC13
+                    AND fdC13f = '2'
+                )
+                OR (
+                    a.DrugCode = b.fdC14
+                    AND fdC14f = '2'
+                )
+                OR (
+                    a.DrugCode = b.fdC15
+                    AND fdC15f = '2'
+                )
+                OR (
+                    a.DrugCode = b.fdC16
+                    AND fdC16f = '2'
+                )
+                OR (
+                    a.DrugCode = b.fdC17
+                    AND fdC17f = '2'
+                )
+                OR (
+                    a.DrugCode = b.fdC18
+                    AND fdC18f = '2'
+                )
+            )
+        AND a.DrugFlag = 1
+        AND fdC6 =#{fdC6}
+        AND (fdC7 =#{fdC7} OR fdC10 =#{fdC10})
+    </select>
+
+</mapper>

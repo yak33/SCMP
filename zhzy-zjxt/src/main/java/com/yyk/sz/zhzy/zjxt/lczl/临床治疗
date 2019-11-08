@@ -1,0 +1,4 @@
+/zjxt/lczl/getWesternCureList           --获取所有临床治疗。
+/zjxt/lczl/getWesternCureDetailList     --获取临床治疗明细。detailItemCode （明细项目编码）
+/zjxt/lczl/saveWesternCure              --保存处治。WesternCure 实体bean
+/zjxt/lczl/delWesternCure               --删除临床治疗。WesternCure 实体Javabean

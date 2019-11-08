@@ -1,0 +1,736 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yyk.sz.zhzy.lzxt.jyjc.mapper.SysInventoryMapper" >
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysInventory" >
+  <id column="DrugCode" property="drugcode" jdbcType="INTEGER" />
+  <result column="UUID" property="uuid" jdbcType="CHAR" />
+  <result column="DrugName" property="drugname" jdbcType="VARCHAR" />
+  <result column="SalesGuige" property="salesguige" jdbcType="VARCHAR" />
+  <result column="Units" property="units" jdbcType="INTEGER" />
+  <result column="DrugDosageCode" property="drugdosagecode" jdbcType="VARCHAR" />
+  <result column="DosePerUnit" property="doseperunit" jdbcType="DECIMAL" />
+  <result column="DoseUnits" property="doseunits" jdbcType="VARCHAR" />
+  <result column="DrugModelCode" property="drugmodelcode" jdbcType="INTEGER" />
+  <result column="InputCode" property="inputcode" jdbcType="VARCHAR" />
+  <result column="DrugTypeCode" property="drugtypecode" jdbcType="VARCHAR" />
+  <result column="PackageUnits" property="packageunits" jdbcType="VARCHAR" />
+  <result column="DrugLow" property="druglow" jdbcType="DECIMAL" />
+  <result column="DrugHigh" property="drughigh" jdbcType="DECIMAL" />
+  <result column="DrugHanLiang" property="drughanliang" jdbcType="DECIMAL" />
+  <result column="DrugHanLiangUnit" property="drughanliangunit" jdbcType="VARCHAR" />
+  <result column="OtherName" property="othername" jdbcType="VARCHAR" />
+  <result column="DrugSource" property="drugsource" jdbcType="VARCHAR" />
+  <result column="DrugProcess" property="drugprocess" jdbcType="VARCHAR" />
+  <result column="DrugTaste" property="drugtaste" jdbcType="VARCHAR" />
+  <result column="DrugMeridian" property="drugmeridian" jdbcType="VARCHAR" />
+  <result column="DrugYinMeridian" property="drugyinmeridian" jdbcType="VARCHAR" />
+  <result column="DrugFunction" property="drugfunction" jdbcType="VARCHAR" />
+  <result column="DrugAttend" property="drugattend" jdbcType="VARCHAR" />
+  <result column="Usage" property="usage" jdbcType="VARCHAR" />
+  <result column="SpecialUsage" property="specialusage" jdbcType="VARCHAR" />
+  <result column="MatterAttend" property="matterattend" jdbcType="VARCHAR" />
+  <result column="DrugStorage" property="drugstorage" jdbcType="VARCHAR" />
+  <result column="LPrice" property="lprice" jdbcType="DECIMAL" />
+  <result column="Remark" property="remark" jdbcType="VARCHAR" />
+  <result column="UpperLimit" property="upperlimit" jdbcType="DECIMAL" />
+  <result column="LowerLimit" property="lowerlimit" jdbcType="DECIMAL" />
+  <result column="DrugFlag" property="drugflag" jdbcType="INTEGER" />
+  <result column="StopFlag" property="stopflag" jdbcType="BIT" />
+  <result column="IntoAmount" property="intoamount" jdbcType="DECIMAL" />
+  <result column="RemainAmount" property="remainamount" jdbcType="DECIMAL" />
+  <result column="TotalAmount" property="totalamount" jdbcType="DECIMAL" />
+  <result column="WarningAmount" property="warningamount" jdbcType="DECIMAL" />
+  <result column="DrugWayCode" property="drugwaycode" jdbcType="INTEGER" />
+  <result column="DosageCode" property="dosagecode" jdbcType="INTEGER" />
+  <result column="MeasurementCoefficient" property="measurementcoefficient" jdbcType="DECIMAL" />
+  <result column="PrescriptionUnit" property="prescriptionunit" jdbcType="INTEGER" />
+  <result column="SingleMeasure" property="singlemeasure" jdbcType="DECIMAL" />
+  <result column="SingleMeasureUnit" property="singlemeasureunit" jdbcType="INTEGER" />
+  <result column="SysCreateDate" property="syscreatedate" jdbcType="TIMESTAMP" />
+  <result column="SysCreateBy" property="syscreateby" jdbcType="VARCHAR" />
+  <result column="SysUpdateDate" property="sysupdatedate" jdbcType="TIMESTAMP" />
+  <result column="SysUpdateBy" property="sysupdateby" jdbcType="VARCHAR" />
+  <result column="VersionNum" property="versionnum" jdbcType="INTEGER" />
+  <result column="SysDelFlag" property="sysdelflag" jdbcType="CHAR" />
+</resultMap>
+
+  <resultMap id="BaseResultTXMap" type="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysInventoryTX" >
+    <id column="DrugCode" property="drugcode" jdbcType="INTEGER" />
+    <result column="DrugName" property="drugname" jdbcType="VARCHAR" />
+    <result column="Units" property="units" jdbcType="INTEGER" />
+    <result column="InputCode" property="inputcode" jdbcType="VARCHAR" />
+    <result column="PackageUnits" property="packageunits" jdbcType="VARCHAR" />
+    <result column="OtherName" property="othername" jdbcType="VARCHAR" />
+    <result column="RemainAmount" property="remainamount" jdbcType="DECIMAL" />
+    <result column="WarningAmount" property="warningamount" jdbcType="DECIMAL" />
+  </resultMap>
+
+  <sql id="Base_Column_List" >
+    DrugCode, UUID, DrugName, SalesGuige, Units, DrugDosageCode, DosePerUnit, DoseUnits, 
+    DrugModelCode, InputCode, DrugTypeCode, PackageUnits, DrugLow, DrugHigh, DrugHanLiang, 
+    DrugHanLiangUnit, OtherName, DrugSource, DrugProcess, DrugTaste, DrugMeridian, DrugYinMeridian, 
+    DrugFunction, DrugAttend, Usage, SpecialUsage, MatterAttend, DrugStorage, LPrice, 
+    Remark, UpperLimit, LowerLimit, DrugFlag, StopFlag, IntoAmount, RemainAmount, TotalAmount, WarningAmount,
+    DrugWayCode, DosageCode, MeasurementCoefficient, PrescriptionUnit, SingleMeasure, 
+    SingleMeasureUnit, SysCreateDate, SysCreateBy, SysUpdateDate, SysUpdateBy, VersionNum,
+    SysDelFlag
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    DrugCode, RemainAmount
+    from sys_inventory
+    where DrugCode = #{drugcode,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from sys_inventory
+    where DrugCode = #{drugcode,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysInventory" >
+    insert into sys_inventory (DrugCode, UUID, DrugName, 
+      SalesGuige, Units, DrugDosageCode, 
+      DosePerUnit, DoseUnits, DrugModelCode, 
+      InputCode, DrugTypeCode, PackageUnits, 
+      DrugLow, DrugHigh, DrugHanLiang, 
+      DrugHanLiangUnit, OtherName, DrugSource, 
+      DrugProcess, DrugTaste, DrugMeridian, 
+      DrugYinMeridian, DrugFunction, DrugAttend, 
+      Usage, SpecialUsage, MatterAttend, 
+      DrugStorage, LPrice, Remark, 
+      UpperLimit, LowerLimit, DrugFlag, 
+      StopFlag, IntoAmount, RemainAmount, 
+      TotalAmount, DrugWayCode, DosageCode, 
+      MeasurementCoefficient, PrescriptionUnit, 
+      SingleMeasure, SingleMeasureUnit, SysCreateDate, 
+      SysCreateBy, SysUpdateDate, SysUpdateBy, 
+      VersionNum, SysDelFlag)
+    values (#{drugcode,jdbcType=INTEGER}, #{uuid,jdbcType=CHAR}, #{drugname,jdbcType=VARCHAR}, 
+      #{salesguige,jdbcType=VARCHAR}, #{units,jdbcType=INTEGER}, #{drugdosagecode,jdbcType=VARCHAR}, 
+      #{doseperunit,jdbcType=DECIMAL}, #{doseunits,jdbcType=VARCHAR}, #{drugmodelcode,jdbcType=INTEGER}, 
+      #{inputcode,jdbcType=VARCHAR}, #{drugtypecode,jdbcType=VARCHAR}, #{packageunits,jdbcType=VARCHAR}, 
+      #{druglow,jdbcType=DECIMAL}, #{drughigh,jdbcType=DECIMAL}, #{drughanliang,jdbcType=DECIMAL}, 
+      #{drughanliangunit,jdbcType=VARCHAR}, #{othername,jdbcType=VARCHAR}, #{drugsource,jdbcType=VARCHAR}, 
+      #{drugprocess,jdbcType=VARCHAR}, #{drugtaste,jdbcType=VARCHAR}, #{drugmeridian,jdbcType=VARCHAR}, 
+      #{drugyinmeridian,jdbcType=VARCHAR}, #{drugfunction,jdbcType=VARCHAR}, #{drugattend,jdbcType=VARCHAR}, 
+      #{usage,jdbcType=VARCHAR}, #{specialusage,jdbcType=VARCHAR}, #{matterattend,jdbcType=VARCHAR}, 
+      #{drugstorage,jdbcType=VARCHAR}, #{lprice,jdbcType=DECIMAL}, #{remark,jdbcType=VARCHAR}, 
+      #{upperlimit,jdbcType=DECIMAL}, #{lowerlimit,jdbcType=DECIMAL}, #{drugflag,jdbcType=INTEGER}, 
+      #{stopflag,jdbcType=BIT}, #{intoamount,jdbcType=DECIMAL}, #{remainamount,jdbcType=DECIMAL}, 
+      #{totalamount,jdbcType=DECIMAL}, #{drugwaycode,jdbcType=INTEGER}, #{dosagecode,jdbcType=INTEGER}, 
+      #{measurementcoefficient,jdbcType=DECIMAL}, #{prescriptionunit,jdbcType=INTEGER}, 
+      #{singlemeasure,jdbcType=DECIMAL}, #{singlemeasureunit,jdbcType=INTEGER}, #{syscreatedate,jdbcType=TIMESTAMP}, 
+      #{syscreateby,jdbcType=VARCHAR}, #{sysupdatedate,jdbcType=TIMESTAMP}, #{sysupdateby,jdbcType=VARCHAR}, 
+      #{versionnum,jdbcType=INTEGER}, #{sysdelflag,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysInventory" >
+    insert into sys_inventory
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="drugcode != null" >
+        DrugCode,
+      </if>
+      <if test="uuid != null" >
+        UUID,
+      </if>
+      <if test="drugname != null" >
+        DrugName,
+      </if>
+      <if test="salesguige != null" >
+        SalesGuige,
+      </if>
+      <if test="units != null" >
+        Units,
+      </if>
+      <if test="drugdosagecode != null" >
+        DrugDosageCode,
+      </if>
+      <if test="doseperunit != null" >
+        DosePerUnit,
+      </if>
+      <if test="doseunits != null" >
+        DoseUnits,
+      </if>
+      <if test="drugmodelcode != null" >
+        DrugModelCode,
+      </if>
+      <if test="inputcode != null" >
+        InputCode,
+      </if>
+      <if test="drugtypecode != null" >
+        DrugTypeCode,
+      </if>
+      <if test="packageunits != null" >
+        PackageUnits,
+      </if>
+      <if test="druglow != null" >
+        DrugLow,
+      </if>
+      <if test="drughigh != null" >
+        DrugHigh,
+      </if>
+      <if test="drughanliang != null" >
+        DrugHanLiang,
+      </if>
+      <if test="drughanliangunit != null" >
+        DrugHanLiangUnit,
+      </if>
+      <if test="othername != null" >
+        OtherName,
+      </if>
+      <if test="drugsource != null" >
+        DrugSource,
+      </if>
+      <if test="drugprocess != null" >
+        DrugProcess,
+      </if>
+      <if test="drugtaste != null" >
+        DrugTaste,
+      </if>
+      <if test="drugmeridian != null" >
+        DrugMeridian,
+      </if>
+      <if test="drugyinmeridian != null" >
+        DrugYinMeridian,
+      </if>
+      <if test="drugfunction != null" >
+        DrugFunction,
+      </if>
+      <if test="drugattend != null" >
+        DrugAttend,
+      </if>
+      <if test="usage != null" >
+        Usage,
+      </if>
+      <if test="specialusage != null" >
+        SpecialUsage,
+      </if>
+      <if test="matterattend != null" >
+        MatterAttend,
+      </if>
+      <if test="drugstorage != null" >
+        DrugStorage,
+      </if>
+      <if test="lprice != null" >
+        LPrice,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+      <if test="upperlimit != null" >
+        UpperLimit,
+      </if>
+      <if test="lowerlimit != null" >
+        LowerLimit,
+      </if>
+      <if test="drugflag != null" >
+        DrugFlag,
+      </if>
+      <if test="stopflag != null" >
+        StopFlag,
+      </if>
+      <if test="intoamount != null" >
+        IntoAmount,
+      </if>
+      <if test="remainamount != null" >
+        RemainAmount,
+      </if>
+      <if test="totalamount != null" >
+        TotalAmount,
+      </if>
+      <if test="drugwaycode != null" >
+        DrugWayCode,
+      </if>
+      <if test="dosagecode != null" >
+        DosageCode,
+      </if>
+      <if test="measurementcoefficient != null" >
+        MeasurementCoefficient,
+      </if>
+      <if test="prescriptionunit != null" >
+        PrescriptionUnit,
+      </if>
+      <if test="singlemeasure != null" >
+        SingleMeasure,
+      </if>
+      <if test="singlemeasureunit != null" >
+        SingleMeasureUnit,
+      </if>
+      <if test="syscreatedate != null" >
+        SysCreateDate,
+      </if>
+      <if test="syscreateby != null" >
+        SysCreateBy,
+      </if>
+      <if test="sysupdatedate != null" >
+        SysUpdateDate,
+      </if>
+      <if test="sysupdateby != null" >
+        SysUpdateBy,
+      </if>
+      <if test="versionnum != null" >
+        VersionNum,
+      </if>
+      <if test="sysdelflag != null" >
+        SysDelFlag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="drugcode != null" >
+        #{drugcode,jdbcType=INTEGER},
+      </if>
+      <if test="uuid != null" >
+        #{uuid,jdbcType=CHAR},
+      </if>
+      <if test="drugname != null" >
+        #{drugname,jdbcType=VARCHAR},
+      </if>
+      <if test="salesguige != null" >
+        #{salesguige,jdbcType=VARCHAR},
+      </if>
+      <if test="units != null" >
+        #{units,jdbcType=INTEGER},
+      </if>
+      <if test="drugdosagecode != null" >
+        #{drugdosagecode,jdbcType=VARCHAR},
+      </if>
+      <if test="doseperunit != null" >
+        #{doseperunit,jdbcType=DECIMAL},
+      </if>
+      <if test="doseunits != null" >
+        #{doseunits,jdbcType=VARCHAR},
+      </if>
+      <if test="drugmodelcode != null" >
+        #{drugmodelcode,jdbcType=INTEGER},
+      </if>
+      <if test="inputcode != null" >
+        #{inputcode,jdbcType=VARCHAR},
+      </if>
+      <if test="drugtypecode != null" >
+        #{drugtypecode,jdbcType=VARCHAR},
+      </if>
+      <if test="packageunits != null" >
+        #{packageunits,jdbcType=VARCHAR},
+      </if>
+      <if test="druglow != null" >
+        #{druglow,jdbcType=DECIMAL},
+      </if>
+      <if test="drughigh != null" >
+        #{drughigh,jdbcType=DECIMAL},
+      </if>
+      <if test="drughanliang != null" >
+        #{drughanliang,jdbcType=DECIMAL},
+      </if>
+      <if test="drughanliangunit != null" >
+        #{drughanliangunit,jdbcType=VARCHAR},
+      </if>
+      <if test="othername != null" >
+        #{othername,jdbcType=VARCHAR},
+      </if>
+      <if test="drugsource != null" >
+        #{drugsource,jdbcType=VARCHAR},
+      </if>
+      <if test="drugprocess != null" >
+        #{drugprocess,jdbcType=VARCHAR},
+      </if>
+      <if test="drugtaste != null" >
+        #{drugtaste,jdbcType=VARCHAR},
+      </if>
+      <if test="drugmeridian != null" >
+        #{drugmeridian,jdbcType=VARCHAR},
+      </if>
+      <if test="drugyinmeridian != null" >
+        #{drugyinmeridian,jdbcType=VARCHAR},
+      </if>
+      <if test="drugfunction != null" >
+        #{drugfunction,jdbcType=VARCHAR},
+      </if>
+      <if test="drugattend != null" >
+        #{drugattend,jdbcType=VARCHAR},
+      </if>
+      <if test="usage != null" >
+        #{usage,jdbcType=VARCHAR},
+      </if>
+      <if test="specialusage != null" >
+        #{specialusage,jdbcType=VARCHAR},
+      </if>
+      <if test="matterattend != null" >
+        #{matterattend,jdbcType=VARCHAR},
+      </if>
+      <if test="drugstorage != null" >
+        #{drugstorage,jdbcType=VARCHAR},
+      </if>
+      <if test="lprice != null" >
+        #{lprice,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="upperlimit != null" >
+        #{upperlimit,jdbcType=DECIMAL},
+      </if>
+      <if test="lowerlimit != null" >
+        #{lowerlimit,jdbcType=DECIMAL},
+      </if>
+      <if test="drugflag != null" >
+        #{drugflag,jdbcType=INTEGER},
+      </if>
+      <if test="stopflag != null" >
+        #{stopflag,jdbcType=BIT},
+      </if>
+      <if test="intoamount != null" >
+        #{intoamount,jdbcType=DECIMAL},
+      </if>
+      <if test="remainamount != null" >
+        #{remainamount,jdbcType=DECIMAL},
+      </if>
+      <if test="totalamount != null" >
+        #{totalamount,jdbcType=DECIMAL},
+      </if>
+      <if test="drugwaycode != null" >
+        #{drugwaycode,jdbcType=INTEGER},
+      </if>
+      <if test="dosagecode != null" >
+        #{dosagecode,jdbcType=INTEGER},
+      </if>
+      <if test="measurementcoefficient != null" >
+        #{measurementcoefficient,jdbcType=DECIMAL},
+      </if>
+      <if test="prescriptionunit != null" >
+        #{prescriptionunit,jdbcType=INTEGER},
+      </if>
+      <if test="singlemeasure != null" >
+        #{singlemeasure,jdbcType=DECIMAL},
+      </if>
+      <if test="singlemeasureunit != null" >
+        #{singlemeasureunit,jdbcType=INTEGER},
+      </if>
+      <if test="syscreatedate != null" >
+        #{syscreatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="syscreateby != null" >
+        #{syscreateby,jdbcType=VARCHAR},
+      </if>
+      <if test="sysupdatedate != null" >
+        #{sysupdatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysupdateby != null" >
+        #{sysupdateby,jdbcType=VARCHAR},
+      </if>
+      <if test="versionnum != null" >
+        #{versionnum,jdbcType=INTEGER},
+      </if>
+      <if test="sysdelflag != null" >
+        #{sysdelflag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysInventory" >
+    update sys_inventory
+    <set >
+      <if test="uuid != null" >
+        UUID = #{uuid,jdbcType=CHAR},
+      </if>
+      <if test="drugname != null" >
+        DrugName = #{drugname,jdbcType=VARCHAR},
+      </if>
+      <if test="salesguige != null" >
+        SalesGuige = #{salesguige,jdbcType=VARCHAR},
+      </if>
+      <if test="units != null" >
+        Units = #{units,jdbcType=INTEGER},
+      </if>
+      <if test="drugdosagecode != null" >
+        DrugDosageCode = #{drugdosagecode,jdbcType=VARCHAR},
+      </if>
+      <if test="doseperunit != null" >
+        DosePerUnit = #{doseperunit,jdbcType=DECIMAL},
+      </if>
+      <if test="doseunits != null" >
+        DoseUnits = #{doseunits,jdbcType=VARCHAR},
+      </if>
+      <if test="drugmodelcode != null" >
+        DrugModelCode = #{drugmodelcode,jdbcType=INTEGER},
+      </if>
+      <if test="inputcode != null" >
+        InputCode = #{inputcode,jdbcType=VARCHAR},
+      </if>
+      <if test="drugtypecode != null" >
+        DrugTypeCode = #{drugtypecode,jdbcType=VARCHAR},
+      </if>
+      <if test="packageunits != null" >
+        PackageUnits = #{packageunits,jdbcType=VARCHAR},
+      </if>
+      <if test="druglow != null" >
+        DrugLow = #{druglow,jdbcType=DECIMAL},
+      </if>
+      <if test="drughigh != null" >
+        DrugHigh = #{drughigh,jdbcType=DECIMAL},
+      </if>
+      <if test="drughanliang != null" >
+        DrugHanLiang = #{drughanliang,jdbcType=DECIMAL},
+      </if>
+      <if test="drughanliangunit != null" >
+        DrugHanLiangUnit = #{drughanliangunit,jdbcType=VARCHAR},
+      </if>
+      <if test="othername != null" >
+        OtherName = #{othername,jdbcType=VARCHAR},
+      </if>
+      <if test="drugsource != null" >
+        DrugSource = #{drugsource,jdbcType=VARCHAR},
+      </if>
+      <if test="drugprocess != null" >
+        DrugProcess = #{drugprocess,jdbcType=VARCHAR},
+      </if>
+      <if test="drugtaste != null" >
+        DrugTaste = #{drugtaste,jdbcType=VARCHAR},
+      </if>
+      <if test="drugmeridian != null" >
+        DrugMeridian = #{drugmeridian,jdbcType=VARCHAR},
+      </if>
+      <if test="drugyinmeridian != null" >
+        DrugYinMeridian = #{drugyinmeridian,jdbcType=VARCHAR},
+      </if>
+      <if test="drugfunction != null" >
+        DrugFunction = #{drugfunction,jdbcType=VARCHAR},
+      </if>
+      <if test="drugattend != null" >
+        DrugAttend = #{drugattend,jdbcType=VARCHAR},
+      </if>
+      <if test="usage != null" >
+        Usage = #{usage,jdbcType=VARCHAR},
+      </if>
+      <if test="specialusage != null" >
+        SpecialUsage = #{specialusage,jdbcType=VARCHAR},
+      </if>
+      <if test="matterattend != null" >
+        MatterAttend = #{matterattend,jdbcType=VARCHAR},
+      </if>
+      <if test="drugstorage != null" >
+        DrugStorage = #{drugstorage,jdbcType=VARCHAR},
+      </if>
+      <if test="lprice != null" >
+        LPrice = #{lprice,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="upperlimit != null" >
+        UpperLimit = #{upperlimit,jdbcType=DECIMAL},
+      </if>
+      <if test="lowerlimit != null" >
+        LowerLimit = #{lowerlimit,jdbcType=DECIMAL},
+      </if>
+      <if test="drugflag != null" >
+        DrugFlag = #{drugflag,jdbcType=INTEGER},
+      </if>
+      <if test="stopflag != null" >
+        StopFlag = #{stopflag,jdbcType=BIT},
+      </if>
+      <if test="intoamount != null" >
+        IntoAmount = #{intoamount,jdbcType=DECIMAL},
+      </if>
+      <if test="remainamount != null" >
+        RemainAmount = #{remainamount,jdbcType=DECIMAL},
+      </if>
+      <if test="totalamount != null" >
+        TotalAmount = #{totalamount,jdbcType=DECIMAL},
+      </if>
+      <if test="drugwaycode != null" >
+        DrugWayCode = #{drugwaycode,jdbcType=INTEGER},
+      </if>
+      <if test="dosagecode != null" >
+        DosageCode = #{dosagecode,jdbcType=INTEGER},
+      </if>
+      <if test="measurementcoefficient != null" >
+        MeasurementCoefficient = #{measurementcoefficient,jdbcType=DECIMAL},
+      </if>
+      <if test="prescriptionunit != null" >
+        PrescriptionUnit = #{prescriptionunit,jdbcType=INTEGER},
+      </if>
+      <if test="singlemeasure != null" >
+        SingleMeasure = #{singlemeasure,jdbcType=DECIMAL},
+      </if>
+      <if test="singlemeasureunit != null" >
+        SingleMeasureUnit = #{singlemeasureunit,jdbcType=INTEGER},
+      </if>
+      <if test="syscreatedate != null" >
+        SysCreateDate = #{syscreatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="syscreateby != null" >
+        SysCreateBy = #{syscreateby,jdbcType=VARCHAR},
+      </if>
+      <if test="sysupdatedate != null" >
+        SysUpdateDate = #{sysupdatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysupdateby != null" >
+        SysUpdateBy = #{sysupdateby,jdbcType=VARCHAR},
+      </if>
+      <if test="versionnum != null" >
+        VersionNum = #{versionnum,jdbcType=INTEGER},
+      </if>
+      <if test="sysdelflag != null" >
+        SysDelFlag = #{sysdelflag,jdbcType=CHAR},
+      </if>
+    </set>
+    where DrugCode = #{drugcode,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysInventory" >
+    update sys_inventory
+    set UUID = #{uuid,jdbcType=CHAR},
+      DrugName = #{drugname,jdbcType=VARCHAR},
+      SalesGuige = #{salesguige,jdbcType=VARCHAR},
+      Units = #{units,jdbcType=INTEGER},
+      DrugDosageCode = #{drugdosagecode,jdbcType=VARCHAR},
+      DosePerUnit = #{doseperunit,jdbcType=DECIMAL},
+      DoseUnits = #{doseunits,jdbcType=VARCHAR},
+      DrugModelCode = #{drugmodelcode,jdbcType=INTEGER},
+      InputCode = #{inputcode,jdbcType=VARCHAR},
+      DrugTypeCode = #{drugtypecode,jdbcType=VARCHAR},
+      PackageUnits = #{packageunits,jdbcType=VARCHAR},
+      DrugLow = #{druglow,jdbcType=DECIMAL},
+      DrugHigh = #{drughigh,jdbcType=DECIMAL},
+      DrugHanLiang = #{drughanliang,jdbcType=DECIMAL},
+      DrugHanLiangUnit = #{drughanliangunit,jdbcType=VARCHAR},
+      OtherName = #{othername,jdbcType=VARCHAR},
+      DrugSource = #{drugsource,jdbcType=VARCHAR},
+      DrugProcess = #{drugprocess,jdbcType=VARCHAR},
+      DrugTaste = #{drugtaste,jdbcType=VARCHAR},
+      DrugMeridian = #{drugmeridian,jdbcType=VARCHAR},
+      DrugYinMeridian = #{drugyinmeridian,jdbcType=VARCHAR},
+      DrugFunction = #{drugfunction,jdbcType=VARCHAR},
+      DrugAttend = #{drugattend,jdbcType=VARCHAR},
+      Usage = #{usage,jdbcType=VARCHAR},
+      SpecialUsage = #{specialusage,jdbcType=VARCHAR},
+      MatterAttend = #{matterattend,jdbcType=VARCHAR},
+      DrugStorage = #{drugstorage,jdbcType=VARCHAR},
+      LPrice = #{lprice,jdbcType=DECIMAL},
+      Remark = #{remark,jdbcType=VARCHAR},
+      UpperLimit = #{upperlimit,jdbcType=DECIMAL},
+      LowerLimit = #{lowerlimit,jdbcType=DECIMAL},
+      DrugFlag = #{drugflag,jdbcType=INTEGER},
+      StopFlag = #{stopflag,jdbcType=BIT},
+      IntoAmount = #{intoamount,jdbcType=DECIMAL},
+      RemainAmount = #{remainamount,jdbcType=DECIMAL},
+      TotalAmount = #{totalamount,jdbcType=DECIMAL},
+      DrugWayCode = #{drugwaycode,jdbcType=INTEGER},
+      DosageCode = #{dosagecode,jdbcType=INTEGER},
+      MeasurementCoefficient = #{measurementcoefficient,jdbcType=DECIMAL},
+      PrescriptionUnit = #{prescriptionunit,jdbcType=INTEGER},
+      SingleMeasure = #{singlemeasure,jdbcType=DECIMAL},
+      SingleMeasureUnit = #{singlemeasureunit,jdbcType=INTEGER},
+      SysCreateDate = #{syscreatedate,jdbcType=TIMESTAMP},
+      SysCreateBy = #{syscreateby,jdbcType=VARCHAR},
+      SysUpdateDate = #{sysupdatedate,jdbcType=TIMESTAMP},
+      SysUpdateBy = #{sysupdateby,jdbcType=VARCHAR},
+      VersionNum = #{versionnum,jdbcType=INTEGER},
+      SysDelFlag = #{sysdelflag,jdbcType=CHAR}
+    where DrugCode = #{drugcode,jdbcType=INTEGER}
+  </update>
+
+  <select id="getInventoryAll" resultMap="BaseResultMap">
+    SELECT
+        a.DrugCode,
+        a.DrugName,
+        a.InputCode,
+        a.OtherName,
+        a.DrugModelCode,
+        c.DrugModelName,
+        a.Units,
+        b.UnitName,
+        a.PackageUnits,
+        a.IntoAmount,
+        a.WarningAmount,
+        CASE
+        WHEN RemainAmount &lt; 0 THEN
+        0
+        ELSE
+        RemainAmount
+        END RemainAmount,
+        (
+        SELECT
+          UnitName
+        FROM
+          Gy_Unit
+        WHERE
+          UnitCode = a.PrescriptionUnit
+        ) prescriptionunitname
+    FROM
+        sys_inventory a
+    LEFT JOIN Gy_Unit b ON a.Units = b.UnitCode
+    LEFT JOIN Gy_DrugModel c ON a.DrugModelCode = c.DrugModelCode
+    WHERE
+        StopFlag = 0
+    <if test="searchText != null">
+      and (
+      a.DrugCode like #{searchText} or
+      a.DrugName like #{searchText} or
+      a.InputCode like #{searchText}
+      )
+    </if>
+    <if test="sortName != null">
+      order by ${sortName} ${sortOrder}
+    </if>
+  </select>
+
+  <select id="getWarningList" resultMap="BaseResultTXMap">
+    SELECT
+    a.DrugCode,
+    a.DrugName,
+    a.InputCode,
+    a.OtherName,
+    a.DrugModelCode,
+    c.DrugModelName,
+    a.Units,
+    b.UnitName,
+    a.PackageUnits,
+    a.IntoAmount,
+    a.WarningAmount,
+    (
+    SELECT
+    UnitName
+    FROM
+    Gy_Unit
+    WHERE
+    UnitCode = a.PrescriptionUnit
+    ) prescriptionunitname,
+    CASE
+    WHEN RemainAmount &lt; 0 THEN
+    0
+    ELSE
+    RemainAmount
+    END RemainAmount
+    FROM
+    sys_inventory a
+    LEFT JOIN Gy_Unit b ON a.Units = b.UnitCode
+    LEFT JOIN Gy_DrugModel c ON a.DrugModelCode = c.DrugModelCode
+    WHERE
+    StopFlag = 0
+    AND a.WarningAmount >= a.RemainAmount
+    <if test="searchText != null">
+      and (
+      a.DrugCode like #{searchText} or
+      a.DrugName like #{searchText} or
+      a.InputCode like #{searchText}
+      )
+    </if>
+    <if test="sortName != null">
+      order by ${sortName} ${sortOrder}
+    </if>
+  </select>
+
+
+  <update id="updateInvertory" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysInventory" >
+    update sys_inventory
+    set
+      IntoAmount = #{intoamount,jdbcType=DECIMAL},
+      WarningAmount = #{warningamount,jdbcType=DECIMAL},
+      RemainAmount = #{remainamount,jdbcType=DECIMAL}
+    where DrugCode = #{drugcode,jdbcType=INTEGER}
+  </update>
+
+  <update id="updateNewRemain" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysInventory" >
+    update sys_inventory
+    set
+      RemainAmount = #{remainamount,jdbcType=DECIMAL}
+    where DrugCode = #{drugcode,jdbcType=INTEGER}
+  </update>
+
+</mapper>

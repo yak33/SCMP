@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.lzxt.xycf.mapper.XiYaoInfoMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.xycf.entity.XiYaoInfo">
+        <id column="UUID" property="id" jdbcType="VARCHAR"/>
+        <result column="DrugName" property="DrugName" jdbcType="VARCHAR"/>
+        <result column="HISCorreCode" property="HISCorreCode" jdbcType="VARCHAR"/>
+        <result column="OtherName" property="OtherName" jdbcType="VARCHAR"/>
+        <result column="InputCode" property="InputCode" jdbcType="VARCHAR"/>
+        <result column="DrugCode" property="DrugCode" jdbcType="VARCHAR"/>
+        <result column="DrugWayCode" property="DrugWayCode" jdbcType="VARCHAR"/>
+        <result column="DrugWayName" property="DrugWayName" jdbcType="VARCHAR"/>
+        <result column="FrequencyCode" property="FrequencyCode" jdbcType="VARCHAR"/>
+        <result column="FrequencyName" property="FrequencyName" jdbcType="VARCHAR"/>
+        <result column="PinYinCode" property="PinYinCode" jdbcType="VARCHAR"/>
+        <result column="Coefficient" property="Coefficient" jdbcType="VARCHAR"/>
+        <result column="v_GetBillCode" property="v_GetBillCode" jdbcType="VARCHAR"/>
+        <result column="v_GetBillID" property="v_GetBillID" jdbcType="VARCHAR"/>
+    </resultMap>
+<select id="getXiYaoTable" resultMap="BaseResultMap">
+    select UUID,DrugName,HISCorreCode,OtherName,ltrim(rtrim(InputCode)) as InputCode,DrugCode from Gy_DrugDict where DrugFlag=2 and StopFlag=0
+    <if test="searchText != null">
+        and (
+        DrugName like #{searchText} or
+        DrugCode like #{searchText} or
+        OtherName like #{searchText} or
+        InputCode like #{searchText}
+        )
+    </if>
+    order by DrugName
+</select>
+
+    <select id="getDrugWayTable" resultMap="BaseResultMap">
+    select DrugWayCode,DrugWayName from Gy_DrugWay order by DrugWayName
+</select>
+
+    <select id="getFrequencyTable" resultMap="BaseResultMap">
+  select FrequencyCode,FrequencyName,PinYinCode,Coefficient from Gy_Frequency order by FrequencyName
+</select>
+
+    <select id="getFangJiTable" resultMap="BaseResultMap">
+      select UUID,EmpBasicMainID,FangJiSubID,FangJiSubCode,FangJiSubName
+                                from CM_FangJiSub where DrugFlag=2 and EmpBasicMainID=#{empBasicMainID} order by FangJiSubID
+</select>
+
+    <select id="GetFangJiCode" statementType="CALLABLE" parameterType="com.yyk.sz.zhzy.lzxt.xycf.entity.XiYaoInfo">
+       <![CDATA[
+            {
+              call gy_sp_getidcode_test(
+                                  #{billCode,jdbcType=VARCHAR,mode=IN},
+                                  #{dateString,jdbcType=VARCHAR,mode=IN},
+                                  #{itemCode,jdbcType=VARCHAR,mode=IN},
+                                  #{option,jdbcType=INTEGER,mode=IN},
+                                  #{voucherCode,jdbcType=VARCHAR,mode=IN},
+                                  #{proUUID,jdbcType=VARCHAR,mode=IN})
+            }
+
+        ]]>
+    </select>
+
+    <select id="GetFangJiCodeRst" resultType="com.yyk.sz.zhzy.lzxt.xycf.entity.FangJiCodeRst">
+       select *
+       from T_GetIdCodeRst
+       where UUID = #{proUUID}
+    </select>
+
+
+</mapper>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.common.mapper.GyUserMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.common.entity.GyUser">
+        <id column="UserCode" property="UserCode" jdbcType="VARCHAR"/>
+        <result column="UserName" property="UserName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        UserCode,UserName
+    </sql>
+
+    <select id="getGyUser" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from Gy_User
+        where DeptCode like '%${deptCode}%'
+    </select>
+
+</mapper>

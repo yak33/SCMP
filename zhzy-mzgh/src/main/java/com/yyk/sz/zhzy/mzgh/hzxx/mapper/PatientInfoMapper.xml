@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.mzgh.hzxx.mapper.PatientInfoMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.mzgh.hzxx.entity.PatientInfo">
+        <id column="RegistrationNum" property="RegistrationNum" jdbcType="VARCHAR"/>
+        <result column="MecidalTypeName" property="MecidalTypeName" jdbcType="VARCHAR"/>
+        <result column="MecidalNum" property="MecidalNum" jdbcType="VARCHAR"/>
+        <result column="EmTypeName" property="EmTypeName" jdbcType="VARCHAR"/>
+        <result column="TreatmentState" property="TreatmentState" jdbcType="INTEGER"/>
+        <result column="MecidalType" property="MecidalType" jdbcType="INTEGER"/>
+        <result column="EmType" property="EmType" jdbcType="INTEGER"/>
+        <result column="EmName" property="EmName" jdbcType="VARCHAR"/>
+        <result column="EmSex" property="EmSex" jdbcType="VARCHAR"/>
+        <result column="EmAge" property="EmAge" jdbcType="INTEGER"/>
+        <result column="EmpType" property="EmpType" jdbcType="INTEGER"/>
+        <result column="DeptName" property="DeptName" jdbcType="VARCHAR"/>
+        <result column="UserName" property="UserName" jdbcType="VARCHAR"/>
+        <result column="EmComName" property="EmComName" jdbcType="VARCHAR"/>
+        <result column="EmMobile" property="EmMobile" jdbcType="VARCHAR"/>
+        <result column="EmAddress" property="EmAddress" jdbcType="VARCHAR"/>
+        <result column="EmNum" property="EmNum" jdbcType="VARCHAR"/>
+        <result column="Maker" property="Maker" jdbcType="VARCHAR"/>
+        <result column="MakeDate" property="MakeDate" jdbcType="DATE"/>
+        <result column="Weight" property="Weight" jdbcType="VARCHAR"/>
+        <result column="OnSetDate" property="OnSetDate" jdbcType="DATE"/>
+        <result column="IsYuFu" property="IsYuFu" jdbcType="VARCHAR"/>
+        <result column="gBillCode" property="gBillCode" jdbcType="VARCHAR"/>
+        <result column="gBillId" property="gBillId" jdbcType="INTEGER"/>
+        <result column="v_GetBillCode" property="v_GetBillCode" jdbcType="VARCHAR"/>
+        <result column="v_GetBillID" property="v_GetBillID" jdbcType="VARCHAR"/>
+        <result column="EmpBasicMainID" property="EmpBasicMainID" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        RegistrationNum,MecidalTypeName,MecidalNum,EmTypeName,EmName,EmSex,EmAge,DeptName,UserName,EmComName,EmMobile,EmAddress,EmNum,Maker,MakeDate,Weight,OnSetDate,IsYuFu
+    </sql>
+
+    <select id="getSelectPatientInfoTable" resultMap="BaseResultMap">
+    select
+        a.RegistrationNum,a.MecidalTypeName,a.MecidalType,a.MecidalNum,a.EmTypeName,a.EmType,a.EmName,a.EmSex,a.EmAge,a.DeptName,a.DeptCode,a.UserName,a.UserCode,a.EmComName,a.EmMobile,a.EmAddress,a.EmNum,a.Maker,a.MakeDate,a.Weight,a.OnSetDate,a.IsYuFu,b.EmpBasicMainID from CM_V_GetPatientInfo a left JOIN CM_EmpBasicMain b on a.RegistrationNum=b.RegistrationNum AND a.MecidalNum=b.MecidalNum
+      where a.RegistrationNum=#{registrationNum}
+    </select>
+
+    <update id="updateHisPatientInfo" parameterType="com.yyk.sz.zhzy.mzgh.hzxx.entity.PatientInfo" >
+    Update CM_HISEmpBasicMain
+        <set>
+            <if test="patientInfo.EmName != null">
+                EmName = #{patientInfo.EmName,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.EmSex != null">
+                EmSex = #{patientInfo.EmSex,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.EmAge != null">
+                EmAge = #{patientInfo.EmAge,jdbcType=INTEGER},
+            </if>
+            <if test="patientInfo.EmNum != null">
+                EmNum = #{patientInfo.EmNum,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.EmMobile != null">
+                EmMobile = #{patientInfo.EmMobile,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.EmComName != null">
+                EmComName = #{patientInfo.EmComName,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.EmAddress != null">
+                EmAddress = #{patientInfo.EmAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.EmpStatus != null">
+                EmpStatus = #{patientInfo.EmpStatus,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.EmHealthCardNum != null">
+                EmHealthCardNum = #{patientInfo.EmHealthCardNum,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.EmPreferentialNum != null">
+                EmPreferentialNum = #{patientInfo.EmPreferentialNum,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.Maker != null">
+                Maker = #{patientInfo.Maker,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.MakeDate != null">
+                MakeDate = #{patientInfo.MakeDate,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.OnSetDate != null">
+                OnSetDate = #{patientInfo.OnSetDate,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.Weight != null">
+                Weight = #{patientInfo.Weight,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.IsYuFu != null">
+                IsYuFu = #{patientInfo.IsYuFu,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.DeptCode != null">
+                DeptCode = #{patientInfo.DeptCode,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.DeptName != null">
+                DeptName = #{patientInfo.DeptName,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.UserCode != null">
+                UserCode = #{patientInfo.UserCode,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.UserName != null">
+                UserName = #{patientInfo.UserName,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.MecidalType != null">
+                MecidalType = #{patientInfo.MecidalType,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.EmType != null">
+                EmType = #{patientInfo.EmType,jdbcType=VARCHAR}
+            </if>
+        </set>
+              where RegistrationNum=#{patientInfo.RegistrationNum};
+    </update>
+    <update id="updatePatientInfo" parameterType="com.yyk.sz.zhzy.mzgh.hzxx.entity.PatientInfo" >
+        Update CM_EmpBasicMain
+        <set>
+            <if test="patientInfo.EmName != null">
+                EmName = #{patientInfo.EmName,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.EmSex != null">
+                EmSex = #{patientInfo.EmSex,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.EmAge != null">
+                EmAge = #{patientInfo.EmAge,jdbcType=INTEGER},
+            </if>
+            <if test="patientInfo.EmNum != null">
+                EmNum = #{patientInfo.EmNum,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.EmMobile != null">
+                EmMobile = #{patientInfo.EmMobile,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.EmComName != null">
+                EmComName = #{patientInfo.EmComName,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.EmAddress != null">
+                EmAddress = #{patientInfo.EmAddress,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.Maker != null">
+                Maker = #{patientInfo.Maker,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.MakeDate != null">
+                MakeDate = #{patientInfo.MakeDate,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.OnSetDate != null">
+                OnSetDate = #{patientInfo.OnSetDate,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.Weight != null">
+                Weight = #{patientInfo.Weight,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.IsYuFu != null">
+                IsYuFu = #{patientInfo.IsYuFu,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.DeptCode != null">
+                DeptCode = #{patientInfo.DeptCode,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.DeptName != null">
+                DeptName = #{patientInfo.DeptName,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.UserCode != null">
+                UserCode = #{patientInfo.UserCode,jdbcType=VARCHAR},
+            </if>
+            <if test="patientInfo.UserName != null">
+                UserName = #{patientInfo.UserName,jdbcType=VARCHAR},
+            </if>
+
+        </set>
+        where RegistrationNum=#{patientInfo.RegistrationNum}
+    </update>
+
+    <insert id="insertHisPatientInfo" parameterType="com.yyk.sz.zhzy.mzgh.hzxx.entity.PatientInfo" >
+    Insert into CM_HISEmpBasicMain(RegistrationNumMainID,MecidalNum,RegistrationNum,EmName,EmSex,EmAge,EmNum,Weight,IsYuFu,
+                            EmMobile,EmComName,EmAddress,UserCode,UserName,DeptCode,DeptName,EmpStatus,EmType,EmHealthCardNum,
+                            EmPreferentialNum,Maker,MakeDate,MecidalType,TreatmentState,OnSetDate) Values(#{RegistrationNumMainID},#{MecidalNum},#{RegistrationNum},#{EmName},#{EmSex},#{EmAge},#{EmNum},#{Weight},#{IsYuFu},
+                            #{EmMobile},#{EmComName},#{EmAddress},#{UserCode},#{UserName},#{DeptCode},#{DeptName},#{EmpStatus},#{EmType},#{EmHealthCardNum},
+                            #{EmPreferentialNum},#{Maker},#{MakeDate},#{MecidalType},#{TreatmentState},#{OnSetDate});
+    </insert>
+    <insert id="insertPatientInfo" parameterType="com.yyk.sz.zhzy.mzgh.hzxx.entity.PatientInfo" >
+    INSERT INTO CM_EmpBasicMain (EmpBasicCode,MecidalNum,RegistrationNum,EmName,EmSex,EmAge,EmAddress,EmNum,EmComName,EmMobile,UserName,UserCode,DeptCode,
+    DeptName,Maker,MakeDate,OnSetDate,Weight,IsYuFu,EmpBasicMainID)
+    VALUES(#{EmpBasicCode},#{MecidalNum},#{RegistrationNum},#{EmName},#{EmSex},#{EmAge},#{EmAddress},#{EmNum},#{EmComName}, #{EmMobile},#{UserName},#{UserCode},#{DeptCode},#{DeptName},#{Maker},#{MakeDate},
+    #{OnSetDate},#{Weight},#{IsYuFu},#{EmpBasicMainID});
+    </insert>
+
+
+    <select id="getBillCode" statementType="CALLABLE" parameterType="com.yyk.sz.zhzy.mzgh.hzxx.entity.PatientInfo">
+        <![CDATA[
+
+            {
+              call gy_sp_getidcode_test(
+                                  #{billCode,jdbcType=VARCHAR,mode=IN},
+                                  #{dateString,jdbcType=VARCHAR,mode=IN},
+                                  #{itemCode,jdbcType=VARCHAR,mode=IN},
+                                  #{option,jdbcType=INTEGER,mode=IN},
+                                  #{voucherCode,jdbcType=VARCHAR,mode=IN},
+                                  #{proUUID,jdbcType=VARCHAR,mode=IN})
+
+            }
+
+        ]]>
+    </select>
+
+    <select id="GetEmpBasicIdCodeRst" resultType="com.yyk.sz.zhzy.mzgh.hzxx.entity.EmpBasicIdCodeRst">
+       select *
+       from T_GetIdCodeRst
+       where UUID = #{proUUID}
+    </select>
+
+
+</mapper>

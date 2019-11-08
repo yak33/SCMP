@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.common.mapper.UserInfoMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.common.entity.UserInfo">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="account" property="account" jdbcType="VARCHAR"/>
+        <result column="name" property="name" jdbcType="VARCHAR"/>
+        <result column="note" property="note" jdbcType="VARCHAR"/>
+        <result column="createBy" property="createBy" jdbcType="VARCHAR"/>
+        <result column="createDate" property="createDate" jdbcType="DATE"/>
+        <result column="updateBy" property="updateBy" jdbcType="VARCHAR"/>
+        <result column="updateDate" property="updateDate" jdbcType="DATE"/>
+        <result column="versionNum" property="versionNum" jdbcType="INTEGER"/>
+        <result column="delFlag" property="delFlag" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,account,name,note,createBy,createDate,updateBy,updateDate,versionNum,delFlag
+    </sql>
+
+    <select id="getUserInfoByAccount" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from sys_user
+        where account = #{account,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="insertSelective" parameterType="com.yyk.sz.zhzy.common.entity.UserInfo">
+        insert into sys_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="account != null">
+                account,
+            </if>
+            <if test="name != null">
+                name,
+            </if>
+            <if test="note != null">
+                note,
+            </if>
+            <if test="createBy != null">
+                createBy,
+            </if>
+            <if test="createDate != null">
+                createDate,
+            </if>
+            <if test="updateBy != null">
+                updateBy,
+            </if>
+            <if test="updateDate != null">
+                updateDate,
+            </if>
+            <if test="versionNum != null">
+                versionNum,
+            </if>
+            <if test="delFlag != null">
+                delFlag,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="account != null">
+                #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="versionNum != null">
+                #{versionNum,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag != null">
+                #{delFlag,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <update id="updateSelective" parameterType="com.yyk.sz.zhzy.common.entity.UserInfo">
+        update sys_user
+        <set>
+            <if test="id != null">
+                id = #{id,jdbcType=VARCHAR},
+            </if>
+            <if test="account != null">
+                account = #{account,jdbcType=VARCHAR},
+            </if>
+            <if test="name != null">
+                name = #{name,jdbcType=VARCHAR},
+            </if>
+            <if test="note != null">
+                note = #{note,jdbcType=VARCHAR},
+            </if>
+            <if test="createBy != null">
+                createBy = #{createBy,jdbcType=VARCHAR},
+            </if>
+            <if test="createDate != null">
+                createDate = #{createDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="updateBy != null">
+                updateBy = #{updateBy,jdbcType=VARCHAR},
+            </if>
+            <if test="updateDate != null">
+                updateDate = #{updateDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="versionNum != null">
+                versionNum = #{versionNum,jdbcType=INTEGER},
+            </if>
+            <if test="delFlag != null">
+                delFlag = #{delFlag,jdbcType=VARCHAR},
+            </if>
+        </set>
+        where account = #{account,jdbcType=VARCHAR}
+    </update>
+
+</mapper>

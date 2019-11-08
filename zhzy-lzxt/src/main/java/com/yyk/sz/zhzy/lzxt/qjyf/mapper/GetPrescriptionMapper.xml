@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.lzxt.qjyf.mapper.GetPrescriptionMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.qjyf.entity.GetPrescription">
+        <id column="UUID" property="UUID" jdbcType="VARCHAR"/>
+        <result column="PrescriptionCode" property="PrescriptionCode" jdbcType="VARCHAR"/>
+        <result column="PrescriptionName" property="PrescriptionName" jdbcType="VARCHAR"/>
+        <result column="PinYinCode" property="PinYinCode" jdbcType="VARCHAR"/>
+        <result column="Effect" property="Effect" jdbcType="VARCHAR"/>
+        <result column="Attend" property="Attend" jdbcType="VARCHAR"/>
+        <result column="Calcite" property="Calcite" jdbcType="VARCHAR"/>
+        <result column="Source" property="Source" jdbcType="VARCHAR"/>
+        <result column="SysFlag" property="SysFlag" jdbcType="VARCHAR"/>
+        <result column="JRate" property="JRate" jdbcType="VARCHAR"/>
+        <result column="CRate" property="CRate" jdbcType="VARCHAR"/>
+        <result column="ZRate" property="ZRate" jdbcType="VARCHAR"/>
+        <result column="SRate" property="SRate" jdbcType="VARCHAR"/>
+        <result column="Remark" property="Remark" jdbcType="VARCHAR"/>
+        <result column="Maker" property="Maker" jdbcType="VARCHAR"/>
+        <result column="MakeDate" property="MakeDate" jdbcType="DATE"/>
+        <result column="DrugFlag" property="DrugFlag" jdbcType="VARCHAR"/>
+        <result column="PCCode" property="PCCode" jdbcType="VARCHAR"/>
+        <result column="EmpBasicMainID" property="EmpBasicMainID" jdbcType="VARCHAR"/>
+        <result column="PersonalFlag" property="PersonalFlag" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectPrescriptionList" resultMap="BaseResultMap">
+        SELECT
+            Gy_PrescriptionMain.PrescriptionCode,
+            Gy_PrescriptionMain.PrescriptionName,
+            Gy_PrescriptionMain.PinYinCode,
+            Gy_PrescriptionMain.Effect,
+            Gy_PrescriptionMain.Attend,
+            Gy_PrescriptionMain.Calcite,
+            Gy_PrescriptionMain.Source,
+            Gy_User.UserName AS MakeName
+        FROM
+            Gy_PrescriptionMain
+        LEFT JOIN Gy_User ON Gy_User.UserCode = Gy_PrescriptionMain.Maker
+        WHERE
+            Gy_PrescriptionMain.DrugFlag =#{drugFlag}
+        AND Gy_PrescriptionMain.Maker IN (
+            SELECT
+                QueryUserCode
+            FROM
+                Gy_UserQueryRight
+            WHERE
+                UserCode =#{userCode}
+            AND BusTypeCode = '20'
+        )
+        OR (
+            Gy_PrescriptionMain.SysFlag = '0'
+            AND Gy_PrescriptionMain.DrugFlag =#{drugFlag}
+        )
+        ORDER BY
+            Gy_PrescriptionMain.SysFlag DESC,
+            Gy_PrescriptionMain.PrescriptionCode
+    </select>
+
+</mapper>

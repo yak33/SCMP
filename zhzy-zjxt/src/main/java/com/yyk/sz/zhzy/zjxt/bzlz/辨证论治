@@ -1,0 +1,5 @@
+/zjxt/bzlz/getAllAcupoint           --添加穴位，获取所有穴位列表。
+/zjxt/bzlz/getMainSymptomList       --获取所有主证。--deptCode，userCode
+/zjxt/bzlz/getDiseaseList           --获取兼症（根据主症编码获取对应的兼症）--mainSymptomCode
+/zjxt/bzlz/getTongueList            --获取舌像（根据主症编码获取对应的舌像）--mainSymptomCode
+/zjxt/bzlz/getPulseList             --获取脉象（根据主症编码获取对应的舌像）--mainSymptomCode

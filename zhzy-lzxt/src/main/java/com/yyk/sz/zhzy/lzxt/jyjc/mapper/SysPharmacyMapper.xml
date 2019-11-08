@@ -1,0 +1,476 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yyk.sz.zhzy.lzxt.jyjc.mapper.SysPharmacyMapper" >
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysPharmacy" >
+    <id column="UUID" property="uuid" jdbcType="CHAR" />
+    <result column="EmpBasicMainID" property="empbasicmainid" jdbcType="INTEGER" />
+    <result column="DrugCode" property="drugcode" jdbcType="VARCHAR" />
+    <result column="DrugName" property="drugname" jdbcType="VARCHAR" />
+    <result column="Quantity" property="quantity" jdbcType="DOUBLE" />
+    <result column="ItemType" property="itemtype" jdbcType="INTEGER" />
+    <result column="TakeFlag" property="takeflag" jdbcType="INTEGER" />
+    <result column="UsageCount" property="usageCount" jdbcType="INTEGER"/>
+    <result column="DaiJian" property="daiJian" jdbcType="INTEGER"/>
+    <result column="SysCreateDate" property="syscreatedate" jdbcType="TIMESTAMP" />
+    <result column="SysCreateBy" property="syscreateby" jdbcType="VARCHAR" />
+    <result column="SysUpdateDate" property="sysupdatedate" jdbcType="TIMESTAMP" />
+    <result column="SysUpdateBy" property="sysupdateby" jdbcType="VARCHAR" />
+    <result column="VersionNum" property="versionnum" jdbcType="INTEGER" />
+    <result column="SysDelFlag" property="sysdelflag" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    UUID, EmpBasicMainID, DrugCode, DrugName, Quantity, ItemType, TakeFlag, UsageCount, DaiJian
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_pharmacy
+    where UUID = #{uuid,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_pharmacy
+    where UUID = #{uuid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysPharmacy" >
+    insert into sys_pharmacy (EmpBasicMainID, DrugCode,
+      DrugName, Quantity, ItemType, TakeFlag, UsageCount, DaiJian
+      )
+    values (#{empbasicmainid,jdbcType=INTEGER}, #{drugcode,jdbcType=VARCHAR},
+      #{drugname,jdbcType=VARCHAR}, #{quantity,jdbcType=DOUBLE}, #{itemtype,jdbcType=INTEGER},
+      #{takeflag,jdbcType=INTEGER}, #{usageCount,jdbcType=INTEGER}, #{daiJian,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysPharmacy" >
+    insert into sys_pharmacy
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uuid != null" >
+        UUID,
+      </if>
+      <if test="empbasicmainid != null" >
+        EmpBasicMainID,
+      </if>
+      <if test="drugcode != null" >
+        DrugCode,
+      </if>
+      <if test="drugname != null" >
+        DrugName,
+      </if>
+      <if test="itemtype != null" >
+        ItemType,
+      </if>
+      <if test="takeflag != null" >
+        TakeFlag,
+      </if>
+      <if test="syscreatedate != null" >
+        SysCreateDate,
+      </if>
+      <if test="syscreateby != null" >
+        SysCreateBy,
+      </if>
+      <if test="sysupdatedate != null" >
+        SysUpdateDate,
+      </if>
+      <if test="sysupdateby != null" >
+        SysUpdateBy,
+      </if>
+      <if test="versionnum != null" >
+        VersionNum,
+      </if>
+      <if test="sysdelflag != null" >
+        SysDelFlag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uuid != null" >
+        #{uuid,jdbcType=CHAR},
+      </if>
+      <if test="empbasicmainid != null" >
+        #{empbasicmainid,jdbcType=INTEGER},
+      </if>
+      <if test="drugcode != null" >
+        #{drugcode,jdbcType=VARCHAR},
+      </if>
+      <if test="drugname != null" >
+        #{drugname,jdbcType=VARCHAR},
+      </if>
+      <if test="itemtype != null" >
+        #{itemtype,jdbcType=INTEGER},
+      </if>
+      <if test="takeflag != null" >
+        #{takeflag,jdbcType=INTEGER},
+      </if>
+      <if test="syscreatedate != null" >
+        #{syscreatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="syscreateby != null" >
+        #{syscreateby,jdbcType=VARCHAR},
+      </if>
+      <if test="sysupdatedate != null" >
+        #{sysupdatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysupdateby != null" >
+        #{sysupdateby,jdbcType=VARCHAR},
+      </if>
+      <if test="versionnum != null" >
+        #{versionnum,jdbcType=INTEGER},
+      </if>
+      <if test="sysdelflag != null" >
+        #{sysdelflag,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysPharmacy" >
+    update sys_pharmacy
+    <set >
+      <if test="empbasicmainid != null" >
+        EmpBasicMainID = #{empbasicmainid,jdbcType=INTEGER},
+      </if>
+      <if test="drugcode != null" >
+        DrugCode = #{drugcode,jdbcType=VARCHAR},
+      </if>
+      <if test="drugname != null" >
+        DrugName = #{drugname,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null" >
+        Quantity = #{quantity,jdbcType=DOUBLE},
+      </if>
+      <if test="itemtype != null" >
+        ItemType = #{itemtype,jdbcType=INTEGER},
+      </if>
+      <if test="takeflag != null" >
+        TakeFlag = #{takeflag,jdbcType=INTEGER},
+      </if>
+    </set>
+    where UUID = #{uuid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysPharmacy" >
+    update sys_pharmacy
+    set EmpBasicMainID = #{empbasicmainid,jdbcType=INTEGER},
+      DrugCode = #{drugcode,jdbcType=VARCHAR},
+      DrugName = #{drugname,jdbcType=VARCHAR},
+      Quantity = #{quantity,jdbcType=DOUBLE},
+      ItemType = #{itemtype,jdbcType=INTEGER},
+      TakeFlag = #{takeflag,jdbcType=INTEGER},
+      UsageCount = #{usageCount,jdbcType=INTEGER},
+      DaiJian = #{daiJian,jdbcType=INTEGER}
+    where UUID = #{uuid,jdbcType=CHAR}
+  </update>
+
+  <delete id="delPharmacy" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysPharmacy">
+        DELETE
+        FROM
+            sys_pharmacy
+        WHERE
+            EmpBasicMainID = #{empbasicmainid}
+        AND ItemType = #{itemtype}
+  </delete>
+
+<!--未取药-->
+  <select id="getWQPhaList" resultMap="BaseResultMap" >
+    WITH ta AS (
+    SELECT DISTINCT
+    a.EmpBasicMainID,
+    b.RegistrationNum,
+    b.MecidalNum,
+    b.EmName,
+    b.MakeDate,
+    b.UserName,
+    b.DeptName
+    FROM
+    sys_financial a
+    INNER JOIN CM_EmpBasicMain b ON a.EmpBasicMainID = b.EmpBasicMainID
+    WHERE
+    a.PayItem IN (0, 1)
+    ),
+    tb AS (
+    SELECT
+    EmpBasicMainID,
+    CASE
+    WHEN (SUM(PayStatus)) = 2
+    OR (
+    (SUM(PayStatus)) = 1
+    AND (count(PayStatus)) = 1
+    ) THEN
+    '已缴费'
+    WHEN (SUM(PayStatus)) = 1
+    AND (count(PayStatus)) = 2 THEN
+    '部分缴费'
+    WHEN (SUM(PayStatus)) = 0 THEN
+    '未缴费'
+    ELSE
+    ''
+    END PayStatusStr
+    FROM
+    sys_financial
+    WHERE
+    PayItem IN (0, 1)
+    GROUP BY
+    EmpBasicMainID
+    ),
+    tc AS (
+    SELECT
+    EmpBasicMainID,
+    CASE
+    WHEN (
+    SUM(TakeFlag) = 0
+    AND count(TakeFlag) = 1
+    )
+    OR (
+    SUM(TakeFlag) &lt; count(TakeFlag)
+    ) THEN
+    '未取药'
+    WHEN (
+    SUM(TakeFlag) = 1
+    AND count(TakeFlag) = 1
+    )
+    OR (
+    SUM(TakeFlag) = count(TakeFlag)
+    ) THEN
+    '已取药'
+    ELSE
+    ''
+    END TakeFlagStr,
+    CASE
+    WHEN (
+    SUM(TakeFlag) = 0
+    AND count(TakeFlag) = 1
+    )
+    OR (
+    SUM(TakeFlag) &lt; count(TakeFlag)
+    ) THEN
+    '0'
+    WHEN (
+    SUM(TakeFlag) = 1
+    AND count(TakeFlag) = 1
+    )
+    OR (
+    SUM(TakeFlag) = count(TakeFlag)
+    ) THEN
+    '1'
+    ELSE
+    ''
+    END takeflag
+    FROM
+    sys_pharmacy
+    WHERE
+    ItemType IN (0, 1)
+    GROUP BY
+    EmpBasicMainID
+    ) SELECT
+    ta.*, tb.PayStatusStr,
+    tc.TakeFlagStr,
+    tc.takeflag
+    FROM
+    ta
+    INNER JOIN tb ON ta.EmpBasicMainID = tb.EmpBasicMainID
+    INNER JOIN tc ON ta.EmpBasicMainID = tc.EmpBasicMainID
+    WHERE
+    TakeFlagStr = '未取药'
+    <if test="searchText != null">
+      and (
+      b.MecidalNum like #{searchText} or
+      b.EmName like #{searchText} or
+      b.RegistrationNum like #{searchText} or
+      b.UserName like #{searchText}
+      )
+    </if>
+    <if test="sortName != null">
+      order by ${sortName} ${sortOrder}
+    </if>
+  </select>
+
+<!--已取药-->
+  <select id="getYQPhaList" resultMap="BaseResultMap" >
+    WITH ta AS (
+    SELECT DISTINCT
+    a.EmpBasicMainID,
+    b.RegistrationNum,
+    b.MecidalNum,
+    b.EmName,
+    b.MakeDate,
+    b.UserName,
+    b.DeptName
+    FROM
+    sys_financial a
+    INNER JOIN CM_EmpBasicMain b ON a.EmpBasicMainID = b.EmpBasicMainID
+    WHERE
+    a.PayItem IN (0, 1)
+    ),
+    tb AS (
+    SELECT
+    EmpBasicMainID,
+    CASE
+    WHEN (SUM(PayStatus)) = 2
+    OR (
+    (SUM(PayStatus)) = 1
+    AND (count(PayStatus)) = 1
+    ) THEN
+    '已缴费'
+    WHEN (SUM(PayStatus)) = 1
+    AND (count(PayStatus)) = 2 THEN
+    '部分缴费'
+    WHEN (SUM(PayStatus)) = 0 THEN
+    '未缴费'
+    ELSE
+    ''
+    END PayStatusStr
+    FROM
+    sys_financial
+    WHERE
+    PayItem IN (0, 1)
+    GROUP BY
+    EmpBasicMainID
+    ),
+    tc AS (
+    SELECT
+    EmpBasicMainID,
+    CASE
+    WHEN (
+    SUM(TakeFlag) = 0
+    AND count(TakeFlag) = 1
+    )
+    OR (
+    SUM(TakeFlag) &lt; count(TakeFlag)
+    ) THEN
+    '未取药'
+    WHEN (
+    SUM(TakeFlag) = 1
+    AND count(TakeFlag) = 1
+    )
+    OR (
+    SUM(TakeFlag) = count(TakeFlag)
+    ) THEN
+    '已取药'
+    ELSE
+    ''
+    END TakeFlagStr,
+    CASE
+    WHEN (
+    SUM(TakeFlag) = 0
+    AND count(TakeFlag) = 1
+    )
+    OR (
+    SUM(TakeFlag) &lt; count(TakeFlag)
+    ) THEN
+    '0'
+    WHEN (
+    SUM(TakeFlag) = 1
+    AND count(TakeFlag) = 1
+    )
+    OR (
+    SUM(TakeFlag) = count(TakeFlag)
+    ) THEN
+    '1'
+    ELSE
+    ''
+    END takeflag
+    FROM
+    sys_pharmacy
+    WHERE
+    ItemType IN (0, 1)
+    GROUP BY
+    EmpBasicMainID
+    ) SELECT
+    ta.*, tb.PayStatusStr,
+    tc.TakeFlagStr,
+    tc.takeflag
+    FROM
+    ta
+    INNER JOIN tb ON ta.EmpBasicMainID = tb.EmpBasicMainID
+    INNER JOIN tc ON ta.EmpBasicMainID = tc.EmpBasicMainID
+    WHERE
+    TakeFlagStr = '已取药'
+    <if test="searchText != null">
+      and (
+      b.MecidalNum like #{searchText} or
+      b.EmName like #{searchText} or
+      b.RegistrationNum like #{searchText} or
+      b.UserName like #{searchText}
+      )
+    </if>
+    <if test="sortName != null">
+      order by ${sortName} ${sortOrder}
+    </if>
+  </select>
+
+  <select id="selectPayStatusPha" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    SELECT
+        PayStatus
+    FROM
+        sys_financial
+    WHERE
+        EmpBasicMainID = #{empbasicmainid}
+    AND PayItem IN (0, 1)
+    GROUP BY
+        PayStatus
+  </select>
+
+  <select id="selectTakeFlagPha" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    SELECT
+        TakeFlag
+    FROM
+        sys_pharmacy
+    WHERE
+        EmpBasicMainID = #{empbasicmainid}
+    GROUP BY
+        TakeFlag
+  </select>
+
+  <select id="getDrugDetail" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+        sys_pharmacy
+    WHERE
+        EmpBasicMainID = #{empbasicmainid}
+  </select>
+
+  <update id="updateTakeFlag" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysPharmacy">
+    update sys_pharmacy
+    <set >
+      <if test="takeflag != null" >
+        TakeFlag = #{takeflag,jdbcType=INTEGER},
+      </if>
+    </set>
+    where EmpBasicMainID = #{empbasicmainid}
+    and ItemType = #{itemtype}
+  </update>
+
+  <select id="getDrugCodeList" resultMap="BaseResultMap" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysPharmacy">
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM
+    sys_pharmacy
+    WHERE
+    EmpBasicMainID = #{empbasicmainid}
+    and ItemType = #{itemtype}
+  </select>
+
+  <select id="getPayOrNo" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    SELECT
+        *
+    FROM
+        sys_financial
+    WHERE
+        EmpBasicMainID = #{empbasicmainid}
+    AND PayItem IN (0, 1)
+  </select>
+
+  <select id="getPrescriptionName" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT
+        unitname prescriptionunitname
+    FROM
+        Gy_Unit
+    WHERE
+        UnitCode = (
+            SELECT
+                PrescriptionUnit
+            FROM
+                Gy_DrugDict
+            WHERE
+                DrugCode = #{drugcode,jdbcType=VARCHAR}
+        )
+  </select>
+
+
+</mapper>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.gcxt.xybm.mapper.GCWesternMedicineMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.gcxt.xybm.entity.GCWesternMedicine">
+        <result column="WesternMedicineName" property="WesternMedicineName" jdbcType="VARCHAR"/>
+        <result column="WesternMedicineCode" property="WesternMedicineCode" jdbcType="VARCHAR"/>
+        <result column="PinYinCode" property="PinYinCode" jdbcType="VARCHAR"/>
+        <result column="SystemCode" property="SystemCode" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getAllWesternMedicineName" resultMap="BaseResultMap">
+       SELECT
+            CC.WesternMedicineName,
+            CC.WesternMedicineCode,
+            CC.PinYinCode
+        FROM
+            (
+                SELECT DISTINCT
+                    `Gy_WesternMedicine`.`WesternMedicineCode` AS `WesternMedicineCode`,
+                    `Gy_WesternMedicine`.`WesternMedicineName` AS `WesternMedicineName`,
+                    `Gy_WesternMedicine`.`PinYinCode` AS `PinYinCode`
+                FROM
+                    (
+                        (
+                            `Gy_DialectcalWesternMedicine` `A`
+                            JOIN `Gy_WesternMedicine` ON (
+                                (
+                                    `Gy_WesternMedicine`.`WesternMedicineCode` = `A`.`WesternMedicineCode`
+                                )
+                            )
+                        )
+                        LEFT JOIN `Gy_MainSymptomSystem` ON (
+                            (
+                                `Gy_MainSymptomSystem`.`MainSymptomCode` = `A`.`MainSymptomCode`
+                            )
+                        )
+                    )
+            ) CC where 1=1
+        <if test="searchText != null">
+            and (
+            CC.WesternMedicineName like '%${searchText}%' or
+            CC.WesternMedicineCode like '%${searchText}%' or
+            CC.PinYinCode like '%${searchText}%'
+            )
+        </if>
+        ORDER BY
+            CC.WesternMedicineName
+    </select>
+
+</mapper>

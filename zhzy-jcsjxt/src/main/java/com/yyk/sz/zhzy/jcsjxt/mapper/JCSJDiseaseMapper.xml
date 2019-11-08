@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJDiseaseMapper">
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDisease">
+      <id column="DiseaseCode" property="diseasecode" javaType="java.lang.String" jdbcType="INTEGER" />
+      <result column="UUID" property="uuid" javaType="java.lang.String" jdbcType="CHAR" />
+      <result column="DiseaseName" property="diseasename" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="PinYinCode" property="pinyincode" javaType="java.lang.String" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getDiseaseTable" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select DiseaseCode,DiseaseName,PinYinCode from Gy_Disease where 1=1
+    <if test="searchText != null">
+      and (
+      DiseaseCode like #{searchText} or
+      DiseaseName like #{searchText} or
+      PinYinCode like #{searchText}
+      )
+    </if>
+    order by DiseaseCode desc
+  </select>
+  <delete id="deleteDisease" parameterType="java.lang.String">
+    delete from Gy_Disease
+    where DiseaseCode = #{diseasecode}
+  </delete>
+
+  <insert id="insertDisease" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDisease">
+    insert into Gy_Disease
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="diseasecode != null">
+        DiseaseCode,
+      </if>
+      <if test="diseasename != null">
+        DiseaseName,
+      </if>
+      <if test="pinyincode != null">
+        PinYinCode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="diseasecode != null">
+        #{diseasecode,jdbcType=INTEGER},
+      </if>
+      <if test="diseasename != null">
+        #{diseasename,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null">
+        #{pinyincode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateDisease" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDisease">
+    update Gy_Disease
+    <set>
+      <if test="diseasename2 != null">
+        DiseaseName = #{diseasename2,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null">
+        PinYinCode = #{pinyincode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DiseaseCode = #{diseasecode,jdbcType=INTEGER}
+  </update>
+
+  <select id="checkDiseaseExits" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select DiseaseCode,DiseaseName,PinYinCode from Gy_Disease where 1=1
+    <if test="diseasecode != null" >
+      and DiseaseCode = #{diseasecode}
+    </if>
+    <if test="diseasename != null" >
+      and DiseaseName = #{diseasename}
+    </if>
+  </select>
+
+  <delete id="deleteMeridianMainSymptom" parameterType="java.lang.String">
+    delete from ${strtable}
+    where DiseaseCode = #{diseasecode}
+  </delete>
+
+  <insert id="insertMeridianMainSymptom" parameterType="java.lang.String">
+    INSERT INTO ${strtable} (DiseaseCode,${cloum})
+    values (#{diseasecode},#{code})
+  </insert>
+
+  <select id="GetDiseaseMainSymptomRelation" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select DiseaseCode from Gy_MainSymptomDisease where 1=1
+    <if test="diseasecode != null" >
+      and DiseaseCode = #{diseasecode}
+    </if>
+  </select>
+
+  <select id="GetDiseaseDialecticalRelation" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select DiseaseCode from Gy_DiseaseOrDialectical where 1=1
+    <if test="diseasecode != null" >
+      and DiseaseCode = #{diseasecode}
+    </if>
+  </select>
+</mapper>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.lzxt.hzlb.mapper.PatientListMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.hzlb.entity.PatientList">
+        <id column="MecidalNum" property="MecidalNum" jdbcType="VARCHAR"/>
+        <result column="RegistrationNum" property="RegistrationNum" jdbcType="VARCHAR"/>
+        <result column="EmName" property="EmName" jdbcType="VARCHAR"/>
+        <result column="MakeDate" property="MakeDate" jdbcType="VARCHAR"/>
+        <result column="OnSetDate" property="OnSetDate" jdbcType="VARCHAR"/>
+        <result column="UserName" property="UserName" jdbcType="VARCHAR"/>
+        <result column="DeptName" property="DeptName" jdbcType="VARCHAR"/>
+        <result column="DeptCode" property="DeptCode" jdbcType="VARCHAR"/>
+        <result column="TreatmentState" property="TreatmentState" jdbcType="VARCHAR"/>
+        <result column="AttachmentSize" property="AttachmentSize" jdbcType="VARCHAR"/>
+        <result column="AttachmentStorageType" property="AttachmentStorageType" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        MecidalNum,RegistrationNum,EmName,MakeDate,UserName,DeptName,DeptCode,TreatmentState,AttachmentSize,AttachmentStorageType
+    </sql>
+
+    <select id="getSelectPatientListTable" resultMap="BaseResultMap">
+select MecidalNum,RegistrationNum,EmName,UserName,DeptCode,DeptName,MakeDate,OnSetDate,case TreatmentState when '0' then '未就诊' when '1' then '已就诊' else
+'等待就诊' end TreatmentState,'查看详情' AttachmentSize,'马上就诊' AttachmentStorageType
+ from CM_HISEmpBasicMain
+ where TreatmentState=#{treatmentState}
+        <if test="deptcode != null">
+            and DeptCode=#{deptcode}
+        </if>
+        <if test="searchText != null">
+             and (
+            MecidalNum like #{searchText} or
+            EmName like #{searchText} or
+            RegistrationNum like #{searchText} or
+            UserName like #{searchText}
+            )
+        </if>
+        <if test="sortName != null">
+            order by ${sortName} ${sortOrder}
+        </if>
+    </select>
+
+</mapper>

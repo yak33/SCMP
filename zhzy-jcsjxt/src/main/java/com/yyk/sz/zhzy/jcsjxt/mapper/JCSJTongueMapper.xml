@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJTongueMapper">
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJTongue">
+      <id column="TongueCode" property="tonguecode" javaType="java.lang.String" jdbcType="INTEGER" />
+      <result column="UUID" property="uuid" javaType="java.lang.String" jdbcType="CHAR" />
+      <result column="TongueName" property="tonguename" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="PinYinCode" property="pinyincode" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="TongueImage" property="tongueimage" javaType="java.lang.String" jdbcType="LONGVARCHAR" />
+  </resultMap>
+
+  <select id="getTongueTable" resultMap="BaseResultMap">
+    select TongueCode,TongueName,PinYinCode,TongueImage from Gy_Tongue where 1=1
+    <if test="searchText != null">
+      and (
+      TongueCode like #{searchText} or
+      TongueName like #{searchText} or
+      PinYinCode like #{searchText}
+      )
+    </if>
+    order by TongueCode desc
+  </select>
+  <delete id="deleteTongue" parameterType="java.lang.String">
+    delete from Gy_Tongue
+    where TongueCode = #{tonguecode,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insertTongue" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJTongue">
+    insert into Gy_Tongue
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="tonguecode != null">
+        TongueCode,
+      </if>
+      <if test="tonguename != null">
+        TongueName,
+      </if>
+      <if test="pinyincode != null">
+        PinYinCode,
+      </if>
+      <if test="tongueimage != null">
+        TongueImage,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="tonguecode != null">
+        #{tonguecode,jdbcType=INTEGER},
+      </if>
+      <if test="tonguename != null">
+        #{tonguename,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null">
+        #{pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="tongueimage != null">
+        #{tongueimage,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateTongue" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJTongue">
+    update Gy_Tongue
+    <set>
+      <if test="tonguename2 != null">
+        TongueName = #{tonguename2,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null">
+        PinYinCode = #{pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="tongueimage != null">
+        TongueImage = #{tongueimage,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where TongueCode = #{tonguecode,jdbcType=INTEGER}
+  </update>
+
+  <select id="checkTongueExits" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select TongueCode,TongueName,PinYinCode,TongueImage from Gy_Tongue where 1=1
+    <if test="tonguecode != null" >
+      and TongueCode = #{tonguecode}
+    </if>
+    <if test="tonguename != null" >
+      and TongueName = #{tonguename}
+    </if>
+  </select>
+  <select id="GetMainTongueByTongueCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select TongueCode from Gy_MainTongue where 1=1
+    <if test="tonguecode != null" >
+      and TongueCode = #{tonguecode}
+    </if>
+  </select>
+</mapper>

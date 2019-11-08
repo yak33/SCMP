@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJSummaryItemMapper" >
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJSummaryItem" >
+      <id column="SummaryCode" property="summarycode" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="UUID" property="uuid" jdbcType="CHAR" javaType="java.lang.String" />
+      <result column="SummaryName" property="summaryname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="PinYinCode" property="pinyincode" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="Remark" property="remark" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="HISCode" property="hiscode" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="DetailItemFlag" property="detailitemflag" jdbcType="INTEGER" javaType="java.lang.Integer" />
+  </resultMap>
+
+  <select id="getSummaryItem" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select SummaryCode,SummaryName,PinYinCode,DetailItemFlag,HISCode,Remark from Gy_SummaryItem where 1=1
+    <if test="summarycode != null" >
+      and SummaryCode like #{summarycode}
+    </if>
+    <if test="summaryname != null" >
+      and SummaryName like #{summaryname}
+    </if>
+    <if test="searchText != null">
+      and (
+      SummaryCode like #{searchText} or
+      SummaryName like #{searchText}
+      )
+    </if>
+    order by SummaryCode desc
+  </select>
+
+  <delete id="deleteSummaryItem" parameterType="java.lang.String" >
+    delete from Gy_SummaryItem
+    where SummaryCode = #{summarycode,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insertSummaryItem" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJSummaryItem" >
+    insert into Gy_SummaryItem
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="summarycode != null" >
+        SummaryCode,
+      </if>
+      <if test="summaryname != null" >
+        SummaryName,
+      </if>
+      <if test="pinyincode != null" >
+        PinYinCode,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+      <if test="hiscode != null" >
+        HISCode,
+      </if>
+      <if test="detailitemflag != null" >
+        DetailItemFlag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="summarycode != null" >
+        #{summarycode,jdbcType=VARCHAR},
+      </if>
+      <if test="summaryname != null" >
+        #{summaryname,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null" >
+        #{pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="hiscode != null" >
+        #{hiscode,jdbcType=VARCHAR},
+      </if>
+      <if test="detailitemflag != null" >
+        #{detailitemflag,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateSummaryItem" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJSummaryItem" >
+    update Gy_SummaryItem
+    <set >
+      <if test="summaryname2 != null" >
+        SummaryName = #{summaryname2,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null" >
+        PinYinCode = #{pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="hiscode != null" >
+        HISCode = #{hiscode,jdbcType=VARCHAR},
+      </if>
+      <if test="detailitemflag != null" >
+        DetailItemFlag = #{detailitemflag,jdbcType=INTEGER},
+      </if>
+    </set>
+    where SummaryCode = #{summarycode,jdbcType=VARCHAR}
+  </update>
+
+  <select id="checkSummaryItemIsUsed" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select SummaryCode from  Gy_DetailItem where 1=1
+    <if test="summarycode != null" >
+      and SummaryCode = #{summarycode}
+    </if>
+    order by SummaryCode desc
+  </select>
+
+  <select id="checkSummaryItemExits" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select SummaryCode,SummaryName,PinYinCode,DetailItemFlag,HISCode,Remark from Gy_SummaryItem where 1=1
+    <if test="summarycode != null" >
+      and SummaryCode = #{summarycode}
+    </if>
+    <if test="summaryname != null" >
+      and SummaryName = #{summaryname}
+    </if>
+  </select>
+
+</mapper>

@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJWesternMedicineMapper">
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJWesternMedicine">
+      <id column="WesternMedicineCode" property="westernmedicinecode" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="UUID" property="uuid" javaType="java.lang.String" jdbcType="CHAR" />
+      <result column="WesternMedicineName" property="westernmedicinename" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="PinYinCode" property="pinyincode" javaType="java.lang.String" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getWesternMedicineTable" resultMap="BaseResultMap">
+    SELECT WesternMedicineCode,WesternMedicineName,PinYinCode FROM Gy_WesternMedicine where 1=1
+    <if test="searchText != null">
+      and (
+      WesternMedicineCode like #{searchText} or
+      WesternMedicineName like #{searchText} or
+      PinYinCode like #{searchText}
+      )
+    </if>
+    order by WesternMedicineCode desc
+  </select>
+
+  <delete id="deleteWesternMedicine" parameterType="java.lang.String">
+    delete from Gy_WesternMedicine
+    where WesternMedicineCode = #{westernmedicinecode,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insertWesternMedicine" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJWesternMedicine">
+    insert into Gy_WesternMedicine
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="westernmedicinecode != null">
+        WesternMedicineCode,
+      </if>
+      <if test="westernmedicinename != null">
+        WesternMedicineName,
+      </if>
+      <if test="pinyincode != null">
+        PinYinCode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="westernmedicinecode != null">
+        #{westernmedicinecode,jdbcType=VARCHAR},
+      </if>
+      <if test="westernmedicinename != null">
+        #{westernmedicinename,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null">
+        #{pinyincode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateWesternMedicine" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJWesternMedicine">
+    update Gy_WesternMedicine
+    <set>
+      <if test="westernmedicinename2 != null">
+        WesternMedicineName = #{westernmedicinename2,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null">
+        PinYinCode = #{pinyincode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where WesternMedicineCode = #{westernmedicinecode,jdbcType=VARCHAR}
+  </update>
+
+  <select id="checkWesternMedicineExits" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT WesternMedicineCode,WesternMedicineName,PinYinCode FROM Gy_WesternMedicine where 1=1
+    <if test="westernmedicinecode != null" >
+      and WesternMedicineCode = #{westernmedicinecode}
+    </if>
+    <if test="westernmedicinename != null" >
+      and WesternMedicineName = #{westernmedicinename}
+    </if>
+  </select>
+
+  <select id="GetMainSymptomInfoByWesternMedicineCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select WesternMedicineCode from Gy_DialectcalWesternMedicine where WesternMedicineCode = #{westernmedicinecode}
+  </select>
+</mapper>

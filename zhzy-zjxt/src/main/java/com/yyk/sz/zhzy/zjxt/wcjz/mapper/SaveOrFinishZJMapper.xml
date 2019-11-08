@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.zjxt.wcjz.mapper.SaveOrFinishZJMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.zjxt.wcjz.entity.SaveOrFinishZJ">
+        <id column="EmpBasicMainID" property="empBasicMainID" jdbcType="VARCHAR"/>
+        <result column="FangJiSubCode" property="fangJiSubCode" jdbcType="VARCHAR"/>
+        <result column="FangJiSubName" property="fangJiSubName" jdbcType="VARCHAR"/>
+        <result column="Effect" property="effect" jdbcType="VARCHAR"/>
+        <result column="Attend" property="attend" jdbcType="VARCHAR"/>
+        <result column="Calcite" property="calcite" jdbcType="VARCHAR"/>
+        <result column="Source" property="source" jdbcType="VARCHAR"/>
+        <result column="DialecticalCode" property="dialecticalCode" jdbcType="VARCHAR"/>
+        <result column="CureCode" property="cureCode" jdbcType="VARCHAR"/>
+        <result column="TotalAmout" property="wholeMoney" jdbcType="VARCHAR"/>
+        <result column="BeginDate" property="beginDate" jdbcType="VARCHAR"/>
+        <result column="ChineseMedicineCode" property="chineseMedicineCode" jdbcType="VARCHAR"/>
+        <result column="WesternMedicineCode" property="westernMedicineCode" jdbcType="VARCHAR"/>
+        <result column="RegistrationNum" property="registrationNum" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <delete id="delFangJiDetailSub" parameterType="java.lang.String">
+       DELETE
+       FROM
+         CM_FangJiDetailSub
+       WHERE
+         FangJiSubID IN (
+            SELECT
+                CM_FangJiSub.FangJiSubID
+            FROM
+                CM_FangJiSub
+            WHERE
+                EmpBasicMainID = #{empBasicMainID}
+            AND DrugFlag = 1
+         )
+    </delete>
+
+    <delete id="delFangJiSub" parameterType="java.lang.String">
+       DELETE
+       FROM
+          CM_FangJiSub
+       WHERE
+          EmpBasicMainID = #{empBasicMainID}
+       AND DrugFlag = 1
+    </delete>
+
+    <insert id="insertFangJiSub" parameterType="com.yyk.sz.zhzy.zjxt.wcjz.entity.SaveOrFinishZJ">
+        INSERT INTO CM_FangJiSub (
+            EmpBasicMainID,
+            FangJiSubCode,
+            FangJiSubName,
+            Effect,
+            Attend,
+            Calcite,
+            Source,
+            UsageCount,
+            Advice,
+            Remark,
+            IsDaiJian,
+            FangjiUsage,
+            DrugFlag,
+            BeginDate,
+            ZJMinutes,
+            HISFangJiSubCode,
+            TotalAmout
+        )
+        VALUES
+            (
+                #{empBasicMainID} , #{prescriptionCode} , #{prescriptionName} , #{calcite} , #{attend} , #{calcite} , '' ,
+                0,
+                '',
+                '',
+                0,
+                '' , 1 , #{beginDate} , #{zjMinutes} , '', #{wholeMoney}
+            )
+    </insert>
+
+    <select id="getFangJiSubIDcc" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+            FangJiSubID
+        FROM
+            CM_FangJiSub
+        WHERE
+            EmpBasicMainID = #{empBasicMainID}
+        AND DrugFlag = 1
+    </select>
+
+    <insert id="insertFangJiDetailSubcc" parameterType="com.yyk.sz.zhzy.zjxt.wcjz.entity.SaveOrFinishZJ">
+        INSERT INTO CM_FangJiDetailSub (
+            DrugCode,
+            FangJiSubID,
+            LPrice,
+            WholeMoney,
+            Quanitity,
+            SufferTypeCode,
+            Remark,
+            DetailMinutes
+        )
+        VALUES
+            (
+                #{acupointCode},
+                #{fangJiSubID},
+                #{LPrice},
+                #{wholeMoney},
+                #{quanitity},
+                '',
+                '',
+                0
+            )
+    </insert>
+
+    <update id="updateEmpBasicMain" parameterType="com.yyk.sz.zhzy.zjxt.wcjz.entity.SaveOrFinishZJ">
+        UPDATE CM_EmpBasicMain
+        SET DialecticalCode =#{dialecticalCode},
+         CureCode =#{cureCode},
+         ChineseMedicineCode =#{chineseMedicineCode},
+         WesternMedicineCode =#{westernMedicineCode}
+        WHERE
+            EmpBasicMainID =#{empBasicMainID}
+    </update>
+
+    <update id="updateHISEmpBasicMain" parameterType="com.yyk.sz.zhzy.zjxt.wcjz.entity.SaveOrFinishZJ">
+        UPDATE CM_HISEmpBasicMain
+        SET TreatmentState = 1
+        WHERE
+            CM_HISEmpBasicMain.RegistrationNum =#{registrationNum}
+    </update>
+
+    <select id="getDrugDict" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+            *
+        FROM
+            Gy_DrugDict
+        WHERE
+            DrugCode = #{acupointCode}
+    </select>
+
+</mapper>

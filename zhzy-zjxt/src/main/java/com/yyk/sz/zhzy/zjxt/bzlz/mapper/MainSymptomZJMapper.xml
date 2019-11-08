@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.zjxt.bzlz.mapper.MainSymptomZJMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.zjxt.bzlz.entity.MainSymptomZJ">
+        <id column="MainSymptomCode" property="mainSymptomCode" jdbcType="INTEGER"/>
+        <result column="MainSymptomName" property="mainSymptomName" jdbcType="VARCHAR"/>
+        <result column="PinYinCode" property="pinYinCode" jdbcType="VARCHAR"/>
+        <result column="MainSymptomTypeName" property="mainSymptomTypeName" jdbcType="VARCHAR"/>
+        <result column="MainSymptomTypeCode" property="mainSymptomTypeCode" jdbcType="INTEGER"/>
+        <result column="Soue" property="soue" jdbcType="VARCHAR"/>
+        <result column="DeptCode" property="deptCode" jdbcType="VARCHAR"/>
+        <result column="DiseaseCode" property="diseaseCode" jdbcType="VARCHAR"/>
+        <result column="DiseaseName" property="diseaseName" jdbcType="VARCHAR"/>
+        <result column="TongueCode" property="tongueCode" jdbcType="INTEGER"/>
+        <result column="TongueName" property="tongueName" jdbcType="VARCHAR"/>
+        <result column="TongueImage" property="tongueImage" jdbcType="VARCHAR"/>
+        <result column="PulseCode" property="pulseCode" jdbcType="INTEGER"/>
+        <result column="PulseName" property="pulseName" jdbcType="VARCHAR"/>
+        <result column="UserCode" property="userCode" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getMainSymptomList" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+            *
+        FROM
+            (
+                SELECT DISTINCT
+                    Gy_MainSymptom.MainSymptomCode,
+                    Gy_MainSymptom.MainSymptomName,
+                    Gy_MainSymptom.PinYinCode,
+                    Gy_MainSymptomType.MainSymptomTypeName,
+                    IFNULL(CM_MaxMainSymptom.Soue, 0) AS Soue,
+                    IFNULL(
+                        Gy_SymptomOrDosage.DeptCode,
+                        ''
+                    ) AS DeptCode
+                FROM
+                    Gy_MainSymptom
+                LEFT JOIN Gy_MainSymptomSystem ON Gy_MainSymptomSystem.MainSymptomCode = Gy_MainSymptom.MainSymptomCode
+                LEFT JOIN Gy_SymptomOrDosage ON Gy_SymptomOrDosage.MainSymptomCode = Gy_MainSymptom.MainSymptomCode
+                AND Gy_SymptomOrDosage.DeptCode = #{deptCode}
+                LEFT JOIN Gy_MainSymptomType ON Gy_MainSymptomType.MainSymptomTypeCode = Gy_MainSymptom.MainSymptomTypeCode
+                LEFT JOIN CM_MaxMainSymptom ON CM_MaxMainSymptom.MainSymptomCode = Gy_MainSymptom.MainSymptomCode
+                AND CM_MaxMainSymptom.UserCode = #{userCode}
+                WHERE
+                    Gy_MainSymptomSystem.SystemCode = '02'
+            ) AA
+        ORDER BY
+            AA.Soue DESC,
+            AA.DeptCode DESC
+    </select>
+
+    <select id="getDiseaseList" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+            0 AS selDisease,
+            Gy_MainSymptomDisease.DiseaseCode,
+            Gy_Disease.DiseaseName
+        FROM
+            Gy_MainSymptomDisease
+        LEFT JOIN Gy_Disease ON Gy_Disease.DiseaseCode = Gy_MainSymptomDisease.DiseaseCode
+        WHERE
+            Gy_MainSymptomDisease.MainSymptomCode = #{mainSymptomCode}
+    </select>
+
+    <select id="getTongueList" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+            0 AS selTongue,
+            Gy_Tongue.TongueCode,
+            Gy_Tongue.TongueName,
+            Gy_Tongue.TongueImage
+        FROM
+            Gy_MainTongue
+        LEFT JOIN Gy_Tongue ON Gy_Tongue.TongueCode = Gy_MainTongue.TongueCode
+        WHERE
+            Gy_MainTongue.MainSymptomCode = #{mainSymptomCode}
+        ORDER BY
+            Gy_Tongue.TongueName
+    </select>
+
+    <select id="getPulseList" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+            0 AS selPulse,
+            Gy_Pulse.PulseCode,
+            Gy_Pulse.PulseName
+        FROM
+            Gy_MainPulse
+        LEFT JOIN Gy_Pulse ON Gy_Pulse.PulseCode = Gy_MainPulse.PulseCode
+        WHERE
+            Gy_MainPulse.MainSymptomCode = #{mainSymptomCode}
+        ORDER BY
+            Gy_Pulse.PulseName
+    </select>
+
+
+</mapper>

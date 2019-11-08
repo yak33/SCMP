@@ -1,0 +1,38 @@
+拆分为3个sql语句：
+4个参数==》 @EmpBasicMainID,@SummaryCodeValue,@PriceValue,@CheckFlag
+
+
+DELETE CM_CheckSub
+FROM
+	CM_CheckSub
+WHERE
+	EmpBasicMainID =@EmpBasicMainID
+AND CM_CheckSub.CheckFlag =@CheckFlag
+AND SummaryCode = ？
+
+*************************************************
+
+INSERT INTO CM_CheckSub (
+	EmpBasicMainID,
+	DetailItemCode,
+	SummaryCode,
+	Price,
+	CheckFlag
+) VALUES (
+	@EmpBasicMainID,
+	DetailItemCode,
+	SummaryCode,
+	0,
+	@CheckFlag
+)
+
+*************************************************
+
+UPDATE CM_CheckSub
+SET Price = @price
+FROM
+	CM_CheckSub
+
+WHERE
+	CM_CheckSub.EmpBasicMainID =@EmpBasicMainID
+AND CM_CheckSub.CheckFlag =@CheckFlag

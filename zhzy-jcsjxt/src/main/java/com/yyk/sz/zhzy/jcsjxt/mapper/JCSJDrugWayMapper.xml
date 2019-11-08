@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJDrugWayMapper" >
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDrugWay" >
+
+      <id column="DrugWayCode" property="drugwaycode" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <result column="UUID" property="uuid" jdbcType="CHAR" javaType="java.lang.String" />
+      <result column="DrugWayName" property="drugwayname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="PinYinCode" property="pinyincode" jdbcType="VARCHAR" javaType="java.lang.String" />
+  </resultMap>
+  <select id="getDrugWay" resultMap="BaseResultMap">
+    select * from Gy_DrugWay order by DrugWayCode
+  </select>
+</mapper>

@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJPrescriptionSubMapper">
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJPrescriptionSub">
+      <id column="PrescriptionCode" property="prescriptioncode" javaType="java.lang.String" jdbcType="INTEGER" />
+      <id column="DrugCode" property="drugcode" javaType="java.lang.String" jdbcType="INTEGER" />
+      <result column="UUID" property="uuid" javaType="java.lang.String" jdbcType="CHAR" />
+      <result column="PrescriptionSubID" property="prescriptionsubid" javaType="java.lang.String" jdbcType="INTEGER" />
+      <result column="Quanitity" property="quanitity" javaType="java.lang.String" jdbcType="DECIMAL" />
+      <result column="SufferTypeCode" property="suffertypecode" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="JFlag" property="jflag" javaType="java.lang.String" jdbcType="BIT" />
+      <result column="CFlag" property="cflag" javaType="java.lang.String" jdbcType="BIT" />
+      <result column="ZFlag" property="zflag" javaType="java.lang.String" jdbcType="BIT" />
+      <result column="SFlag" property="sflag" javaType="java.lang.String" jdbcType="BIT" />
+      <result column="Remark" property="remark" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="MainFlag" property="mainflag" javaType="java.lang.String" jdbcType="BIT" />
+  </resultMap>
+
+  <insert id="insertPrescriptionSub" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJPrescriptionSub">
+    insert into Gy_PrescriptionSub
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="prescriptioncode != null">
+        PrescriptionCode,
+      </if>
+      <if test="drugcode != null">
+        DrugCode,
+      </if>
+      <if test="prescriptionsubid != null">
+        PrescriptionSubID,
+      </if>
+      <if test="quanitity != null">
+        Quanitity,
+      </if>
+      <if test="suffertypecode != null">
+        SufferTypeCode,
+      </if>
+      <if test="jflag != null">
+        JFlag,
+      </if>
+      <if test="cflag != null">
+        CFlag,
+      </if>
+      <if test="zflag != null">
+        ZFlag,
+      </if>
+      <if test="sflag != null">
+        SFlag,
+      </if>
+      <if test="remark != null">
+        Remark,
+      </if>
+      <if test="mainflag != null">
+        MainFlag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="prescriptioncode != null">
+        #{prescriptioncode,jdbcType=INTEGER},
+      </if>
+      <if test="drugcode != null">
+        #{drugcode,jdbcType=INTEGER},
+      </if>
+      <if test="prescriptionsubid != null">
+        #{prescriptionsubid,jdbcType=INTEGER},
+      </if>
+      <if test="quanitity != null">
+        #{quanitity,jdbcType=DECIMAL},
+      </if>
+      <if test="suffertypecode != null">
+        #{suffertypecode,jdbcType=VARCHAR},
+      </if>
+      <if test="jflag != null">
+        #{jflag,jdbcType=BIT},
+      </if>
+      <if test="cflag != null">
+        #{cflag,jdbcType=BIT},
+      </if>
+      <if test="zflag != null">
+        #{zflag,jdbcType=BIT},
+      </if>
+      <if test="sflag != null">
+        #{sflag,jdbcType=BIT},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="mainflag != null">
+        #{mainflag,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updatePrescriptionSub" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJPrescriptionSub">
+    update Gy_PrescriptionSub
+    <set>
+      <if test="prescriptionsubid != null">
+        PrescriptionSubID = #{prescriptionsubid,jdbcType=INTEGER},
+      </if>
+      <if test="quanitity != null">
+        Quanitity = #{quanitity,jdbcType=DECIMAL},
+      </if>
+      <if test="suffertypecode != null">
+        SufferTypeCode = #{suffertypecode,jdbcType=VARCHAR},
+      </if>
+      <if test="jflag != null">
+        JFlag = #{jflag,jdbcType=BIT},
+      </if>
+      <if test="cflag != null">
+        CFlag = #{cflag,jdbcType=BIT},
+      </if>
+      <if test="zflag != null">
+        ZFlag = #{zflag,jdbcType=BIT},
+      </if>
+      <if test="sflag != null">
+        SFlag = #{sflag,jdbcType=BIT},
+      </if>
+      <if test="remark != null">
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="mainflag != null">
+        MainFlag = #{mainflag,jdbcType=BIT},
+      </if>
+    </set>
+    where PrescriptionCode = #{prescriptioncode,jdbcType=INTEGER}
+      and DrugCode = #{drugcode,jdbcType=INTEGER}
+  </update>
+
+  <select id="GetPrescriptionMedicineSub" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select Gy_PrescriptionSub.DrugCode,Gy_DrugDict.DrugName,Gy_PrescriptionSub.Quanitity ,Gy_PrescriptionSub.SufferTypeCode,
+    Gy_SufferType.SufferTypeName,JFlag,CFlag,ZFlag,SFlag,Gy_PrescriptionSub.Remark
+    from Gy_PrescriptionSub left join Gy_DrugDict on Gy_DrugDict.DrugCode = Gy_PrescriptionSub.DrugCode
+    left join Gy_SufferType on Gy_SufferType.SufferTypeCode = Gy_PrescriptionSub.SufferTypeCode
+    where 1=1
+    <if test="prescriptioncode != null" >
+      and PrescriptionCode = #{prescriptioncode}
+    </if>
+    order by PrescriptionSubID
+  </select>
+</mapper>

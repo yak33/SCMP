@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJMainSymptomTypeMapper">
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJMainSymptomType">
+      <id column="MainSymptomTypeCode" property="mainsymptomtypecode" javaType="java.lang.String" jdbcType="INTEGER" />
+      <result column="UUID" property="uuid" javaType="java.lang.String" jdbcType="CHAR" />
+      <result column="MainSymptomTypeName" property="mainsymptomtypename" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="Remark" property="remark" javaType="java.lang.String" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getMainSymptomTypeTable" resultMap="BaseResultMap">
+    select MainSymptomTypeCode,MainSymptomTypeName,Remark
+    from Gy_MainSymptomType
+    where 1=1
+    <if test="searchText != null">
+      and (
+      MainSymptomTypeCode like #{searchText} or
+      MainSymptomTypeName like #{searchText}
+      )
+    </if>
+    order by MainSymptomTypeCode desc
+  </select>
+  <delete id="deleteMainSymptomType" parameterType="java.lang.String">
+    delete from Gy_MainSymptomType
+    where MainSymptomTypeCode = #{mainsymptomtypecode}
+  </delete>
+  <insert id="insertMainSymptomType" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJMainSymptomType">
+    insert into Gy_MainSymptomType
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mainsymptomtypecode != null">
+        MainSymptomTypeCode,
+      </if>
+      <if test="mainsymptomtypename != null">
+        MainSymptomTypeName,
+      </if>
+      <if test="remark != null">
+        Remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mainsymptomtypecode != null">
+        #{mainsymptomtypecode,jdbcType=INTEGER},
+      </if>
+      <if test="mainsymptomtypename != null">
+        #{mainsymptomtypename,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateMainSymptomType" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJMainSymptomType">
+    update Gy_MainSymptomType
+    <set>
+      <if test="mainsymptomtypename2 != null">
+        MainSymptomTypeName = #{mainsymptomtypename2,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where MainSymptomTypeCode = #{mainsymptomtypecode,jdbcType=INTEGER}
+  </update>
+  <select id="GetMainSymptomByMainSymptomTypeCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select MainSymptomTypeCode
+    from Gy_MainSymptom
+    where MainSymptomTypeCode = #{mainsymptomtypecode}
+  </select>
+
+  <select id="checkMainSymptomTypeExits" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select MainSymptomTypeCode,MainSymptomTypeName,Remark
+    from Gy_MainSymptomType
+    where 1=1
+    <if test="mainsymptomtypecode != null" >
+      and MainSymptomTypeCode = #{mainsymptomtypecode}
+    </if>
+    <if test="mainsymptomtypename != null" >
+      and MainSymptomTypeName = #{mainsymptomtypename}
+    </if>
+  </select>
+</mapper>

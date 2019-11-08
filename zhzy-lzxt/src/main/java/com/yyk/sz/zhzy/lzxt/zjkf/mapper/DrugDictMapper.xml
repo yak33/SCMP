@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.lzxt.zjkf.mapper.DrugDictMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.zjkf.entity.DrugDict">
+        <id column="DrugCode" property="DrugCode" jdbcType="VARCHAR"/>
+        <result column="OtherName" property="OtherName" jdbcType="VARCHAR"/>
+        <result column="DrugSource" property="DrugSource" jdbcType="VARCHAR"/>
+        <result column="DrugFunction" property="DrugFunction" jdbcType="VARCHAR"/>
+        <result column="DrugAttend" property="DrugAttend" jdbcType="VARCHAR"/>
+        <result column="USAGE" property="USAGE" jdbcType="VARCHAR"/>
+        <result column="SpecialUsage" property="SpecialUsage" jdbcType="VARCHAR"/>
+        <result column="MatterAttend" property="MatterAttend" jdbcType="VARCHAR"/>
+        <result column="DrugStorage" property="DrugStorage" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getDrugInfoList" resultMap="BaseResultMap">
+        SELECT
+            IFNULL(Gy_DrugDict.OtherName,'') OtherName,
+            IFNULL(Gy_DrugDict.DrugSource,'') DrugSource,
+            IFNULL(Gy_DrugDict.DrugFunction,'') DrugFunction,
+            IFNULL(Gy_DrugDict.DrugAttend,'') DrugAttend,
+            IFNULL(Gy_DrugDict.USAGE,'') USAGEE,
+            IFNULL(Gy_DrugDict.SpecialUsage,'') SpecialUsage,
+            IFNULL(Gy_DrugDict.MatterAttend,'') MatterAttend,
+            IFNULL(Gy_DrugDict.DrugStorage,'') DrugStorage
+        FROM
+            Gy_DrugDict
+        WHERE
+            Gy_DrugDict.DrugCode = #{drugCode}
+    </select>
+
+</mapper>

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJUsedPhrasesMapper" >
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJUsedPhrases" >
+      <result column="UUID" property="uuid" jdbcType="CHAR" javaType="java.lang.String" />
+      <result column="UsedPhrasesType" property="usedphrasestype" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <result column="UsedPhrasesName" property="usedphrasesname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="PinYinCode" property="pinyincode" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="UsedPhrasesContent" property="usedphrasescontent" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="RemarkSub" property="remarksub" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="DeptCode" property="deptcode" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="DeptName" property="deptname" jdbcType="VARCHAR" javaType="java.lang.String" />
+  </resultMap>
+  <select id="getUsedPhrasesList" resultMap="BaseResultMap">
+    select CM_UsedPhrases.*,Gy_DeptMent.DeptName from CM_UsedPhrases left join Gy_DeptMent on
+    Gy_DeptMent.DeptCode=CM_UsedPhrases.DeptCode where 1=1
+    <if test="usedPhrasesType != null" >
+      and CM_UsedPhrases.UsedPhrasesType = #{usedPhrasesType}
+    </if>
+    <if test="usedPhrasesName != null" >
+      and CM_UsedPhrases.UsedPhrasesName like #{usedPhrasesName}
+    </if>
+    <if test="searchText != null">
+      and (
+      CM_UsedPhrases.UsedPhrasesType like #{searchText} or
+      CM_UsedPhrases.UsedPhrasesName like #{searchText}
+      )
+    </if>
+      order by CM_UsedPhrases.UsedPhrasesType desc,CM_UsedPhrases.UsedPhrasesName desc
+  </select>
+
+  <delete id="deleteUsedPhrases" parameterType="java.lang.String" >
+    delete from CM_UsedPhrases where UsedPhrasesType=#{usedphrasestype} and UsedPhrasesName = #{usedphrasesname}
+  </delete>
+
+  <insert id="insertUsedPhrases" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJUsedPhrases" >
+    insert into CM_UsedPhrases
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="usedphrasestype != null" >
+        UsedPhrasesType,
+      </if>
+      <if test="usedphrasesname != null" >
+        UsedPhrasesName,
+      </if>
+      <if test="pinyincode != null" >
+        PinYinCode,
+      </if>
+      <if test="usedphrasescontent != null" >
+        UsedPhrasesContent,
+      </if>
+      <if test="remarksub != null" >
+        RemarkSub,
+      </if>
+      <if test="deptcode != null" >
+        DeptCode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="usedphrasestype != null" >
+        #{usedphrasestype,jdbcType=INTEGER},
+      </if>
+      <if test="usedphrasesname != null" >
+        #{usedphrasesname,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null" >
+        #{pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="usedphrasescontent != null" >
+        #{usedphrasescontent,jdbcType=VARCHAR},
+      </if>
+      <if test="remarksub != null" >
+        #{remarksub,jdbcType=VARCHAR},
+      </if>
+      <if test="deptcode != null" >
+        #{deptcode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateUsedPhrases" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJUsedPhrases" >
+    update CM_UsedPhrases
+    <set >
+      <if test="usedphrasestype2 != null" >
+        UsedPhrasesType = #{usedphrasestype2,jdbcType=INTEGER},
+      </if>
+      <if test="usedphrasesname2 != null" >
+        UsedPhrasesName = #{usedphrasesname2,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null" >
+        PinYinCode = #{pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="usedphrasescontent != null" >
+        UsedPhrasesContent = #{usedphrasescontent,jdbcType=VARCHAR},
+      </if>
+      <if test="remarksub != null" >
+        RemarkSub = #{remarksub,jdbcType=VARCHAR},
+      </if>
+      <if test="deptcode != null" >
+        DeptCode = #{deptcode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where UsedPhrasesType = #{usedphrasestype} and UsedPhrasesName = #{usedphrasesname}
+  </update>
+
+  <select id="GetUsedPhrasesByTypeName" resultMap="BaseResultMap">
+    select CM_UsedPhrases.*,Gy_DeptMent.DeptName from CM_UsedPhrases left join Gy_DeptMent on
+    Gy_DeptMent.DeptCode=CM_UsedPhrases.DeptCode where 1=1
+    <if test="usedPhrasesType != null" >
+      and CM_UsedPhrases.UsedPhrasesType = #{usedPhrasesType}
+    </if>
+    <if test="usedPhrasesName != null" >
+      and CM_UsedPhrases.UsedPhrasesName = #{usedPhrasesName}
+    </if>
+    order by CM_UsedPhrases.UsedPhrasesType desc,CM_UsedPhrases.UsedPhrasesName desc
+  </select>
+
+</mapper>

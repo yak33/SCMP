@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yyk.sz.zhzy.system.core.mappercust.SysRoleMapperCust" >
+  <sql id="Base_Column_List" >
+    UUID, code, name, sortNo, roleType, remark, SysCreateDate, SysCreateBy, SysUpdateDate, 
+    SysUpdateBy, VersionNum, SysDelFlag
+  </sql>
+  <select id="listPage" resultType="com.yyk.sz.zhzy.system.core.entity.SysRole">
+      select
+        <include refid="Base_Column_List" />
+      from sys_role
+      where SysDelFlag = '0'
+      <if test="name != null">
+        and (
+          name like '%#{name,jdbcType=VARCHAR}%'
+        )
+      </if>
+      order by ${sortType}
+  </select>
+</mapper>

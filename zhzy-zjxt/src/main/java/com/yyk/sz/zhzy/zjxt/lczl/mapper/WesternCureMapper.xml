@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.zjxt.lczl.mapper.WesternCureMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.zjxt.lczl.entity.WesternCure">
+        <id column="DetailItemCode" property="detailItemCode" jdbcType="VARCHAR"/>
+        <result column="DetailItemName" property="detailItemName" jdbcType="VARCHAR"/>
+        <result column="PinYinCode" property="pinYinCode" jdbcType="VARCHAR"/>
+        <result column="SummaryCode" property="summaryCode" jdbcType="VARCHAR"/>
+        <result column="SummaryName" property="summaryName" jdbcType="VARCHAR"/>
+        <result column="Remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="HISDetailItemCode" property="HISDetailItemCode" jdbcType="VARCHAR"/>
+        <result column="DetailItemFlag" property="detailItemFlag" jdbcType="VARCHAR"/>
+        <result column="EmpBasicMainID" property="empBasicMainID" jdbcType="INTEGER"/>
+        <result column="SysUpdateDate" property="sysupdatedate" jdbcType="TIMESTAMP" />
+    </resultMap>
+
+    <select id="getWesternCureList" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+            DetailItemCode,
+            DetailItemName,
+            Gy_DetailItem.PinYinCode,
+            Gy_DetailItem.SummaryCode,
+            Gy_SummaryItem.SummaryName,
+            Gy_DetailItem.Remark,
+            HISDetailItemCode,
+            Gy_SummaryItem.DetailItemFlag
+        FROM
+            Gy_DetailItem
+        LEFT JOIN Gy_SummaryItem ON Gy_DetailItem.SummaryCode = Gy_SummaryItem.SummaryCode
+        WHERE
+            1 = 1
+        <if test="searchText != null and searchText != ''">
+            and (
+            DetailItemCode like '%${searchText}%' or
+            DetailItemName like '%${searchText}%' or
+            Gy_DetailItem.PinYinCode like '%${searchText}%' or
+            Gy_DetailItem.SummaryCode like '%${searchText}%' or
+            Gy_SummaryItem.SummaryName like '%${searchText}%'
+            )
+        </if>
+        ORDER BY
+            DetailItemCode DESC
+    </select>
+
+    <select id="getWesternCureDetailList" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+            Gy_DetailItemSub.DetailItemCode,
+            Gy_DetailItem.DetailItemName,
+            (
+                sum(
+                    (
+                        CASE
+                        WHEN Gy_DetailItemSub.Number = 0 THEN
+                            1
+                        ELSE
+                            Gy_DetailItemSub.Number
+                        END
+                    ) * Gy_MedicalCare.SinglePrice
+                )
+            ) AS price
+        FROM
+            Gy_DetailItemSub
+        LEFT JOIN Gy_DetailItem ON Gy_DetailItemSub.DetailItemCode = Gy_DetailItem.DetailItemCode
+        LEFT JOIN Gy_MedicalCare ON Gy_DetailItemSub.MedicalCareCode = Gy_MedicalCare.MedicalCareCode
+        WHERE
+            Gy_DetailItemSub.DetailItemCode = #{detailItemCode}
+        GROUP BY
+            Gy_DetailItemSub.DetailItemCode,
+            DetailItemName
+    </select>
+
+    <select id="getYiCunMedicareCure" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+            a.EmpBasicMainID,
+            a.FangJiSubID,
+            a.FangJiSubCode,
+            a.FangJiSubName,
+            b.DrugCode,
+            c.DetailItemCode,
+            c.DetailItemName,
+            a.SysUpdateDate,
+            AA.price
+        FROM
+            CM_FangJiSub a
+        LEFT JOIN CM_FangJiDetailSub b ON a.FangJiSubID = b.FangJiSubID
+        LEFT JOIN Gy_DetailItem c ON b.DrugCode = c.DetailItemCode
+        LEFT JOIN (
+            SELECT
+                Gy_DetailItemSub.DetailItemCode,
+                Gy_DetailItem.DetailItemName,
+                (
+                    sum(
+                        (
+                            CASE
+                            WHEN Gy_DetailItemSub.Number = 0 THEN
+                                1
+                            ELSE
+                                Gy_DetailItemSub.Number
+                            END
+                        ) * Gy_MedicalCare.SinglePrice
+                    )
+                ) AS price
+            FROM
+                Gy_DetailItemSub
+            LEFT JOIN Gy_DetailItem ON Gy_DetailItemSub.DetailItemCode = Gy_DetailItem.DetailItemCode
+            LEFT JOIN Gy_MedicalCare ON Gy_DetailItemSub.MedicalCareCode = Gy_MedicalCare.MedicalCareCode
+            GROUP BY
+                Gy_DetailItemSub.DetailItemCode,
+                DetailItemName
+        ) AA ON b.DrugCode = AA.DetailItemCode
+        WHERE
+            a.DrugFlag = 3
+        AND a.EmpBasicMainID = #{empBasicMainID}
+        ORDER BY
+            a.FangJiSubID
+    </select>
+
+    <!--///////////////////-->
+    <delete id="delFangJiDetailSub" parameterType="java.lang.Integer">
+       DELETE
+       FROM
+         CM_FangJiDetailSub
+       WHERE
+         FangJiSubID IN (
+            SELECT
+                CM_FangJiSub.FangJiSubID
+            FROM
+                CM_FangJiSub
+            WHERE
+                EmpBasicMainID = #{empBasicMainID}
+            AND DrugFlag = 3
+         )
+    </delete>
+    <delete id="delFangJiSub" parameterType="java.lang.Integer">
+       DELETE
+       FROM
+          CM_FangJiSub
+       WHERE
+          EmpBasicMainID = #{empBasicMainID}
+       AND DrugFlag = 3
+    </delete>
+    <insert id="saveWesternCure" parameterType="com.yyk.sz.zhzy.zjxt.lczl.entity.WesternCure">
+        INSERT INTO CM_FangJiSub (
+            EmpBasicMainID,
+            FangJiSubCode,
+            FangJiSubName,
+            UsageCount,
+            IsDaiJian,
+            DrugFlag,
+            HISFangJiSubCode
+        )
+        VALUES
+            (
+                #{empBasicMainID}, #{fangJiSubCode}, #{fangJiSubName}, 0, 0, 3, ''
+            )
+    </insert>
+    <select id="getFangJiSubID" resultMap="BaseResultMap" parameterType="com.yyk.sz.zhzy.zjxt.lczl.entity.WesternCure">
+        SELECT
+            FangJiSubID
+        FROM
+            CM_FangJiSub
+        WHERE
+            EmpBasicMainID = #{empBasicMainID}
+        AND DrugFlag = 3 AND FangJiSubCode = #{fangJiSubCode}
+    </select>
+    <insert id="saveWesternCureFangjiDetail" parameterType="com.yyk.sz.zhzy.zjxt.lczl.entity.WesternCure">
+        INSERT INTO CM_FangJiDetailSub (
+            DrugCode,
+            FangJiSubID,
+            LPrice,
+            SufferTypeCode
+        )
+        VALUES
+            (
+                #{detailItemCode},
+                #{fangJiSubID},
+                #{price}, ''
+            )
+    </insert>
+
+    <select id="getDetailItemName" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT
+        Gy_DetailItem.DetailItemName
+        FROM
+        Gy_DetailItem
+        where Gy_DetailItem.DetailItemCode = #{detailItemCode}
+    </select>
+
+    <!--<insert id="saveWesternCureFangjiDetail" statementType="CALLABLE" parameterType="com.yyk.sz.zhzy.zjxt.lczl.entity.WesternCure">
+        <![CDATA[
+            {
+              call Gy_Sp_SaveWesternCureFinishFangjiDetail (
+                                  #{fangJiSubCode,jdbcType=VARCHAR,mode=IN},
+                                  #{fangJiSubID,jdbcType=INTEGER,mode=IN},
+                                  #{empBasicMainID,jdbcType=INTEGER,mode=IN},
+                                  #{drugCode,jdbcType=VARCHAR,mode=IN},
+                                  #{consumption,jdbcType=VARCHAR,mode=IN},
+                                  #{drugWayCode,jdbcType=VARCHAR,mode=IN},
+                                  #{frequencyCode,jdbcType=VARCHAR,mode=IN},
+                                  #{useDays,jdbcType=VARCHAR,mode=IN},
+                                  #{totalAmount,jdbcType=VARCHAR,mode=IN},
+                                  #{quanititye,jdbcType=VARCHAR,mode=IN},
+                                  #{LPrice,jdbcType=VARCHAR,mode=IN},
+                                  #{wholeMoney,jdbcType=VARCHAR,mode=IN})
+            }
+        ]]>
+    </insert>-->
+
+</mapper>

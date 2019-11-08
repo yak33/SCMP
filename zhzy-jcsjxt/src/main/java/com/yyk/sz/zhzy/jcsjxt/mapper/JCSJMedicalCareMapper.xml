@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJMedicalCareMapper" >
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJMedicalCare" >
+      <id column="MedicalCareCode" property="medicalcarecode" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="UUID" property="uuid" jdbcType="CHAR" javaType="java.lang.String" />
+      <result column="MedicalCareName" property="medicalcarename" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="PinYinCode" property="pinyincode" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="UnitCode" property="unitcode" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <result column="UnitName" property="unitname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="SinglePrice" property="singleprice" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <result column="HISMedicalCareCode" property="hismedicalcarecode" jdbcType="VARCHAR" javaType="java.lang.String" />
+  </resultMap>
+  <select id="getMedicalCare" resultMap="BaseResultMap" >
+    select MedicalCareCode,MedicalCareName,PinYinCode,Gy_MedicalCare.UnitCode,Gy_Unit.UnitName,CAST(SinglePrice as decimal(18,2)) as SinglePrice,HISMedicalCareCode from Gy_MedicalCare
+    left join Gy_Unit on Gy_MedicalCare.UnitCode=Gy_Unit.UnitCode where 1=1
+    <if test="medicalCareCode != null" >
+      And MedicalCareCode like #{medicalCareCode}
+    </if>
+    <if test="medicalCareName != null" >
+      And MedicalCareName like #{medicalCareName}
+    </if>
+    <if test="pinYinCode != null" >
+      And PinYinCode like #{pinYinCode}
+    </if>
+    <if test="searchText != null">
+      and (
+      MedicalCareCode like #{searchText} or
+      MedicalCareName like #{searchText} or
+      PinYinCode like #{searchText}
+      )
+    </if>
+    order by MedicalCareCode desc
+  </select>
+  <delete id="deleteMedicalCare" parameterType="java.lang.String" >
+    delete from Gy_MedicalCare where MedicalCareCode = #{medicalCareCode,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertMedicalCare" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJMedicalCare" >
+    insert into Gy_MedicalCare
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="medicalcarecode != null" >
+        MedicalCareCode,
+      </if>
+      <if test="medicalcarename != null" >
+        MedicalCareName,
+      </if>
+      <if test="pinyincode != null" >
+        PinYinCode,
+      </if>
+      <if test="unitcode != null" >
+        UnitCode,
+      </if>
+      <if test="singleprice != null" >
+        SinglePrice,
+      </if>
+      <if test="hismedicalcarecode != null" >
+        HISMedicalCareCode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="medicalcarecode != null" >
+        #{medicalcarecode,jdbcType=VARCHAR},
+      </if>
+      <if test="medicalcarename != null" >
+        #{medicalcarename,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null" >
+        #{pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="unitcode != null" >
+        #{unitcode,jdbcType=INTEGER},
+      </if>
+      <if test="singleprice != null" >
+        #{singleprice,jdbcType=DECIMAL},
+      </if>
+      <if test="hismedicalcarecode != null" >
+        #{hismedicalcarecode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateMedicalCare" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJMedicalCare" >
+    update Gy_MedicalCare
+    <set >
+      <if test="medicalcarename2 != null" >
+        MedicalCareName = #{medicalcarename2,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null" >
+        PinYinCode = #{pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="unitcode != null" >
+        UnitCode = #{unitcode,jdbcType=INTEGER},
+      </if>
+      <if test="singleprice != null" >
+        SinglePrice = #{singleprice,jdbcType=DECIMAL},
+      </if>
+      <if test="hismedicalcarecode != null" >
+        HISMedicalCareCode = #{hismedicalcarecode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where MedicalCareCode = #{medicalcarecode,jdbcType=VARCHAR}
+  </update>
+
+  <select id="CheckMedicalExits" resultMap="BaseResultMap" >
+    select MedicalCareCode,MedicalCareName,PinYinCode,Gy_MedicalCare.UnitCode,Gy_Unit.UnitName,CAST(SinglePrice as decimal(18,2)) as SinglePrice,HISMedicalCareCode from Gy_MedicalCare
+    left join Gy_Unit on Gy_MedicalCare.UnitCode=Gy_Unit.UnitCode where 1=1
+    <if test="medicalCareCode != null" >
+      And MedicalCareCode = #{medicalCareCode}
+    </if>
+    <if test="medicalCareName != null" >
+      And MedicalCareName = #{medicalCareName}
+    </if>
+    order by MedicalCareCode desc
+  </select>
+</mapper>

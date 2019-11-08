@@ -1,0 +1,603 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJDrugDictMapper" >
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDrugDict" >
+      <id column="DrugCode" property="drugcode" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <result column="UUID" property="uuid" jdbcType="CHAR" javaType="java.lang.String" />
+      <result column="DrugName" property="drugname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="SalesGuige" property="salesguige" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="Units" property="units" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <result column="DrugDosageCode" property="drugdosagecode" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="DosePerUnit" property="doseperunit" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <result column="DoseUnits" property="doseunits" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="DrugModelCode" property="drugmodelcode" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <result column="InputCode" property="inputcode" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="DrugTypeCode" property="drugtypecode" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="PackageUnits" property="packageunits" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="DrugLow" property="druglow" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <result column="DrugHigh" property="drughigh" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <result column="DrugHanLiang" property="drughanliang" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <result column="DrugHanLiangUnit" property="drughanliangunit" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="OtherName" property="othername" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="DrugSource" property="drugsource" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="DrugProcess" property="drugprocess" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="DrugTaste" property="drugtaste" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="DrugMeridian" property="drugmeridian" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="DrugYinMeridian" property="drugyinmeridian" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="DrugFunction" property="drugfunction" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="DrugAttend" property="drugattend" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="Usage" property="usage" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="SpecialUsage" property="specialusage" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="MatterAttend" property="matterattend" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="DrugStorage" property="drugstorage" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="LPrice" property="lprice" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <result column="HISCorreCode" property="hiscorrecode" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="Remark" property="remark" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="UpperLimit" property="upperlimit" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <result column="LowerLimit" property="lowerlimit" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <result column="MeridianOrder" property="meridianorder" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <result column="PType" property="ptype" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <result column="PointX" property="pointx" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <result column="PointY" property="pointy" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <result column="PositionExplain" property="positionexplain" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="DrugFlag" property="drugflag" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <result column="StopFlag" property="stopflag" jdbcType="BIT" javaType="java.lang.Boolean" />
+      <result column="DrugWayCode" property="drugwaycode" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <result column="DosageCode" property="dosagecode" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <result column="MeasurementCoefficient" property="measurementcoefficient" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <result column="PrescriptionUnit" property="prescriptionunit" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <result column="SingleMeasure" property="singlemeasure" jdbcType="DECIMAL" javaType="java.math.BigDecimal" />
+      <result column="SingleMeasureUnit" property="singlemeasureunit" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <result column="DrugModelName" property="drugmodelname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="UnitName" property="unitname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="DrugWayName" property="drugwayname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="DosageName" property="dosagename" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="PrescriptionUnitName" property="prescriptionunitname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="SingleMeasureUnitName" property="singlemeasureunitname" jdbcType="VARCHAR" javaType="java.lang.String" />
+    <result column="v_GetBillCode" property="v_GetBillCode" jdbcType="VARCHAR"/>
+    <result column="v_GetBillID" property="v_GetBillID" jdbcType="VARCHAR"/>
+  </resultMap>
+  <select id="getWesternDistionaryTable" resultMap="BaseResultMap">
+    select * from CM_V_WesternDistionary where DrugFlag=2
+    <if test="searchText != null">
+      and (
+      DrugCode like #{searchText} or
+      DrugName like #{searchText} or
+      InputCode like #{searchText}
+      )
+    </if>
+    <if test="sortName != null">
+      order by #{sortName} #{sortOrder}
+    </if>
+    <if test="sortName == null">
+      order by DrugCode DESC
+    </if>
+  </select>
+
+  <select id="getDrugDictDistionaryTable" resultMap="BaseResultMap">
+    select * from CM_V_DrugDictDistionary where DrugFlag=0
+    <if test="searchText != null">
+      and (
+      DrugCode like #{searchText} or
+      DrugName like #{searchText} or
+      InputCode like #{searchText}
+      )
+    </if>
+    <if test="sortName != null">
+      order by #{sortName} #{sortOrder}
+    </if>
+    <if test="sortName == null">
+      order by DrugCode DESC
+    </if>
+  </select>
+
+  <select id="getAcupointZJTable" resultMap="BaseResultMap">
+    SELECT DrugCode,DrugName,InputCode,MeridianOrder, PointX,PointY,PType,PositionExplain FROM Gy_DrugDict where DrugFlag=1
+    <if test="searchText != null">
+      and (
+      DrugCode like #{searchText} or
+      DrugName like #{searchText} or
+      InputCode like #{searchText}
+      )
+    </if>
+    <if test="sortName != null">
+      order by #{sortName} #{sortOrder}
+    </if>
+    <if test="sortName == null">
+      order by DrugCode DESC
+    </if>
+  </select>
+
+  <insert id="insertWesternDistionary" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDrugDict" >
+    insert into Gy_DrugDict
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="drugcode != null" >
+        DrugCode,
+      </if>
+      <if test="drugname != null" >
+        DrugName,
+      </if>
+      <if test="salesguige != null" >
+        SalesGuige,
+      </if>
+      <if test="units != null" >
+        Units,
+      </if>
+      <if test="drugdosagecode != null" >
+        DrugDosageCode,
+      </if>
+      <if test="doseperunit != null" >
+        DosePerUnit,
+      </if>
+      <if test="doseunits != null" >
+        DoseUnits,
+      </if>
+      <if test="drugmodelcode != null" >
+        DrugModelCode,
+      </if>
+      <if test="inputcode != null" >
+        InputCode,
+      </if>
+      <if test="drugtypecode != null" >
+        DrugTypeCode,
+      </if>
+      <if test="packageunits != null" >
+        PackageUnits,
+      </if>
+      <if test="druglow != null" >
+        DrugLow,
+      </if>
+      <if test="drughigh != null" >
+        DrugHigh,
+      </if>
+      <if test="drughanliang != null" >
+        DrugHanLiang,
+      </if>
+      <if test="drughanliangunit != null" >
+        DrugHanLiangUnit,
+      </if>
+      <if test="othername != null" >
+        OtherName,
+      </if>
+      <if test="drugsource != null" >
+        DrugSource,
+      </if>
+      <if test="drugprocess != null" >
+        DrugProcess,
+      </if>
+      <if test="drugtaste != null" >
+        DrugTaste,
+      </if>
+      <if test="drugmeridian != null" >
+        DrugMeridian,
+      </if>
+      <if test="drugyinmeridian != null" >
+        DrugYinMeridian,
+      </if>
+      <if test="drugfunction != null" >
+        DrugFunction,
+      </if>
+      <if test="drugattend != null" >
+        DrugAttend,
+      </if>
+      <if test="usage != null" >
+        `Usage`,
+      </if>
+      <if test="specialusage != null" >
+        SpecialUsage,
+      </if>
+      <if test="matterattend != null" >
+        MatterAttend,
+      </if>
+      <if test="drugstorage != null" >
+        DrugStorage,
+      </if>
+      <if test="lprice != null" >
+        LPrice,
+      </if>
+      <if test="hiscorrecode != null" >
+        HISCorreCode,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+      <if test="upperlimit != null" >
+        UpperLimit,
+      </if>
+      <if test="lowerlimit != null" >
+        LowerLimit,
+      </if>
+      <if test="meridianorder != null" >
+        MeridianOrder,
+      </if>
+      <if test="ptype != null" >
+        PType,
+      </if>
+      <if test="pointx != null" >
+        PointX,
+      </if>
+      <if test="pointy != null" >
+        PointY,
+      </if>
+      <if test="positionexplain != null" >
+        PositionExplain,
+      </if>
+      <if test="drugflag != null" >
+        DrugFlag,
+      </if>
+      <if test="stopflag != null" >
+        StopFlag,
+      </if>
+      <if test="drugwaycode != null" >
+        DrugWayCode,
+      </if>
+      <if test="dosagecode != null" >
+        DosageCode,
+      </if>
+      <if test="measurementcoefficient != null" >
+        MeasurementCoefficient,
+      </if>
+      <if test="prescriptionunit != null" >
+        PrescriptionUnit,
+      </if>
+      <if test="singlemeasure != null" >
+        SingleMeasure,
+      </if>
+      <if test="singlemeasureunit != null" >
+        SingleMeasureUnit,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="drugcode != null" >
+        #{drugcode,jdbcType=INTEGER},
+      </if>
+      <if test="drugname != null" >
+        #{drugname,jdbcType=VARCHAR},
+      </if>
+      <if test="salesguige != null" >
+        #{salesguige,jdbcType=VARCHAR},
+      </if>
+      <if test="units != null" >
+        #{units,jdbcType=INTEGER},
+      </if>
+      <if test="drugdosagecode != null" >
+        #{drugdosagecode,jdbcType=VARCHAR},
+      </if>
+      <if test="doseperunit != null" >
+        #{doseperunit,jdbcType=DECIMAL},
+      </if>
+      <if test="doseunits != null" >
+        #{doseunits,jdbcType=VARCHAR},
+      </if>
+      <if test="drugmodelcode != null" >
+        #{drugmodelcode,jdbcType=INTEGER},
+      </if>
+      <if test="inputcode != null" >
+        #{inputcode,jdbcType=VARCHAR},
+      </if>
+      <if test="drugtypecode != null" >
+        #{drugtypecode,jdbcType=VARCHAR},
+      </if>
+      <if test="packageunits != null" >
+        #{packageunits,jdbcType=VARCHAR},
+      </if>
+      <if test="druglow != null" >
+        #{druglow,jdbcType=DECIMAL},
+      </if>
+      <if test="drughigh != null" >
+        #{drughigh,jdbcType=DECIMAL},
+      </if>
+      <if test="drughanliang != null" >
+        #{drughanliang,jdbcType=DECIMAL},
+      </if>
+      <if test="drughanliangunit != null" >
+        #{drughanliangunit,jdbcType=VARCHAR},
+      </if>
+      <if test="othername != null" >
+        #{othername,jdbcType=VARCHAR},
+      </if>
+      <if test="drugsource != null" >
+        #{drugsource,jdbcType=VARCHAR},
+      </if>
+      <if test="drugprocess != null" >
+        #{drugprocess,jdbcType=VARCHAR},
+      </if>
+      <if test="drugtaste != null" >
+        #{drugtaste,jdbcType=VARCHAR},
+      </if>
+      <if test="drugmeridian != null" >
+        #{drugmeridian,jdbcType=VARCHAR},
+      </if>
+      <if test="drugyinmeridian != null" >
+        #{drugyinmeridian,jdbcType=VARCHAR},
+      </if>
+      <if test="drugfunction != null" >
+        #{drugfunction,jdbcType=VARCHAR},
+      </if>
+      <if test="drugattend != null" >
+        #{drugattend,jdbcType=VARCHAR},
+      </if>
+      <if test="usage != null" >
+        #{usage,jdbcType=VARCHAR},
+      </if>
+      <if test="specialusage != null" >
+        #{specialusage,jdbcType=VARCHAR},
+      </if>
+      <if test="matterattend != null" >
+        #{matterattend,jdbcType=VARCHAR},
+      </if>
+      <if test="drugstorage != null" >
+        #{drugstorage,jdbcType=VARCHAR},
+      </if>
+      <if test="lprice != null" >
+        #{lprice,jdbcType=DECIMAL},
+      </if>
+      <if test="hiscorrecode != null" >
+        #{hiscorrecode,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="upperlimit != null" >
+        #{upperlimit,jdbcType=DECIMAL},
+      </if>
+      <if test="lowerlimit != null" >
+        #{lowerlimit,jdbcType=DECIMAL},
+      </if>
+      <if test="meridianorder != null" >
+        #{meridianorder,jdbcType=INTEGER},
+      </if>
+      <if test="ptype != null" >
+        #{ptype,jdbcType=INTEGER},
+      </if>
+      <if test="pointx != null" >
+        #{pointx,jdbcType=DECIMAL},
+      </if>
+      <if test="pointy != null" >
+        #{pointy,jdbcType=DECIMAL},
+      </if>
+      <if test="positionexplain != null" >
+        #{positionexplain,jdbcType=VARCHAR},
+      </if>
+      <if test="drugflag != null" >
+        #{drugflag,jdbcType=INTEGER},
+      </if>
+      <if test="stopflag != null" >
+        #{stopflag,jdbcType=BIT},
+      </if>
+      <if test="drugwaycode != null" >
+        #{drugwaycode,jdbcType=INTEGER},
+      </if>
+      <if test="dosagecode != null" >
+        #{dosagecode,jdbcType=INTEGER},
+      </if>
+      <if test="measurementcoefficient != null" >
+        #{measurementcoefficient,jdbcType=DECIMAL},
+      </if>
+      <if test="prescriptionunit != null" >
+        #{prescriptionunit,jdbcType=INTEGER},
+      </if>
+      <if test="singlemeasure != null" >
+        #{singlemeasure,jdbcType=DECIMAL},
+      </if>
+      <if test="singlemeasureunit != null" >
+        #{singlemeasureunit,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateWesternDistionary" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDrugDict" >
+    update Gy_DrugDict
+    <set >
+      <if test="drugname2 != null" >
+        DrugName = #{drugname2,jdbcType=VARCHAR},
+      </if>
+      <if test="salesguige != null" >
+        SalesGuige = #{salesguige,jdbcType=VARCHAR},
+      </if>
+      <if test="units != null" >
+        Units = #{units,jdbcType=INTEGER},
+      </if>
+      <if test="drugdosagecode != null" >
+        DrugDosageCode = #{drugdosagecode,jdbcType=VARCHAR},
+      </if>
+      <if test="doseperunit != null" >
+        DosePerUnit = #{doseperunit,jdbcType=DECIMAL},
+      </if>
+      <if test="doseunits != null" >
+        DoseUnits = #{doseunits,jdbcType=VARCHAR},
+      </if>
+      <if test="drugmodelcode != null" >
+        DrugModelCode = #{drugmodelcode,jdbcType=INTEGER},
+      </if>
+      <if test="inputcode != null" >
+        InputCode = #{inputcode,jdbcType=VARCHAR},
+      </if>
+      <if test="drugtypecode != null" >
+        DrugTypeCode = #{drugtypecode,jdbcType=VARCHAR},
+      </if>
+      <if test="packageunits != null" >
+        PackageUnits = #{packageunits,jdbcType=VARCHAR},
+      </if>
+      <if test="druglow != null" >
+        DrugLow = #{druglow,jdbcType=DECIMAL},
+      </if>
+      <if test="drughigh != null" >
+        DrugHigh = #{drughigh,jdbcType=DECIMAL},
+      </if>
+      <if test="drughanliang != null" >
+        DrugHanLiang = #{drughanliang,jdbcType=DECIMAL},
+      </if>
+      <if test="drughanliangunit != null" >
+        DrugHanLiangUnit = #{drughanliangunit,jdbcType=VARCHAR},
+      </if>
+      <if test="othername != null" >
+        OtherName = #{othername,jdbcType=VARCHAR},
+      </if>
+      <if test="drugsource != null" >
+        DrugSource = #{drugsource,jdbcType=VARCHAR},
+      </if>
+      <if test="drugprocess != null" >
+        DrugProcess = #{drugprocess,jdbcType=VARCHAR},
+      </if>
+      <if test="drugtaste != null" >
+        DrugTaste = #{drugtaste,jdbcType=VARCHAR},
+      </if>
+      <if test="drugmeridian != null" >
+        DrugMeridian = #{drugmeridian,jdbcType=VARCHAR},
+      </if>
+      <if test="drugyinmeridian != null" >
+        DrugYinMeridian = #{drugyinmeridian,jdbcType=VARCHAR},
+      </if>
+      <if test="drugfunction != null" >
+        DrugFunction = #{drugfunction,jdbcType=VARCHAR},
+      </if>
+      <if test="drugattend != null" >
+        DrugAttend = #{drugattend,jdbcType=VARCHAR},
+      </if>
+      <if test="usage != null" >
+        `Usage` = #{usage,jdbcType=VARCHAR},
+      </if>
+      <if test="specialusage != null" >
+        SpecialUsage = #{specialusage,jdbcType=VARCHAR},
+      </if>
+      <if test="matterattend != null" >
+        MatterAttend = #{matterattend,jdbcType=VARCHAR},
+      </if>
+      <if test="drugstorage != null" >
+        DrugStorage = #{drugstorage,jdbcType=VARCHAR},
+      </if>
+      <if test="lprice != null" >
+        LPrice = #{lprice,jdbcType=DECIMAL},
+      </if>
+      <if test="hiscorrecode != null" >
+        HISCorreCode = #{hiscorrecode,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="upperlimit != null" >
+        UpperLimit = #{upperlimit,jdbcType=DECIMAL},
+      </if>
+      <if test="lowerlimit != null" >
+        LowerLimit = #{lowerlimit,jdbcType=DECIMAL},
+      </if>
+      <if test="meridianorder != null" >
+        MeridianOrder = #{meridianorder,jdbcType=INTEGER},
+      </if>
+      <if test="ptype != null" >
+        PType = #{ptype,jdbcType=INTEGER},
+      </if>
+      <if test="pointx != null" >
+        PointX = #{pointx,jdbcType=DECIMAL},
+      </if>
+      <if test="pointy != null" >
+        PointY = #{pointy,jdbcType=DECIMAL},
+      </if>
+      <if test="positionexplain != null" >
+        PositionExplain = #{positionexplain,jdbcType=VARCHAR},
+      </if>
+      <if test="drugflag != null" >
+        DrugFlag = #{drugflag,jdbcType=INTEGER},
+      </if>
+      <if test="stopflag != null" >
+        StopFlag = #{stopflag,jdbcType=BIT},
+      </if>
+      <if test="drugwaycode != null" >
+        DrugWayCode = #{drugwaycode,jdbcType=INTEGER},
+      </if>
+      <if test="dosagecode != null" >
+        DosageCode = #{dosagecode,jdbcType=INTEGER},
+      </if>
+      <if test="measurementcoefficient != null" >
+        MeasurementCoefficient = #{measurementcoefficient,jdbcType=DECIMAL},
+      </if>
+      <if test="prescriptionunit != null" >
+        PrescriptionUnit = #{prescriptionunit,jdbcType=INTEGER},
+      </if>
+      <if test="singlemeasure != null" >
+        SingleMeasure = #{singlemeasure,jdbcType=DECIMAL},
+      </if>
+      <if test="singlemeasureunit != null" >
+        SingleMeasureUnit = #{singlemeasureunit,jdbcType=INTEGER},
+      </if>
+    </set>
+    where DrugCode = #{drugcode,jdbcType=INTEGER}
+  </update>
+
+  <delete id="deleteWesternDistionary" parameterType="java.lang.Integer">
+      delete from Gy_DrugDict where DrugCode=#{drugcode}
+  </delete>
+
+  <select id="getBillCode" statementType="CALLABLE" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDrugDict">
+
+
+        <![CDATA[
+
+            {
+              call gy_sp_getidcode_test(
+                                  #{billCode,jdbcType=VARCHAR,mode=IN},
+                                  #{dateString,jdbcType=VARCHAR,mode=IN},
+                                  #{itemCode,jdbcType=VARCHAR,mode=IN},
+                                  #{option,jdbcType=INTEGER,mode=IN},
+                                  #{voucherCode,jdbcType=VARCHAR,mode=IN},
+                                  #{proUUID,jdbcType=VARCHAR,mode=IN})
+            }
+
+        ]]>
+    </select>
+
+  <select id="GetDictCodeRst" resultType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDictCodeRst">
+       select *
+       from T_GetIdCodeRst
+       where UUID = #{proUUID}
+    </select>
+
+  <select id="GetDrugInfoByDrugName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select * from Gy_DrugDict where DrugName = #{drugname}
+  </select>
+
+  <select id="GetDrugInfoByPrescription" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select * from Gy_PrescriptionSub where DrugCode=#{drugcode}
+  </select>
+
+  <select id="GetDrugInfoByDrugTaboos" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select * from Gy_DrugTaboos where DrugCode=#{drugcode} or DrugCodeOne=#{drugcode}
+  </select>
+
+  <select id="GetDrugInfoFromFangJiDetailSub" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select * from CM_FangJiDetailSub where DrugCode=#{drugcode}
+  </select>
+
+  <delete id="deleteAcupointZJ" parameterType="java.lang.Integer">
+      delete from Gy_DrugOrMeridian where DrugCode=#{drugcode}
+  </delete>
+
+  <insert id="insertAcupointZJ" parameterType="java.lang.String">
+    insert into Gy_DrugOrMeridian
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="drugcode != null">
+        DrugCode,
+      </if>
+      <if test="meridiancode != null">
+        MeridianCode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="drugcode != null">
+        #{drugcode,jdbcType=INTEGER},
+      </if>
+      <if test="meridiancode != null">
+        #{meridiancode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="CheckZJAcuIsUsedOrNot" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select DrugCode from CM_FangJiDetailSub where DrugCode=#{drugcode}
+  </select>
+
+  <select id="CheckZJAcuIsUsedOrNotInPreSub" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+    select DrugCode from Gy_PrescriptionSub where DrugCode=#{drugcode}
+  </select>
+</mapper>

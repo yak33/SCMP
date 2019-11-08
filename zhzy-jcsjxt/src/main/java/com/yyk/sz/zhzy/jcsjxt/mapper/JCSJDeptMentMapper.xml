@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJDeptMentMapper">
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDeptMent">
+      <id column="DeptCode" property="deptcode" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="UUID" property="uuid" javaType="java.lang.String" jdbcType="CHAR" />
+      <result column="DeptName" property="deptname" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="Remark" property="remark" javaType="java.lang.String" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDeptMent">
+    <result column="MainSymptomCode" property="mainsymptomcode" javaType="java.lang.String" jdbcType="VARCHAR" />
+    <result column="MainSymptomName" property="mainsymptomname" javaType="java.lang.String" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getDeptMentTable" resultMap="BaseResultMap">
+    select DeptCode,DeptName,Remark from Gy_DeptMent where 1=1
+    <if test="searchText != null">
+      and (
+      DeptCode like #{searchText} or
+      DeptName like #{searchText} or
+      Remark like #{searchText}
+      )
+    </if>
+    order by DeptCode desc
+  </select>
+  <delete id="deleteDeptMent" parameterType="java.lang.String">
+    delete from Gy_DeptMent
+    where DeptCode = #{deptcode,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertDeptMent" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDeptMent">
+    insert into Gy_DeptMent
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="deptcode != null">
+        DeptCode,
+      </if>
+      <if test="deptname != null">
+        DeptName,
+      </if>
+      <if test="remark != null">
+        Remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="deptcode != null">
+        #{deptcode,jdbcType=VARCHAR},
+      </if>
+      <if test="deptname != null">
+        #{deptname,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateDeptMent" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDeptMent">
+    update Gy_DeptMent
+    <set>
+      <if test="deptname2 != null">
+        DeptName = #{deptname2,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DeptCode = #{deptcode,jdbcType=VARCHAR}
+  </update>
+
+  <select id="checkDeptMentExits" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select DeptCode,DeptName,Remark from Gy_DeptMent where 1=1
+    <if test="deptcode != null" >
+      and DeptCode = #{deptcode}
+    </if>
+    <if test="deptname != null" >
+      and DeptName = #{deptname}
+    </if>
+  </select>
+
+  <insert id="insertDepartmentMainSymptom" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDeptMent">
+    INSERT INTO Gy_SymptomOrDosage
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mainsymptomcode != null">
+        MainSymptomCode,
+      </if>
+      <if test="deptcode != null">
+        DeptCode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mainsymptomcode != null">
+        #{mainsymptomcode,jdbcType=VARCHAR},
+      </if>
+      <if test="deptcode != null">
+        #{deptcode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <delete id="deleteDepartmentMainSymptom" parameterType="java.lang.String">
+    DELETE FROM Gy_SymptomOrDosage
+    where DeptCode = #{deptcode,jdbcType=VARCHAR}
+  </delete>
+
+  <select id="GetUserByDeptCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select UserCode,DeptCode from Gy_User where DeptCode = #{deptcode}
+  </select>
+
+  <select id="getMainSymptomByDeptCode" resultMap="ResultMap" parameterType="java.lang.String" >
+    select Gy_SymptomOrDosage.MainSymptomCode,Gy_MainSymptom.MainSymptomName
+    from Gy_SymptomOrDosage left join Gy_MainSymptom on Gy_MainSymptom.MainSymptomCode = Gy_SymptomOrDosage.MainSymptomCode
+    where Gy_SymptomOrDosage.DeptCode = #{deptcode}
+  </select>
+</mapper>

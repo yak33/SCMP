@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJCureMapper">
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJCure">
+      <id column="CureCode" property="curecode" javaType="java.lang.String" jdbcType="INTEGER" />
+      <result column="UUID" property="uuid" javaType="java.lang.String" jdbcType="CHAR" />
+      <result column="CureName" property="curename" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="PinYinCode" property="pinyincode" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="Remark" property="remark" javaType="java.lang.String" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getCureTable" resultMap="BaseResultMap">
+    select CureCode,CureName,PinYinCode,Remark from Gy_Cure where 1=1
+    <if test="searchText != null">
+      and (
+      CureCode like #{searchText} or
+      CureName like #{searchText} or
+      PinYinCode like #{searchText}
+      )
+    </if>
+    order by CureCode desc
+  </select>
+  <delete id="deleteCure" parameterType="java.lang.String">
+    delete from Gy_Cure
+    where CureCode = #{curecode,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertCure" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJCure">
+    insert into Gy_Cure
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="curecode != null">
+        CureCode,
+      </if>
+      <if test="curename != null">
+        CureName,
+      </if>
+      <if test="pinyincode != null">
+        PinYinCode,
+      </if>
+      <if test="remark != null">
+        Remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="curecode != null">
+        #{curecode,jdbcType=INTEGER},
+      </if>
+      <if test="curename != null">
+        #{curename,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null">
+        #{pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateCure" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJCure">
+    update Gy_Cure
+    <set>
+      <if test="curename2 != null">
+        CureName = #{curename2,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null">
+        PinYinCode = #{pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where CureCode = #{curecode,jdbcType=INTEGER}
+  </update>
+
+  <select id="checkCureExits" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select CureCode,CureName,PinYinCode,Remark from Gy_Cure where 1=1
+    <if test="curecode != null" >
+      and CureCode = #{curecode}
+    </if>
+    <if test="curename != null" >
+      and CureName = #{curename}
+    </if>
+  </select>
+  <select id="GetCureDialecticalRelation" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select CureCode from Gy_CureDialectical where 1=1
+    <if test="curecode != null" >
+      and CureCode = #{curecode}
+    </if>
+  </select>
+</mapper>

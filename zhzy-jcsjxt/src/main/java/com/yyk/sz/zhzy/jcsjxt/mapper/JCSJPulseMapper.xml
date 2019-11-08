@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJPulseMapper">
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJPulse">
+      <id column="PulseCode" property="pulsecode" javaType="java.lang.String" jdbcType="INTEGER" />
+      <result column="UUID" property="uuid" javaType="java.lang.String" jdbcType="CHAR" />
+      <result column="PulseName" property="pulsename" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="PinYinCode" property="pinyincode" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="Remark" property="remark" javaType="java.lang.String" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getPulseTable" resultMap="BaseResultMap">
+    select PulseCode,PulseName,PinYinCode,Remark from Gy_Pulse where 1=1
+    <if test="searchText != null">
+      and (
+      PulseCode like #{searchText} or
+      PulseName like #{searchText} or
+      PinYinCode like #{searchText}
+      )
+    </if>
+    order by PulseCode desc
+  </select>
+  <delete id="deletePulse" parameterType="java.lang.String">
+    delete from Gy_Pulse
+    where PulseCode = #{pulsecode,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertPulse" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJPulse">
+    insert into Gy_Pulse
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="pulsecode != null">
+        PulseCode,
+      </if>
+      <if test="pulsename != null">
+        PulseName,
+      </if>
+      <if test="pinyincode != null">
+        PinYinCode,
+      </if>
+      <if test="remark != null">
+        Remark,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="pulsecode != null">
+        #{pulsecode,jdbcType=INTEGER},
+      </if>
+      <if test="pulsename != null">
+        #{pulsename,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null">
+        #{pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updatePulse" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJPulse">
+    update Gy_Pulse
+    <set>
+      <if test="pulsename2 != null">
+        PulseName = #{pulsename2,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null">
+        PinYinCode = #{pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null">
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where PulseCode = #{pulsecode,jdbcType=INTEGER}
+  </update>
+
+  <select id="checkPulseExits" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select PulseCode,PulseName,PinYinCode,Remark from Gy_Pulse where 1=1
+    <if test="pulsecode != null" >
+      and PulseCode = #{pulsecode}
+    </if>
+    <if test="pulsename != null" >
+      and PulseName = #{pulsename}
+    </if>
+  </select>
+  <select id="GetMainPulseByPulseCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select PulseCode from Gy_MainPulse where 1=1
+    <if test="pulsecode != null" >
+      and PulseCode = #{pulsecode}
+    </if>
+  </select>
+</mapper>

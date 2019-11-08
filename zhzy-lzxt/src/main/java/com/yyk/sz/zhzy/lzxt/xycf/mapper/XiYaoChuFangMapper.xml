@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.lzxt.xycf.mapper.XiYaoChuFangMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.xycf.entity.FangJiSubEntity">
+        <id column="EmpBasicMainID" property="empBasicMainID" jdbcType="INTEGER"/>
+        <result column="FangJiSubID" property="fangJiSubID" jdbcType="INTEGER"/>
+        <result column="FangJiSubCode" property="fangJiSubCode" jdbcType="VARCHAR"/>
+        <result column="FangJiSubName" property="fangJiSubName" jdbcType="VARCHAR"/>
+        <result column="Effect" property="effect" jdbcType="VARCHAR"/>
+        <result column="Attend" property="attend" jdbcType="VARCHAR"/>
+        <result column="Calcite" property="calcite" jdbcType="VARCHAR"/>
+        <result column="Source" property="source" jdbcType="VARCHAR"/>
+        <result column="UsageCount" property="UsageCount" jdbcType="VARCHAR"/>
+        <result column="Advice" property="advice" jdbcType="VARCHAR"/>
+        <result column="Remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="IsDaiJian" property="IsDaiJian" jdbcType="VARCHAR"/>
+        <result column="FangJiUsage" property="fangJiUsage" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="saveWesternDrugFangji_SP" resultMap="BaseResultMap" statementType="CALLABLE" parameterType="com.yyk.sz.zhzy.lzxt.xycf.entity.FangJiSubEntity">
+     <![CDATA[
+            {
+              call  Gy_Sp_SaveWesternFinishFangjiDetail (
+                      0,#{fangJiSubCode,mode=IN},#{fangJiSubID,mode=IN},#{empBasicMainID,mode=IN},#{DrugCodeValue,mode=IN},#{ConsumptionValue,mode=IN},
+                      #{DrugWayCodeValue,mode=IN},#{FrequencyCodeValue,mode=IN},#{UseDaysValue,mode=IN},#{TotalAmountValue,mode=IN},#{QuanitityValue,mode=IN},
+                      #{LPriceValue,mode=IN},#{WholeMoneyValue,mode=IN})
+            }
+        ]]>
+</select>
+
+    <select id="updateWesternDrugFangji" resultMap="BaseResultMap" statementType="CALLABLE" parameterType="com.yyk.sz.zhzy.lzxt.xycf.entity.FangJiSubEntity">
+     <![CDATA[
+            {
+              call  Gy_Sp_SaveWesternFinishFangjiDetail (
+                      1,#{fangJiSubCode,mode=IN},#{fangJiSubID,mode=IN},#{empBasicMainID,mode=IN},#{DrugCodeValue,mode=IN},#{ConsumptionValue,mode=IN},
+                      #{DrugWayCodeValue,mode=IN},#{FrequencyCodeValue,mode=IN},#{UseDaysValue,mode=IN},#{TotalAmountValue,mode=IN},#{QuanitityValue,mode=IN},
+                      #{LPriceValue,mode=IN},#{WholeMoneyValue,mode=IN})
+            }
+        ]]>
+</select>
+
+<insert id="saveWesternDrugFangji" parameterType="com.yyk.sz.zhzy.lzxt.xycf.entity.FangJiSubEntity">
+    INSERT INTO CM_FangJiSub (
+            EmpBasicMainID,
+            FangJiSubCode,
+            FangJiSubName,
+            UsageCount,
+            IsDaiJian,
+            DrugFlag,
+            HISFangJiSubCode
+        )
+        VALUES
+            (
+                #{empBasicMainID}, #{fangJiSubCode}, #{fangJiSubName}, 0, 0, 2, ''
+            )
+</insert>
+    <delete id="deleteWesternDrugFangji" parameterType="com.yyk.sz.zhzy.lzxt.xycf.entity.FangJiSubEntity">
+   delete from CM_FangJiDetailSub where FangJiSubID =#{fangJiSubID};
+   delete from CM_FangJiSub where FangJiSubID =#{fangJiSubID} and EmpBasicMainID=#{empBasicMainID} and DrugFlag=2
+</delete>
+</mapper>

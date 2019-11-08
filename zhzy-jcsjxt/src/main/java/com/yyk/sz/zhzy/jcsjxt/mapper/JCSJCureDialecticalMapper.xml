@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJCureDialecticalMapper">
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJCureDialectical">
+      <result column="UUID" property="uuid" javaType="java.lang.String" jdbcType="CHAR" />
+      <result column="DialecticalCode" property="dialecticalcode" javaType="java.lang.String" jdbcType="INTEGER" />
+      <result column="CureCode" property="curecode" javaType="java.lang.String"/>
+      <result column="PrescriptionCode" property="prescriptioncode" javaType="java.lang.String"/>
+      <result column="MainSymptomCode" property="mainsymptomcode" javaType="java.lang.String" />
+      <result column="ZJPrescriptionCode" property="zjprescriptioncode" javaType="java.lang.String" />
+      <result column="sysFlag" property="sysflag" javaType="java.lang.String" jdbcType="INTEGER" />
+    <result column="MainSymptomName" property="mainsymptomname" javaType="java.lang.String"/>
+    <result column="WesternMedicineCode" property="westernmedicinecode" javaType="java.lang.String"/>
+    <result column="WesternMedicineName" property="westernmedicinename" javaType="java.lang.String"/>
+    <result column="DialecticalName" property="dialecticalname" javaType="java.lang.String"/>
+    <result column="CureName" property="curename" javaType="java.lang.String"/>
+    <result column="PrescriptionName" property="prescriptionname" javaType="java.lang.String"/>
+    <result column="ZJPrescriptionName" property="zjprescriptionname" javaType="java.lang.String"/>
+    <result column="WeightValue" property="weightvalue" javaType="java.lang.String" jdbcType="INTEGER"/>
+  </resultMap>
+
+  <select id="GetCureDialecticalTable" resultMap="BaseResultMap">
+select Gy_DialecticalMainSymptom.DialecticalCode,Gy_Dialectical.DialecticalName,
+                                Gy_DialecticalMainSymptom.MainSymptomCode,Gy_MainSymptom.MainSymptomName,
+                                Gy_DialecticalMainSymptom.WesternMedicineCode,
+                                Gy_WesternMedicine.WesternMedicineName
+                                from Gy_DialecticalMainSymptom
+                                left join Gy_Dialectical on Gy_DialecticalMainSymptom.DialecticalCode =Gy_Dialectical.DialecticalCode
+                                left join Gy_MainSymptom on Gy_DialecticalMainSymptom.MainSymptomCode=Gy_MainSymptom.MainSymptomCode
+                                left join Gy_WesternMedicine on Gy_DialecticalMainSymptom.WesternMedicineCode=Gy_WesternMedicine.WesternMedicineCode
+                                where 1=1
+    <if test="searchText != null">
+      and (
+      Gy_DialecticalMainSymptom.DialecticalCode like #{searchText} or
+      Gy_Dialectical.DialecticalName like #{searchText} or
+      Gy_MainSymptom.MainSymptomName like #{searchText}
+      )
+    </if>
+  </select>
+  <delete id="deleteCureDialectical" parameterType="java.lang.String">
+    delete from ${strtable}
+    where DialecticalCode=#{dialecticalcode} and MainSymptomCode=#{mainsymptomcode}
+  </delete>
+  <insert id="insertCureDialectical" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJCureDialectical">
+    insert into Gy_CureDialectical
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dialecticalcode != null">
+        DialecticalCode,
+      </if>
+      <if test="curecode != null">
+        CureCode,
+      </if>
+      <if test="prescriptioncode != null">
+        PrescriptionCode,
+      </if>
+      <if test="mainsymptomcode != null">
+        MainSymptomCode,
+      </if>
+      <if test="zjprescriptioncode != null">
+        ZJPrescriptionCode,
+      </if>
+      <if test="sysflag != null">
+        sysFlag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dialecticalcode != null">
+        #{dialecticalcode,jdbcType=INTEGER},
+      </if>
+      <if test="curecode != null">
+        #{curecode,jdbcType=INTEGER},
+      </if>
+      <if test="prescriptioncode != null">
+        #{prescriptioncode,jdbcType=INTEGER},
+      </if>
+      <if test="mainsymptomcode != null">
+        #{mainsymptomcode,jdbcType=INTEGER},
+      </if>
+      <if test="zjprescriptioncode != null">
+        #{zjprescriptioncode,jdbcType=INTEGER},
+      </if>
+      <if test="sysflag != null">
+        #{sysflag,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateCureDialectical" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJCureDialectical">
+
+update Gy_CureDialectical
+<set>
+  <if test="dialecticalcode != null">
+    DialecticalCode = #{dialecticalcode,jdbcType=INTEGER},
+  </if>
+  <if test="curecode != null">
+    CureCode = #{curecode,jdbcType=INTEGER},
+  </if>
+  <if test="prescriptioncode != null">
+    PrescriptionCode = #{prescriptioncode,jdbcType=INTEGER},
+  </if>
+  <if test="mainsymptomcode != null">
+    MainSymptomCode = #{mainsymptomcode,jdbcType=INTEGER},
+  </if>
+  <if test="zjprescriptioncode != null">
+    ZJPrescriptionCode = #{zjprescriptioncode,jdbcType=INTEGER},
+  </if>
+  <if test="sysflag != null">
+    sysFlag = #{sysflag,jdbcType=INTEGER},
+  </if>
+</set>
+
+</update>
+
+  <select id="GetDialecticalCureRelation" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select DialecticalCode,MainSymptomCode from Gy_CureDialectical where 1=1
+    <if test="dialecticalcode != null" >
+      And DialecticalCode = #{dialecticalcode}
+    </if>
+    <if test="mainsymptomcode != null" >
+      And MainSymptomCode = #{mainsymptomcode}
+    </if>
+  </select>
+
+  <select id="CheckSingleInfo" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select *  from Gy_DialecticalMainSymptom
+    where DialecticalCode=#{dialecticalcode} and MainSymptomCode=#{mainsymptomcode}
+  </select>
+
+  <insert id="insertDialecticalMainSymptom" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJCureDialectical">
+    insert into Gy_DialecticalMainSymptom
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dialecticalcode != null">
+        DialecticalCode,
+      </if>
+      <if test="mainsymptomcode != null">
+        MainSymptomCode,
+      </if>
+        WesternMedicineCode,
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dialecticalcode != null">
+        #{dialecticalcode,jdbcType=INTEGER},
+      </if>
+      <if test="mainsymptomcode != null">
+        #{mainsymptomcode,jdbcType=INTEGER},
+      </if>
+        '',
+    </trim>
+  </insert>
+
+  <select id="dialecticalDiseaseCurePrescription_SP" resultMap="BaseResultMap" statementType="CALLABLE" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJCureDialectical">
+     <![CDATA[
+            {
+              call  Gy_Sp_DialecticalDiseaseCurePrescription (
+                      #{dialecticalcode,mode=IN},#{mainsymptomcode,mode=IN},#{diseasecode,mode=IN},#{pulsecode,mode=IN},#{tonguecode,mode=IN},
+                      #{curecode,mode=IN},#{prescriptioncode,mode=IN},#{prescriptioncurecode,mode=IN})
+            }
+        ]]>
+</select>
+
+  <update id="updateDialecticalMainSymptom" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJCureDialectical">
+    update Gy_DialecticalMainSymptom set WesternMedicineCode=''
+    where DialecticalCode=#{dialecticalcode} and MainSymptomCode=#{mainsymptomcode};
+  </update>
+
+  <select id="GetDiseaseByMainSymptomCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select MainSymptomCode1 MainSymptomCode,DiseaseCode,DiseaseName,PulseCode,PulseName,TongueCode,TongueName,'0' as WeightValue
+    from Gy_V_DiseasePulseTongue where 1=1
+    <if test="mainsymptomcode != null" >
+      And MainSymptomCode1 = #{mainsymptomcode}
+    </if>
+  </select>
+
+  <select id="GetCureAndPreListBycode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select e.CureCode,e.CureName,e.PrescriptionCode,e.PrescriptionName,e.ZJPrescriptionCode,Gy_PrescriptionMain.PrescriptionName as ZJPrescriptionName
+    from (select Gy_CureDialectical.CureCode,Gy_Cure.CureName,Gy_CureDialectical.PrescriptionCode,Gy_PrescriptionMain.PrescriptionName,Gy_CureDialectical.ZJPrescriptionCode
+    from Gy_CureDialectical
+    left join Gy_Cure on Gy_CureDialectical.CureCode=Gy_Cure.CureCode
+    left join Gy_PrescriptionMain on Gy_PrescriptionMain.PrescriptionCode=Gy_CureDialectical.PrescriptionCode
+    where DialecticalCode=#{dialecticalcode} and MainSymptomCode=#{mainsymptomcode}) AS e
+    left join Gy_PrescriptionMain on Gy_PrescriptionMain.PrescriptionCode=e.ZJPrescriptionCode
+  </select>
+
+  <select id="GetDiseaseByDialecticalAndMainSymptomCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+     SELECT MainSymptomCode,a.DiseaseCode,b.DiseaseName,WeightValue,DialecticalCode,a.Remark,a.PulseCode,c.PulseName,
+  a.TongueCode,d.TongueName,sysFlag FROM Gy_DiseaseOrDialectical a
+    LEFT JOIN Gy_Disease b ON b.DiseaseCode = a.DiseaseCode
+    LEFT JOIN Gy_Pulse c ON c.PulseCode = a.PulseCode
+    LEFT JOIN Gy_Tongue d ON d.TongueCode = a.TongueCode
+   where DialecticalCode=#{dialecticalcode} and MainSymptomCode=#{mainsymptomcode}
+  </select>
+
+  <select id="GetWesternTable" parameterType="java.lang.String" resultMap="BaseResultMap">
+    		select  Gy_DialectcalWesternMedicine.WesternMedicineCode, Gy_WesternMedicine.WesternMedicineName from Gy_DialectcalWesternMedicine left join
+                           Gy_WesternMedicine on Gy_WesternMedicine.WesternMedicineCode=Gy_DialectcalWesternMedicine.WesternMedicineCode
+                           where Gy_DialectcalWesternMedicine.MainSymptomCode=#{mainsymptomcode} and Gy_DialectcalWesternMedicine.DialecticalCode=#{dialecticalcode}
+  </select>
+</mapper>

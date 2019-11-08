@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJDiseasesClassifyMapper">
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDiseasesClassify">
+      <id column="DCCode" property="dccode" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="UUID" property="uuid" javaType="java.lang.String" jdbcType="CHAR" />
+      <result column="DCName" property="dcname" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="PinYinCode" property="pinyincode" javaType="java.lang.String" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getDiseasesClassifyTable" resultMap="BaseResultMap">
+    select DCCode,DCName,PinYinCode from Gy_DiseasesClassify where 1=1
+    <if test="searchText != null">
+      and (
+      DCCode like #{searchText} or
+      DCName like #{searchText} or
+      PinYinCode like #{searchText}
+      )
+    </if>
+    order by DCCode desc
+  </select>
+
+  <delete id="deleteDiseasesClassify" parameterType="java.lang.String">
+    delete from Gy_DiseasesClassify
+    where DCCode = #{dccode,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insertDiseasesClassify" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDiseasesClassify">
+    insert into Gy_DiseasesClassify
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dccode != null">
+        DCCode,
+      </if>
+      <if test="dcname != null">
+        DCName,
+      </if>
+      <if test="pinyincode != null">
+        PinYinCode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dccode != null">
+        #{dccode,jdbcType=VARCHAR},
+      </if>
+      <if test="dcname != null">
+        #{dcname,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null">
+        #{pinyincode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateDiseasesClassify" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDiseasesClassify">
+    update Gy_DiseasesClassify
+    <set>
+      <if test="dcname2 != null">
+        DCName = #{dcname2,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null">
+        PinYinCode = #{pinyincode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where DCCode = #{dccode,jdbcType=VARCHAR}
+  </update>
+
+  <select id="checkDiseasesClassifyExits" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select DCCode,DCName,PinYinCode from Gy_DiseasesClassify where 1=1
+    <if test="dccode != null" >
+      and DCCode = #{dccode}
+    </if>
+    <if test="dcname != null" >
+      and DCName = #{dcname}
+    </if>
+  </select>
+
+  <insert id="insertDiseasesClassifyCMedicine" parameterType="java.lang.String">
+    INSERT INTO Gy_DClassifyCMedicine
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="dccode != null">
+        DCCode,
+      </if>
+      <if test="chinesemedicinecode != null">
+        ChineseMedicineCode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="dccode != null">
+        #{dccode,jdbcType=VARCHAR},
+      </if>
+      <if test="chinesemedicinecode != null">
+        #{chinesemedicinecode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <delete id="deleteDiseasesClassifyCMedicine" parameterType="java.lang.String">
+    DELETE FROM Gy_DClassifyCMedicine
+    where DCCode = #{dccode,jdbcType=VARCHAR}
+  </delete>
+
+  <select id="GetDClassifyCMedicineByDCCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select DCCode from Gy_DClassifyCMedicine where DCCode = #{dccode}
+  </select>
+
+  <select id="getChineseMedicineByDCCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select Gy_DClassifyCMedicine.ChineseMedicineCode,Gy_ChineseMedicine.ChineseMedicineName
+    from Gy_DClassifyCMedicine left join Gy_ChineseMedicine on Gy_ChineseMedicine.ChineseMedicineCode = Gy_DClassifyCMedicine.ChineseMedicineCode
+    where Gy_DClassifyCMedicine.DCCode = #{dccode}
+  </select>
+</mapper>

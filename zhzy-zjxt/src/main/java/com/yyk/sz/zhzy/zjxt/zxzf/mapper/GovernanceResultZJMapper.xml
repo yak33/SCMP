@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.zjxt.zxzf.mapper.GovernanceResultZJMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.zjxt.zxzf.entity.GovernanceResultZJ">
+        <id column="EmpBasicMainID" property="empBasicMainID" jdbcType="INTEGER"/>
+        <result column="OperationType" property="operationType" jdbcType="INTEGER"/>
+        <result column="DialecticalCode" property="dialecticalCode" jdbcType="VARCHAR"/>
+        <result column="CureCode" property="cureCode" jdbcType="VARCHAR"/>
+        <result column="PrescriptionCode" property="prescriptionCode" jdbcType="VARCHAR"/>
+        <result column="DrugCode" property="drugCode" jdbcType="INTEGER"/>
+        <result column="PrescriptionSubID" property="prescriptionSubID" jdbcType="INTEGER"/>
+        <result column="Quanitity" property="quanitity" jdbcType="DECIMAL"/>
+        <result column="SufferTypeCode" property="sufferTypeCode" jdbcType="VARCHAR"/>
+        <result column="JFlag" property="JFlag" jdbcType="VARCHAR"/>
+        <result column="CFlag" property="CFlag" jdbcType="VARCHAR"/>
+        <result column="ZFlag" property="ZFlag" jdbcType="VARCHAR"/>
+        <result column="SFlag" property="SFlag" jdbcType="VARCHAR"/>
+        <result column="Remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="GRZJListRstMap" type="com.yyk.sz.zhzy.zjxt.zxzf.entity.GRZJListRst">
+        <id column="UUID" property="UUID" jdbcType="VARCHAR"/>
+        <result column="ChineseMedicineCode" property="chineseMedicineCode" jdbcType="VARCHAR"/>
+        <result column="ChineseMedicineName" property="chineseMedicineName" jdbcType="VARCHAR"/>
+        <result column="CureCode" property="cureCode" jdbcType="VARCHAR"/>
+        <result column="CureName" property="cureName" jdbcType="VARCHAR"/>
+        <result column="DialecticalCode" property="dialecticalCode" jdbcType="VARCHAR"/>
+        <result column="DialecticalName" property="dialecticalName" jdbcType="VARCHAR"/>
+        <result column="PrescriptionCode" property="prescriptionCode" jdbcType="VARCHAR"/>
+        <result column="PrescriptionName" property="prescriptionName" jdbcType="VARCHAR"/>
+        <result column="Score" property="score" jdbcType="VARCHAR"/>
+        <result column="SubID" property="subID" jdbcType="VARCHAR"/>
+        <result column="WesternMedicineCode" property="westernMedicineCode" jdbcType="VARCHAR"/>
+        <result column="WesternMedicineName" property="westernMedicineName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getGRZJList" statementType="CALLABLE" parameterType="com.yyk.sz.zhzy.zjxt.zxzf.entity.GovernanceResultZJ">
+        <![CDATA[
+            {
+              call CM_Sp_DialecticalZJOne_test(
+                                  #{empBasicMainID,jdbcType=INTEGER,mode=IN},
+                                  #{operationType,jdbcType=INTEGER,mode=IN},
+                                  #{dialecticalCode,jdbcType=VARCHAR,mode=IN},
+                                  #{cureCode,jdbcType=VARCHAR,mode=IN},
+                                  #{proUUID,jdbcType=VARCHAR,mode=IN})
+            }
+        ]]>
+    </select>
+
+    <select id="getGRZJListRst" resultMap="GRZJListRstMap" >
+        select *
+        from T_DialecticalZJOneRst
+        where UUID = #{proUUID}
+    </select>
+
+    <update id="updateEmpBasicMain" parameterType="com.yyk.sz.zhzy.zjxt.zxzf.entity.GovernanceResultZJ">
+        UPDATE CM_EmpBasicMain
+        SET DialecticalCode =#{dialecticalCode},
+         CureCode =#{cureCode}
+        WHERE
+            EmpBasicMainID =#{empBasicMainID}
+    </update>
+
+</mapper>

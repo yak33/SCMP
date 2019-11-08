@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.lzxt.bcbl.mapper.EmpBasicMainEntyMapper">
+
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.bcbl.entity.EmpBasicMainEnty">
+        <id column="EmpBasicMainID" property="EmpBasicMainID" jdbcType="INTEGER" />
+        <result column="v_ReturnValueStr" property="v_ReturnValueStr" jdbcType="VARCHAR"/>
+        <result column="FangjiReturnValue" property="FangjiReturnValue" jdbcType="VARCHAR"/>
+        <result column="DetailItemName" property="DetailItemName" jdbcType="VARCHAR"/>
+        <result column="checkFlag" property="checkFlag" jdbcType="VARCHAR"/>
+        <result column="UUID" property="UUID" jdbcType="CHAR" />
+        <result column="EmpBasicCode" property="EmpBasicCode" jdbcType="VARCHAR" />
+        <result column="MecidalNum" property="MecidalNum" jdbcType="VARCHAR" />
+        <result column="RegistrationNum" property="RegistrationNum" jdbcType="VARCHAR" />
+        <result column="PrescriptionCode" property="PrescriptionCode" jdbcType="VARCHAR" />
+        <result column="DiagnosticInfo" property="DiagnosticInfo" jdbcType="VARCHAR" />
+        <result column="EmName" property="EmName" jdbcType="VARCHAR" />
+        <result column="EmSex" property="EmSex" jdbcType="BIT" />
+        <result column="EmAge" property="EmAge" jdbcType="INTEGER" />
+        <result column="EmNum" property="EmNum" jdbcType="VARCHAR" />
+        <result column="EmMobile" property="EmMobile" jdbcType="VARCHAR" />
+        <result column="EmComName" property="EmComName" jdbcType="VARCHAR" />
+        <result column="EmAddress" property="EmAddress" jdbcType="VARCHAR" />
+        <result column="UserCode" property="UserCode" jdbcType="VARCHAR" />
+        <result column="UserName" property="UserName" jdbcType="VARCHAR" />
+        <result column="DeptCode" property="DeptCode" jdbcType="VARCHAR" />
+        <result column="DeptName" property="DeptName" jdbcType="VARCHAR" />
+        <result column="Weight" property="Weight" jdbcType="DECIMAL" />
+        <result column="ChiefComplaint" property="ChiefComplaint" jdbcType="VARCHAR" />
+        <result column="PhysicalExamination" property="PhysicalExamination" jdbcType="VARCHAR" />
+        <result column="HistoryPresent" property="HistoryPresent" jdbcType="VARCHAR" />
+        <result column="HistoryPast" property="HistoryPast" jdbcType="VARCHAR" />
+        <result column="HistoryAllergic" property="HistoryAllergic" jdbcType="VARCHAR" />
+        <result column="DiagnosisViews" property="DiagnosisViews" jdbcType="VARCHAR" />
+        <result column="OtherDescription" property="OtherDescription" jdbcType="VARCHAR" />
+        <result column="MainSymptomCode" property="MainSymptomCode" jdbcType="VARCHAR" />
+        <result column="DialecticalCode" property="DialecticalCode" jdbcType="VARCHAR" />
+        <result column="CureCode" property="CureCode" jdbcType="VARCHAR" />
+        <result column="Maker" property="Maker" jdbcType="VARCHAR" />
+        <result column="MakeDate" property="MakeDate" jdbcType="TIMESTAMP" />
+        <result column="FinishDate" property="FinishDate" jdbcType="TIMESTAMP" />
+        <result column="OnSetDate" property="OnSetDate" jdbcType="TIMESTAMP" />
+        <result column="IsYuFu" property="IsYuFu" jdbcType="BIT" />
+        <result column="ChineseMedicineCode" property="ChineseMedicineCode" jdbcType="VARCHAR" />
+        <result column="WesternMedicineCode" property="WesternMedicineCode" jdbcType="VARCHAR" />
+        <result column="EvaluationCode" property="EvaluationCode" jdbcType="INTEGER" />
+        <result column="EvaluationRemark" property="EvaluationRemark" jdbcType="VARCHAR" />
+        <result column="MainSymptomName" property="MainSymptomName" jdbcType="VARCHAR" />
+        <result column="DiseaseName" property="DiseaseName" jdbcType="VARCHAR" />
+        <result column="TongueName" property="TongueName" jdbcType="VARCHAR" />
+        <result column="PulseName" property="PulseName" jdbcType="VARCHAR" />
+        <result column="ClinicalRemark" property="ClinicalRemark" jdbcType="VARCHAR" />
+        <result column="LinRemark" property="LinRemark" jdbcType="VARCHAR" />
+        <result column="DCCode" property="DCCode" jdbcType="VARCHAR" />
+        <result column="MedicalNumber" property="MedicalNumber" jdbcType="VARCHAR" />
+        <result column="MedicalNumberRemark" property="MedicalNumberRemark" jdbcType="VARCHAR" />
+        <result column="FangJiSubID" property="FangJiSubID" jdbcType="VARCHAR" />
+        <result column="FangJiUsage" property="FangJiUsage" jdbcType="VARCHAR" />
+        <result column="IsDaiJian" property="IsDaiJian" jdbcType="VARCHAR" />
+        <result column="Remark" property="Remark" jdbcType="VARCHAR" />
+        <result column="UsageCount" property="UsageCount" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="getEmpBasicList" resultMap="BaseResultMap">
+    select MecidalNum,RegistrationNum,MakeDate ,DeptName,UserName,OnSetDate from CM_EmpBasicMain
+                                             where MecidalNum=#{mecidalNum} order by RegistrationNum DESC
+    </select>
+
+    <select id="getEmpBasicMainEntyTable" resultMap="BaseResultMap">
+    select  CM_EmpBasicMain.*, Gy_WesternMedicine.WesternMedicineName,Gy_ChineseMedicine.ChineseMedicineName,Advice,FangJiSubName,FangJiSubID,FangJiUsage,IsDaiJian,CM_FangJiSub.Remark,UsageCount,Gy_Dialectical.DialecticalName,Gy_Cure.CureName,
+(select IFNULL(Gy_User.UserName,'') from Gy_User left join CM_EmpBasicMain on Gy_User.HISUserCode=CM_EmpBasicMain.UserCode and Gy_User.DeptCode=CM_EmpBasicMain.DeptCode LIMIT 1) as strUserName,
+(select IFNULL(DeptName,'') from Gy_DeptMent where Gy_DeptMent.DeptCode=CM_EmpBasicMain.DeptCode LIMIT 1) as strDeptName,CM_HISEmpBasicMain.OnSetDate,CM_HISEmpBasicMain.Weight,CM_HISEmpBasicMain.IsYuFu from CM_EmpBasicMain left join
+ Gy_WesternMedicine on Gy_WesternMedicine.WesternMedicineCode=CM_EmpBasicMain.WesternMedicineCode left join
+ Gy_ChineseMedicine on Gy_ChineseMedicine.ChineseMedicineCode=CM_EmpBasicMain.ChineseMedicineCode left join
+ CM_FangJiSub on CM_FangJiSub.EmpBasicMainID=CM_EmpBasicMain.EmpBasicMainID left join
+ Gy_Dialectical on Gy_Dialectical.DialecticalCode=CM_EmpBasicMain.DialecticalCode left join
+ Gy_Cure on Gy_Cure.CureCode=CM_EmpBasicMain.CureCode left join CM_HISEmpBasicMain on CM_HISEmpBasicMain.RegistrationNum= CM_EmpBasicMain.RegistrationNum  where CM_EmpBasicMain.RegistrationNum=#{registrationNum};
+    </select>
+
+    <insert id="insertEmpBasic" parameterType="com.yyk.sz.zhzy.lzxt.bcbl.entity.EmpBasicMainEnty">
+    INSERT INTO CM_EmpBasicMain (EmpBasicCode,MecidalNum,RegistrationNum,EmName,EmSex,EmAge,EmAddress,EmNum,EmComName,UserName,UserCode,DeptCode,
+    DeptName,Maker,MakeDate,OnSetDate,Weight,IsYuFu,MainSymptomCode,EmpBasicMainID,ChiefComplaint,HistoryPresent,HistoryPast,HistoryAllergic,PhysicalExamination,
+    DialecticalCode,CureCode,ChineseMedicineCode,WesternMedicineCode,MainSymptomName,DiseaseName,TongueName,PulseName)
+    VALUES(#{EmpBasicCode},#{MecidalNum},#{RegistrationNum},#{EmName},#{EmSex},#{EmAge},#{EmAddress},#{EmNum},#{EmComName},#{UserName},#{UserCode},#{DeptCode},#{DeptName},#{Maker},#{MakeDate},
+    #{OnSetDate},#{Weight},#{IsYuFu},#{MainSymptomCode},#{EmpBasicMainID},#{ChiefComplaint},#{HistoryPresent},#{HistoryPast},#{HistoryAllergic},#{PhysicalExamination},
+    #{DialecticalCode},#{CureCode},#{ChineseMedicineCode},#{WesternMedicineCode},#{MainSymptomName},#{DiseaseName},#{TongueName},#{PulseName});
+    </insert>
+
+    <select id="insertEmpBasicSP" resultMap="BaseResultMap" statementType="CALLABLE" parameterType="com.yyk.sz.zhzy.lzxt.bcbl.entity.EmpBasicMainEnty">
+     <![CDATA[
+            {
+              call CM_Sp_InsertDiseaseOrPulseOrTongueSub #{EmpBasicMainID},#{DiseaseCode},#{TongueCode},#{PulseCode}
+            }
+        ]]>
+</select>
+
+    <select id="getEmpBasicInfo" statementType="CALLABLE">
+     <![CDATA[
+            {
+              call CM_GetFangJiZJValueOneTest_test(
+                #{registrationNum,jdbcType=VARCHAR,mode=IN},
+                #{drugFlag,jdbcType=INTEGER,mode=IN},
+                #{proUUID,jdbcType=VARCHAR,mode=IN})
+            }
+        ]]>
+    </select>
+
+    <select id="getEmpBasicInfoRst" resultType="com.yyk.sz.zhzy.lzxt.bcbl.entity.EmpBasicInfoRst">
+      select *
+      from T_GetFangJiZJValueOneTestRst
+      where UUID = #{proUUID}
+    </select>
+
+    <!--<update id="updateEmpBasic" parameterType="com.yyk.sz.zhzy.lzxt.bcbl.entity.EmpBasicMainEnty">-->
+    <!--update CM_EmpBasicMain set EmpBasicCode=#{EmpBasicCode},MecidalNum=#{MecidalNum},EmName=#{EmName},EmSex=#{EmSex},EmAge=#{EmAge},OnSetDate =#{OnSetDate},-->
+    <!--Weight =#{Weight},IsYuFu=#{IsYuFu},MainSymptomCode=#{MainSymptomCode},ChiefComplaint =#{ChiefComplaint},HistoryPresent =#{HistoryPresent},HistoryPast =#{HistoryPast},-->
+    <!--HistoryAllergic=#{HistoryAllergic},PhysicalExamination=#{PhysicalExamination},OtherDescription=#{OtherDescription},DialecticalCode=#{DialecticalCode},-->
+    <!--CureCode=#{CureCode},ChineseMedicineCode=#{ChineseMedicineCode},EmAddress=#{EmAddress},WesternMedicineCode=#{WesternMedicineCode},MainSymptomName=#{MainSymptomName},-->
+    <!--DiseaseName=#{DiseaseName},TongueName=#{TongueName},PulseName=#{PulseName} where EmpBasicMainID=#{EmpBasicMainID};-->
+    <!--</update>-->
+    <update id="updateEmpBasic" parameterType="com.yyk.sz.zhzy.lzxt.bcbl.entity.EmpBasicMainEnty">
+    update CM_EmpBasicMain
+        <set>
+            <if test="empBasicMainEnty.MainSymptomCode != null">
+                MainSymptomCode=#{empBasicMainEnty.MainSymptomCode,jdbcType=VARCHAR},
+            </if>
+            <if test="empBasicMainEnty.ChiefComplaint != null">
+                ChiefComplaint=#{empBasicMainEnty.ChiefComplaint,jdbcType=VARCHAR},
+            </if>
+            <if test="empBasicMainEnty.HistoryPresent != null">
+                HistoryPresent=#{empBasicMainEnty.HistoryPresent,jdbcType=VARCHAR},
+            </if>
+            <if test="empBasicMainEnty.HistoryPast != null">
+                HistoryPast=#{empBasicMainEnty.HistoryPast,jdbcType=VARCHAR},
+            </if>
+            <if test="empBasicMainEnty.HistoryAllergic != null">
+                HistoryAllergic=#{empBasicMainEnty.HistoryAllergic,jdbcType=VARCHAR},
+            </if>
+            <if test="empBasicMainEnty.PhysicalExamination != null">
+                PhysicalExamination=#{empBasicMainEnty.PhysicalExamination,jdbcType=VARCHAR},
+            </if>
+            <if test="empBasicMainEnty.OtherDescription != null">
+                OtherDescription=#{empBasicMainEnty.OtherDescription,jdbcType=VARCHAR},
+            </if>
+            <if test="empBasicMainEnty.DialecticalCode != null">
+                DialecticalCode=#{empBasicMainEnty.DialecticalCode,jdbcType=VARCHAR},
+            </if>
+            <if test="empBasicMainEnty.CureCode != null">
+                CureCode=#{empBasicMainEnty.CureCode,jdbcType=VARCHAR},
+            </if>
+            <if test="empBasicMainEnty.ChineseMedicineCode != null">
+                ChineseMedicineCode=#{empBasicMainEnty.ChineseMedicineCode,jdbcType=VARCHAR},
+            </if>
+            <if test="empBasicMainEnty.WesternMedicineCode != null">
+                WesternMedicineCode=#{empBasicMainEnty.WesternMedicineCode,jdbcType=VARCHAR},
+            </if>
+            <if test="empBasicMainEnty.MainSymptomName != null">
+                MainSymptomName=#{empBasicMainEnty.MainSymptomName,jdbcType=VARCHAR},
+            </if>
+            <if test="empBasicMainEnty.DiseaseName != null">
+                DiseaseName=#{empBasicMainEnty.DiseaseName,jdbcType=VARCHAR},
+            </if>
+            <if test="empBasicMainEnty.TongueName != null">
+                TongueName=#{empBasicMainEnty.TongueName,jdbcType=VARCHAR},
+            </if>
+            <if test="empBasicMainEnty.PulseName != null">
+                PulseName=#{empBasicMainEnty.PulseName,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where EmpBasicMainID=#{empBasicMainEnty.EmpBasicMainID};
+    </update>
+
+    <delete id="deleteDiseaseSub" parameterType="java.lang.Integer">
+          DELETE FROM CM_DiseaseSub WHERE EmpBasicMainID=#{empBasicMainID}
+    </delete>
+
+    <delete id="deleteTongueSub" parameterType="java.lang.Integer">
+          DELETE FROM CM_TongueSub WHERE EmpBasicMainID=#{empBasicMainID}
+    </delete>
+
+    <delete id="deletePulseSub" parameterType="java.lang.Integer">
+          DELETE FROM CM_PulseSub WHERE EmpBasicMainID=#{empBasicMainID}
+    </delete>
+
+    <insert id="insertDiseaseSub" parameterType="com.yyk.sz.zhzy.lzxt.bcbl.entity.EmpBasicMainEnty">
+        INSERT INTO CM_DiseaseSub(EmpBasicMainID,DiseaseCode) values
+		(#{empBasicMainEnty.EmpBasicMainID},#{empBasicMainEnty.DiseaseCode})
+    </insert>
+
+    <insert id="insertTongueSub" parameterType="com.yyk.sz.zhzy.lzxt.bcbl.entity.EmpBasicMainEnty">
+        INSERT INTO CM_TongueSub(EmpBasicMainID,TongueCode) values
+		(#{empBasicMainEnty.EmpBasicMainID},#{empBasicMainEnty.TongueCode})
+    </insert>
+
+    <insert id="insertPulseSub" parameterType="com.yyk.sz.zhzy.lzxt.bcbl.entity.EmpBasicMainEnty">
+        INSERT INTO CM_PulseSub(EmpBasicMainID,PulseCode) values
+		(#{empBasicMainEnty.EmpBasicMainID},#{empBasicMainEnty.PulseCode})
+    </insert>
+
+    <select id="updateEmpBasicSP" resultMap="BaseResultMap" statementType="CALLABLE" parameterType="com.yyk.sz.zhzy.lzxt.bcbl.entity.EmpBasicMainEnty">
+     <![CDATA[
+            {
+              call CM_Sp_InsertDiseaseOrPulseOrTongueSub #{empBasicMainEnty.EmpBasicMainID},#{empBasicMainEnty.DiseaseCode},#{empBasicMainEnty.TongueCode},#{empBasicMainEnty.PulseCode}
+            }
+        ]]>
+</select>
+
+    <select id="getCompareEmpBasicList" resultMap="BaseResultMap">
+    select MecidalNum, RegistrationNum,0 as selName,EmName,UserName,DeptCode,DeptName,MakeDate from CM_EmpBasicMain
+                                             where MecidalNum=#{mecidalNum} order by CM_EmpBasicMain.RegistrationNum DESC
+    </select>
+
+    <select id="getCompareEmpBasicInfo" resultMap="BaseResultMap">
+    select CM_V_EmpBasicMain.*, CM_FangJiSub.FangJiSubName as FangJiSubNameOne,CM_FangJiSub.FangJiUsage as FangJiUsageOne,
+    CM_FangJiSub.UsageCount as UsageCountOne,CM_FangJiSub.Advice as AdviceOne from CM_V_EmpBasicMain left join CM_FangJiSub
+    on CM_FangJiSub.EmpBasicMainID=CM_V_EmpBasicMain.EmpBasicMainID  where CM_V_EmpBasicMain.RegistrationNum=#{registrationNum}
+    </select>
+
+    <select id="getCompareEmpBasicChuFang" resultMap="BaseResultMap">
+        <if test="drugFlag == 0">
+            select
+            GROUP_CONCAT(CONCAT(ifNULL(Gy_DrugDict.DrugName,''),+' ',+
+            ifNULL(CM_FangJiDetailSub.Quanitity,0),+'g ' ,
+            + ifNULL(Gy_SufferType.SufferTypeName,''),
+            + case when ifNULL(CM_FangJiDetailSub.DetailMinutes,0)!=0
+            then (CM_FangJiDetailSub.DetailMinutes)+'分钟' else '' end,
+            + ifNULL(CM_FangJiDetailSub.Remark,''),+' |') SEPARATOR ' ') FangjiReturnValue
+            from CM_FangJiDetailSub inner join  CM_FangJiSub on CM_FangJiSub.FangJiSubID =CM_FangJiDetailSub.FangJiSubID left outer join
+            Gy_SufferType on CM_FangJiDetailSub.SufferTypeCode =Gy_SufferType.SufferTypeCode left outer join
+            Gy_DrugDict on CM_FangJiDetailSub.DrugCode =Gy_DrugDict.DrugCode left join
+            Gy_Unit on Gy_Unit.UnitCode=Gy_DrugDict.Units where CM_FangJiSub.EmpBasicMainID=#{empBasicMainID}and CM_FangJiSub.DrugFlag=0
+        </if>
+        <if test="drugFlag == 1">
+            select GROUP_CONCAT(CONCAT(IfNULL(Gy_DrugDict.DrugName,''),+'|')SEPARATOR ' ') FangjiReturnValue
+            from CM_FangJiDetailSub inner join  CM_FangJiSub on CM_FangJiSub.FangJiSubID =CM_FangJiDetailSub.FangJiSubID left outer join
+            Gy_DrugDict on CM_FangJiDetailSub.DrugCode =Gy_DrugDict.DrugCode  where CM_FangJiSub.EmpBasicMainID=#{empBasicMainID} and CM_FangJiSub.DrugFlag=1
+        </if>
+
+    </select>
+
+    <select id="getCompareEmpBasicWesternTable" resultMap="BaseResultMap">
+    select (select GROUP_CONCAT(CONCAT(Gy_DrugDict.DrugName,' ',CM_FangJiDetailSub.Quanitity,' ',ifnull(Gy_Unit.UnitName,''))SEPARATOR ' ') as jg
+    from CM_FangJiDetailSub inner join Gy_DrugDict on Gy_DrugDict.DrugCode=CM_FangJiDetailSub.DrugCode left join
+    Gy_Unit on Gy_Unit.UnitCode=Gy_DrugDict.PrescriptionUnit  where CM_FangJiDetailSub.FangJiSubID=CM_FangJiSub.FangJiSubID ) as fangjiDetailValue
+    from CM_FangJiSub inner join CM_EmpBasicMain on CM_EmpBasicMain.EmpBasicMainID=CM_FangJiSub.EmpBasicMainID where
+    CM_EmpBasicMain.RegistrationNum=#{registrationNum} and CM_FangJiSub.DrugFlag=2
+    </select>
+
+    <select id="getCompareEmpBasicCheckItem" resultMap="BaseResultMap">
+   	 SELECT  GROUP_CONCAT(Gy_DetailItem.DetailItemName)  as DetailItemName ,CheckFlag
+     FROM CM_CheckSub INNER JOIN Gy_DetailItem ON Gy_DetailItem.DetailItemCode=CM_CheckSub.DetailItemCode
+	 WHERE CM_CheckSub.EmpBasicMainID=#{empBasicMainID} AND CM_CheckSub.CheckFlag=#{checkFlag} GROUP BY CM_CheckSub.SummaryCode,CheckFlag
+    </select>
+
+    <update id="EvaluationCodeRemark" parameterType="com.yyk.sz.zhzy.lzxt.bcbl.entity.EmpBasicMainEnty">
+        update CM_EmpBasicMain
+        <set>
+            <if test="empBasicMainEnty.EvaluationCode != null">
+                EvaluationCode=#{empBasicMainEnty.EvaluationCode,jdbcType=VARCHAR},
+            </if>
+            <if test="empBasicMainEnty.EvaluationRemark != null">
+                EvaluationRemark=#{empBasicMainEnty.EvaluationRemark,jdbcType=VARCHAR},
+            </if>
+            <if test="empBasicMainEnty.LunAfterImg != null">
+                LunAfterImg=#{empBasicMainEnty.LunAfterImg,jdbcType=VARCHAR}
+            </if>
+        </set>
+        where RegistrationNum=#{empBasicMainEnty.RegistrationNum};
+    </update>
+
+</mapper>

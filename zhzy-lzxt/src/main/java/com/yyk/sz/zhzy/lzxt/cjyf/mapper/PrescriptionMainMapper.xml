@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.lzxt.cjyf.mapper.PrescriptionMainMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.cjyf.entity.PrescriptionMain">
+        <id column="PrescriptionCode" property="prescriptionCode" jdbcType="VARCHAR"/>
+        <result column="PrescriptionName" property="prescriptionName" jdbcType="VARCHAR"/>
+        <result column="PinYinCode" property="pinYinCode" jdbcType="VARCHAR"/>
+        <result column="Effect" property="effect" jdbcType="VARCHAR"/>
+        <result column="Attend" property="attend" jdbcType="VARCHAR"/>
+        <result column="Calcite" property="calcite" jdbcType="VARCHAR"/>
+        <result column="Source" property="source" jdbcType="VARCHAR"/>
+        <result column="SysFlag" property="SysFlag" jdbcType="VARCHAR"/>
+        <result column="JRate" property="jRate" jdbcType="DECIMAL"/>
+        <result column="CRate" property="cRate" jdbcType="DECIMAL"/>
+        <result column="ZRate" property="zRate" jdbcType="DECIMAL"/>
+        <result column="SRate" property="sRate" jdbcType="DECIMAL"/>
+        <result column="Remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="Maker" property="userCode" jdbcType="VARCHAR"/>
+        <result column="MakeDate" property="makeDate" jdbcType="TIMESTAMP"/>
+        <result column="DrugFlag" property="drugFlag" jdbcType="VARCHAR"/>
+        <result column="PCCode" property="pCCode" jdbcType="VARCHAR"/>
+        <result column="PCName" property="pCName" jdbcType="VARCHAR"/>
+        <result column="DrugCode" property="drugCode" jdbcType="INTEGER"/>
+        <result column="PrescriptionSubID" property="prescriptionSubID" jdbcType="INTEGER"/>
+        <result column="Quanitity" property="quanitity" jdbcType="DECIMAL"/>
+        <result column="SufferTypeCode" property="sufferTypeCode" jdbcType="VARCHAR"/>
+        <result column="SufferTypeName" property="sufferTypeName" jdbcType="VARCHAR"/>
+        <result column="HISCode" property="hisCode" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <delete id="delPrescriptionZJ" parameterType="com.yyk.sz.zhzy.lzxt.cjyf.entity.PrescriptionMain">
+        DELETE
+        FROM
+            Gy_PrescriptionMain
+        WHERE
+            DrugFlag = 0
+        AND PrescriptionName = #{prescriptionName}
+        AND Maker = #{userCode}
+    </delete>
+    <delete id="delPrescriptionSubZJ" parameterType="com.yyk.sz.zhzy.lzxt.cjyf.entity.PrescriptionMain">
+        DELETE
+        FROM
+            Gy_PrescriptionSub
+        WHERE
+            PrescriptionCode IN (
+                SELECT
+                    PrescriptionCode
+                FROM
+                    Gy_PrescriptionMain
+                WHERE
+                    DrugFlag = 0
+                AND PrescriptionName = #{prescriptionName}
+                AND Maker = #{userCode}
+            )
+    </delete>
+
+    <insert id="insertMain" parameterType="com.yyk.sz.zhzy.lzxt.cjyf.entity.PrescriptionMain">
+        INSERT INTO Gy_PrescriptionMain (
+            PrescriptionName,
+            PinYinCode,
+            Effect,
+            Attend,
+            Calcite,
+            Source,
+            SysFlag,
+            JRate,
+            CRate,
+            ZRate,
+            SRate,
+            Remark,
+            Maker,
+            MakeDate,
+            DrugFlag,
+            PCCode,
+            PersonalFlag
+        )
+        VALUES
+            (
+                #{prescriptionName},#{pinYinCode}, #{effect}, #{attend},#{calcite}, #{source}, 1,
+                #{jRate}, #{cRate}, #{zRate},#{sRate}, #{remark}, #{userCode},
+                #{makeDate}, 0 , #{pCCode}, 0
+            )
+  </insert>
+    <select id="getWantCode" resultMap="BaseResultMap" parameterType="com.yyk.sz.zhzy.lzxt.cjyf.entity.PrescriptionMain">
+        SELECT
+            *
+        FROM
+            Gy_PrescriptionMain
+        WHERE
+            DrugFlag = 0
+        AND PrescriptionName = #{prescriptionName}
+        AND Maker = #{userCode}
+    </select>
+    <insert id="insertSub" parameterType="com.yyk.sz.zhzy.lzxt.cjyf.entity.PrescriptionMain">
+        insert into Gy_PrescriptionSub (PrescriptionCode, DrugCode,
+          PrescriptionSubID, Quanitity, SufferTypeCode,
+          JFlag, CFlag, ZFlag,
+          SFlag, MainFlag)
+        values ( #{prescriptionCode}, #{drugCode},
+          #{prescriptionSubID}, #{quanitity}, #{sufferTypeCode},
+          0, 0, 0, 0, 0 )
+  </insert>
+
+    <select id="getClassify" resultMap="BaseResultMap">
+        SELECT
+            PCCode,
+            PCName,
+            PinYinCode
+        FROM
+            Gy_PrescriptionClassify
+    </select>
+
+    <select id="getSufferType" resultMap="BaseResultMap">
+        SELECT
+            SufferTypeCode,
+            SufferTypeName,
+            HISCode
+        FROM
+            Gy_SufferType
+    </select>
+    <!--<delete id="delete" parameterType="com.yyk.sz.zhzy.lzxt.cjyf.entity.PrescriptionMain">-->
+       <!--delete from Gy_PrescriptionSub where PrescriptionCode=#{prescriptionCode}-->
+    <!--</delete>-->
+
+</mapper>

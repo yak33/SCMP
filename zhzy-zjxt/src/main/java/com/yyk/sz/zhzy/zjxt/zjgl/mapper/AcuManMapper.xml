@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.zjxt.zjgl.mapper.AcuManMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.zjxt.zjgl.entity.AcuMan">
+        <id column="EmpBasicMainID" property="empBasicMainID" jdbcType="VARCHAR"/>
+        <result column="RegistrationNum" property="registrationNum" jdbcType="VARCHAR"/>
+        <result column="BeginDate" property="beginDate" jdbcType="VARCHAR"/>
+        <result column="EmName" property="emName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getAcuManAll" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+            CM_EmpBasicMain.RegistrationNum,
+            CM_EmpBasicMain.EmpBasicMainID,
+            CM_EmpBasicMain.EmName,
+            CM_FangJiSub.BeginDate AS MakeBeginDate,
+            CM_FangJiSub.ZJMinutes,
+            IFNULL(CM_FangJiSub.ZZDateTime, '') AS ZZTime,
+            '' AS BZTime
+        FROM
+            CM_EmpBasicMain
+        INNER JOIN CM_FangJiSub ON CM_FangJiSub.EmpBasicMainID = CM_EmpBasicMain.EmpBasicMainID
+        WHERE
+            CM_FangJiSub.ZJMinutes &gt; 0
+        AND CM_FangJiSub.DrugFlag = 1
+        <if test="searchText != null and searchText != ''">
+            and (
+            CM_EmpBasicMain.RegistrationNum like '%${searchText}%' or
+            CM_EmpBasicMain.EmpBasicMainID like '%${searchText}%' or
+            CM_EmpBasicMain.EmName like '%${searchText}%'
+            )
+        </if>
+        <if test="sortName != null">
+            ORDER BY ${sortName} ${sortOrder}
+        </if>
+    </select>
+
+    <!--<select id="getAcuManNoList" resultMap="BaseResultMap" parameterType="java.lang.String">-->
+        <!--SELECT-->
+            <!--CM_EmpBasicMain.RegistrationNum,-->
+            <!--CM_EmpBasicMain.EmpBasicMainID,-->
+            <!--CM_EmpBasicMain.EmName,-->
+            <!--CM_FangJiSub.BeginDate AS MakeBeginDate,-->
+            <!--CM_FangJiSub.ZJMinutes,-->
+            <!--CM_FangJiSub.ZZDateTime,-->
+            <!--IFNULL(CM_FangJiSub.ZZDateTime, '') AS ZZTime,-->
+            <!--'' AS BZTime-->
+        <!--FROM-->
+            <!--CM_EmpBasicMain-->
+        <!--INNER JOIN CM_FangJiSub ON CM_FangJiSub.EmpBasicMainID = CM_EmpBasicMain.EmpBasicMainID-->
+        <!--WHERE-->
+            <!--CM_FangJiSub.ZJMinutes &gt; 0-->
+        <!--AND CM_FangJiSub.DrugFlag = 1-->
+        <!--AND CM_FangJiSub.BeginDate &gt; IFNULL(CM_FangJiSub.ZZDateTime, '')-->
+        <!--AND (-->
+            <!--TIMESTAMPDIFF(-->
+            <!--MINUTE,-->
+            <!--CM_FangJiSub.ZZDateTime , #{strDateTime}-->
+            <!--) &lt;= CM_FangJiSub.ZJMinutes-->
+            <!--OR rtrim(IFNULL(CM_FangJiSub.ZZDateTime, '')) = ''-->
+            <!--)-->
+        <!--<if test="searchText != null and searchText != ''">-->
+            <!--and (-->
+            <!--CM_EmpBasicMain.RegistrationNum like '%${searchText}%' or-->
+            <!--CM_EmpBasicMain.EmpBasicMainID like '%${searchText}%' or-->
+            <!--CM_EmpBasicMain.EmName like '%${searchText}%'-->
+            <!--)-->
+        <!--</if>-->
+        <!--<if test="sortName != null">-->
+            <!--ORDER BY ${sortName} ${sortOrder}-->
+        <!--</if>-->
+    <!--</select>-->
+
+    <select id="getAcuManNoList" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        CM_EmpBasicMain.RegistrationNum,
+        CM_EmpBasicMain.EmpBasicMainID,
+        CM_EmpBasicMain.EmName,
+        CM_FangJiSub.BeginDate AS MakeBeginDate,
+        CM_FangJiSub.ZJMinutes,
+        CM_FangJiSub.ZZDateTime,
+        IFNULL(CM_FangJiSub.ZZDateTime, '') AS ZZTime,
+        '' AS BZTime
+        FROM
+        CM_EmpBasicMain
+        INNER JOIN CM_FangJiSub ON CM_FangJiSub.EmpBasicMainID = CM_EmpBasicMain.EmpBasicMainID
+        WHERE
+        CM_FangJiSub.ZJMinutes > 0
+        AND CM_FangJiSub.DrugFlag = 1
+        AND rtrim(
+        IFNULL(CM_FangJiSub.ZZDateTime, '')
+        ) = ''
+        <if test="searchText != null and searchText != ''">
+            and (
+            CM_EmpBasicMain.RegistrationNum like '%${searchText}%' or
+            CM_EmpBasicMain.EmpBasicMainID like '%${searchText}%' or
+            CM_EmpBasicMain.EmName like '%${searchText}%'
+            )
+        </if>
+        <if test="sortName != null">
+            ORDER BY ${sortName} ${sortOrder}
+        </if>
+    </select>
+
+    <!--<select id="getAcuManYesList" resultMap="BaseResultMap" parameterType="java.lang.String">-->
+        <!--SELECT-->
+            <!--CM_EmpBasicMain.RegistrationNum,-->
+            <!--CM_EmpBasicMain.EmpBasicMainID,-->
+            <!--CM_EmpBasicMain.EmName,-->
+            <!--CM_FangJiSub.BeginDate AS MakeBeginDate,-->
+            <!--CM_FangJiSub.ZJMinutes,-->
+            <!--IFNULL(CM_FangJiSub.ZZDateTime, '') AS ZZTime,-->
+            <!--'' AS BZTime-->
+        <!--FROM-->
+            <!--CM_EmpBasicMain-->
+        <!--INNER JOIN CM_FangJiSub ON CM_FangJiSub.EmpBasicMainID = CM_EmpBasicMain.EmpBasicMainID-->
+        <!--WHERE-->
+            <!--CM_FangJiSub.ZJMinutes &gt; 0-->
+        <!--AND CM_FangJiSub.DrugFlag = 1-->
+        <!--AND CM_FangJiSub.BeginDate &gt; CM_FangJiSub.ZZDateTime-->
+        <!--AND (-->
+            <!--TIMESTAMPDIFF(-->
+            <!--MINUTE,-->
+            <!--CM_FangJiSub.ZZDateTime,-->
+            <!--#{strDateTime}-->
+            <!--) &gt; CM_FangJiSub.ZJMinutes-->
+            <!--AND rtrim(CM_FangJiSub.ZZDateTime) <![CDATA[ <> ]]> ''-->
+            <!--)-->
+        <!--<if test="searchText != null and searchText != ''">-->
+            <!--and (-->
+            <!--CM_EmpBasicMain.RegistrationNum like '%${searchText}%' or-->
+            <!--CM_EmpBasicMain.EmpBasicMainID like '%${searchText}%' or-->
+            <!--CM_EmpBasicMain.EmName like '%${searchText}%'-->
+            <!--)-->
+        <!--</if>-->
+        <!--<if test="sortName != null">-->
+            <!--ORDER BY ${sortName} ${sortOrder}-->
+        <!--</if>-->
+    <!--</select>-->
+
+    <select id="getAcuManYesList" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        CM_EmpBasicMain.RegistrationNum,
+        CM_EmpBasicMain.EmpBasicMainID,
+        CM_EmpBasicMain.EmName,
+        CM_FangJiSub.BeginDate AS MakeBeginDate,
+        CM_FangJiSub.ZJMinutes,
+        CM_FangJiSub.ZZDateTime,
+        IFNULL(CM_FangJiSub.ZZDateTime, '') AS ZZTime,
+        '' AS BZTime
+        FROM
+        CM_EmpBasicMain
+        INNER JOIN CM_FangJiSub ON CM_FangJiSub.EmpBasicMainID = CM_EmpBasicMain.EmpBasicMainID
+        WHERE
+        CM_FangJiSub.ZJMinutes > 0
+        AND CM_FangJiSub.DrugFlag = 1
+        AND TIMESTAMPDIFF(
+        MINUTE,
+        CM_FangJiSub.ZZDateTime,
+        #{strDateTime}
+        ) &gt; CM_FangJiSub.ZJMinutes
+        AND rtrim(CM_FangJiSub.ZZDateTime) <![CDATA[ <> ]]> ''
+        <if test="searchText != null and searchText != ''">
+            and (
+            CM_EmpBasicMain.RegistrationNum like '%${searchText}%' or
+            CM_EmpBasicMain.EmpBasicMainID like '%${searchText}%' or
+            CM_EmpBasicMain.EmName like '%${searchText}%'
+            )
+        </if>
+        <if test="sortName != null">
+            ORDER BY ${sortName} ${sortOrder}
+        </if>
+    </select>
+
+<!--正在扎针-->
+    <select id="getAcuManIngList" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        CM_EmpBasicMain.RegistrationNum,
+        CM_EmpBasicMain.EmpBasicMainID,
+        CM_EmpBasicMain.EmName,
+        CM_FangJiSub.BeginDate AS MakeBeginDate,
+        CM_FangJiSub.ZJMinutes,
+        CM_FangJiSub.ZZDateTime,
+        IFNULL(CM_FangJiSub.ZZDateTime, '') AS ZZTime,
+        '' AS BZTime
+        FROM
+        CM_EmpBasicMain
+        INNER JOIN CM_FangJiSub ON CM_FangJiSub.EmpBasicMainID = CM_EmpBasicMain.EmpBasicMainID
+        WHERE
+        CM_FangJiSub.ZJMinutes > 0
+        AND CM_FangJiSub.DrugFlag = 1
+        AND TIMESTAMPDIFF(
+        MINUTE,
+        CM_FangJiSub.ZZDateTime,
+        #{strDateTime}
+        ) &lt;= CM_FangJiSub.ZJMinutes
+        AND rtrim(CM_FangJiSub.ZZDateTime) <![CDATA[ <> ]]> ''
+        <if test="searchText != null and searchText != ''">
+            and (
+            CM_EmpBasicMain.RegistrationNum like '%${searchText}%' or
+            CM_EmpBasicMain.EmpBasicMainID like '%${searchText}%' or
+            CM_EmpBasicMain.EmName like '%${searchText}%'
+            )
+        </if>
+        <if test="sortName != null">
+            ORDER BY ${sortName} ${sortOrder}
+        </if>
+    </select>
+
+    <update id="updateZZDateTime" parameterType="com.yyk.sz.zhzy.zjxt.zjgl.entity.AcuMan">
+        UPDATE CM_FangJiSub
+        SET ZZDateTime = #{zzDateTime}
+        WHERE
+            CM_FangJiSub.EmpBasicMainID = #{empBasicMainID}
+    </update>
+
+</mapper>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJDetailItemMapper" >
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDetailItem" >
+      <id column="DetailItemCode" property="detailitemcode" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="UUID" property="uuid" jdbcType="CHAR" javaType="java.lang.String" />
+      <result column="DetailItemName" property="detailitemname" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="PinYinCode" property="pinyincode" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="SummaryCode" property="summarycode" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="Remark" property="remark" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="HISDetailItemCode" property="hisdetailitemcode" jdbcType="VARCHAR" javaType="java.lang.String" />
+      <result column="DetailItemFlag" property="detailitemflag" jdbcType="INTEGER" javaType="java.lang.Integer" />
+  </resultMap>
+  <select id="getDetailItem" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select DetailItemCode,DetailItemName,Gy_DetailItem.PinYinCode,Gy_DetailItem.SummaryCode,Gy_SummaryItem.SummaryName,Gy_DetailItem.Remark,HISDetailItemCode,Gy_SummaryItem.DetailItemFlag from Gy_DetailItem
+    left join Gy_SummaryItem on Gy_DetailItem.SummaryCode=Gy_SummaryItem.SummaryCode where 1=1
+    <if test="detailItemCode != null" >
+      And DetailItemCode like #{detailItemCode}
+    </if>
+    <if test="detailItemName != null" >
+      And DetailItemName like #{detailItemName}
+    </if>
+    <if test="pinYinCode != null" >
+      And Gy_DetailItem.PinYinCode like #{pinYinCode}
+    </if>
+    <if test="searchText != null">
+      and (
+      DetailItemCode like #{searchText} or
+      DetailItemName like #{searchText} or
+      Gy_DetailItem.PinYinCode like #{searchText}
+      )
+    </if>
+    order by DetailItemCode desc
+  </select>
+
+  <delete id="deleteDetailItem" parameterType="java.lang.String" >
+    delete from Gy_DetailItem
+    where DetailItemCode = #{detailitemcode,jdbcType=VARCHAR}
+  </delete>
+
+  <insert id="insertDetailItem" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDetailItem" >
+    insert into Gy_DetailItem
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="detailitemcode != null" >
+        DetailItemCode,
+      </if>
+      <if test="detailitemname != null" >
+        DetailItemName,
+      </if>
+      <if test="pinyincode != null" >
+        PinYinCode,
+      </if>
+      <if test="summarycode != null" >
+        SummaryCode,
+      </if>
+      <if test="remark != null" >
+        Remark,
+      </if>
+      <if test="hisdetailitemcode != null" >
+        HISDetailItemCode,
+      </if>
+      <if test="detailitemflag != null" >
+        DetailItemFlag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="detailitemcode != null" >
+        #{detailitemcode,jdbcType=VARCHAR},
+      </if>
+      <if test="detailitemname != null" >
+        #{detailitemname,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null" >
+        #{pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="summarycode != null" >
+        #{summarycode,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="hisdetailitemcode != null" >
+        #{hisdetailitemcode,jdbcType=VARCHAR},
+      </if>
+      <if test="detailitemflag != null" >
+        #{detailitemflag,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateDetailItem" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDetailItem" >
+    update Gy_DetailItem
+    <set >
+      <if test="detailitemname2 != null" >
+        DetailItemName = #{detailitemname2,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null" >
+        PinYinCode = #{pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="summarycode != null" >
+        SummaryCode = #{summarycode,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="hisdetailitemcode != null" >
+        HISDetailItemCode = #{hisdetailitemcode,jdbcType=VARCHAR},
+      </if>
+      <if test="detailitemflag != null" >
+        DetailItemFlag = #{detailitemflag,jdbcType=INTEGER},
+      </if>
+    </set>
+    where DetailItemCode = #{detailitemcode,jdbcType=VARCHAR}
+  </update>
+
+  <select id="CheckDetailItemExits" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select DetailItemCode,DetailItemName,Gy_DetailItem.PinYinCode,Gy_DetailItem.SummaryCode,Gy_SummaryItem.SummaryName,Gy_DetailItem.Remark,HISDetailItemCode,Gy_SummaryItem.DetailItemFlag from Gy_DetailItem
+    left join Gy_SummaryItem on Gy_DetailItem.SummaryCode=Gy_SummaryItem.SummaryCode where 1=1
+    <if test="detailItemCode != null" >
+      And DetailItemCode = #{detailItemCode}
+    </if>
+    <if test="detailItemName != null" >
+      And DetailItemName = #{detailItemName}
+    </if>
+  </select>
+</mapper>

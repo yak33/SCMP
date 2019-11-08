@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.lzxt.zjkf.mapper.MeridianMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.zjkf.entity.Meridian">
+        <id column="DrugCode" property="DrugCode" jdbcType="VARCHAR"/>
+        <result column="MeridianCode" property="MeridianCode" jdbcType="VARCHAR"/>
+        <result column="MeridianName" property="MeridianName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getMeridianList" resultMap="BaseResultMap">
+        SELECT
+            MeridianName
+        FROM
+            Gy_Meridian
+        INNER JOIN Gy_DrugOrMeridian ON Gy_DrugOrMeridian.MeridianCode = Gy_Meridian.MeridianCode
+        WHERE
+            Gy_DrugOrMeridian.DrugCode = #{drugCode}
+    </select>
+
+</mapper>

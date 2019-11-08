@@ -1,0 +1,3 @@
+/zjxt/cqjyf/getPrescription     --取经验方 userCode，drugFlag（0中药方剂 1 针灸方剂 2西医）
+/zjxt/cqjyf/savePrescriptionZJ  --存经验方 Prescription （实体Javabean）
+/zjxt/cqjyf/getFangJie          --获取方解 prescriptionCode（方剂编码）

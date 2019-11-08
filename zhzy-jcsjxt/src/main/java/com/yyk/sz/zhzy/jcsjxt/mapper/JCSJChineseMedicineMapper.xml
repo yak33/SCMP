@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJChineseMedicineMapper">
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJChineseMedicine">
+      <id column="ChineseMedicineCode" property="chinesemedicinecode" javaType="java.lang.String" jdbcType="INTEGER" />
+      <result column="UUID" property="uuid" javaType="java.lang.String" jdbcType="CHAR" />
+      <result column="ChineseMedicineName" property="chinesemedicinename" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="PinYinCode" property="pinyincode" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="ChineseMedicineDM" property="chinesemedicinedm" javaType="java.lang.String" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getChineseMedicineTable" resultMap="BaseResultMap">
+    select ChineseMedicineCode,ChineseMedicineName,PinYinCode,ChineseMedicineDM from Gy_ChineseMedicine where 1=1
+    <if test="searchText != null">
+      and (
+      ChineseMedicineCode like #{searchText} or
+      ChineseMedicineName like #{searchText} or
+      PinYinCode like #{searchText}
+      )
+    </if>
+    order by ChineseMedicineCode desc
+  </select>
+  <delete id="deleteChineseMedicine" parameterType="java.lang.String">
+    delete from Gy_ChineseMedicine
+    where ChineseMedicineCode = #{chinesemedicinecode,jdbcType=INTEGER}
+  </delete>
+  <insert id="insertChineseMedicine" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJChineseMedicine">
+    insert into Gy_ChineseMedicine
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="chinesemedicinecode != null">
+        ChineseMedicineCode,
+      </if>
+      <if test="chinesemedicinename != null">
+        ChineseMedicineName,
+      </if>
+      <if test="pinyincode != null">
+        PinYinCode,
+      </if>
+      <if test="chinesemedicinedm != null">
+        ChineseMedicineDM,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="chinesemedicinecode != null">
+        #{chinesemedicinecode,jdbcType=INTEGER},
+      </if>
+      <if test="chinesemedicinename != null">
+        #{chinesemedicinename,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null">
+        #{pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="chinesemedicinedm != null">
+        #{chinesemedicinedm,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateChineseMedicine" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJChineseMedicine">
+    update Gy_ChineseMedicine
+    <set>
+      <if test="chinesemedicinename2 != null">
+        ChineseMedicineName = #{chinesemedicinename2,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null">
+        PinYinCode = #{pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="chinesemedicinedm != null">
+        ChineseMedicineDM = #{chinesemedicinedm,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ChineseMedicineCode = #{chinesemedicinecode,jdbcType=INTEGER}
+  </update>
+
+  <select id="checkChineseMedicineExits" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select ChineseMedicineCode,ChineseMedicineName,PinYinCode,ChineseMedicineDM from Gy_ChineseMedicine where 1=1
+    <if test="chinesemedicinecode != null" >
+      and ChineseMedicineCode = #{chinesemedicinecode}
+    </if>
+    <if test="chinesemedicinename != null" >
+      and ChineseMedicineName = #{chinesemedicinename}
+    </if>
+  </select>
+  <select id="GetMainSymptomInfoByChineseMedicineCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select ChineseMedicineCode from Gy_MainSymptom where 1=1
+    <if test="chinesemedicinecode != null" >
+      and ChineseMedicineCode = #{chinesemedicinecode}
+    </if>
+  </select>
+  <select id="GetPrescriptionByChineseMedicineCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select ltrim(rtrim(Gy_CMedicinePrescription.PrescriptionCode)) as PrescriptionCode,
+    ltrim(rtrim(Gy_PrescriptionMain.PrescriptionName)) as PrescriptionName
+    from Gy_CMedicinePrescription left join Gy_PrescriptionMain on Gy_PrescriptionMain.PrescriptionCode=Gy_CMedicinePrescription.PrescriptionCode
+    where 1=1
+    <if test="chinesemedicinecode != null" >
+      and Gy_CMedicinePrescription.ChineseMedicineCode = #{chinesemedicinecode}
+    </if>
+    order by Gy_CMedicinePrescription.PrescriptionCode
+  </select>
+</mapper>

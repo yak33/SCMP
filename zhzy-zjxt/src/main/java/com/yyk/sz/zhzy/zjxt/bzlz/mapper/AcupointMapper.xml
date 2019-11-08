@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.zjxt.bzlz.mapper.AcupointMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.zjxt.bzlz.entity.Acupoint">
+        <id column="acupointCode" property="acupointCode" jdbcType="VARCHAR"/>
+        <result column="acupointName" property="acupointName" jdbcType="VARCHAR"/>
+        <result column="InputCode" property="inputCode" jdbcType="VARCHAR"/>
+        <result column="PointX" property="pointX" jdbcType="VARCHAR"/>
+        <result column="PointY" property="pointY" jdbcType="VARCHAR"/>
+        <result column="PositionExplain" property="positionExplain" jdbcType="VARCHAR"/>
+        <result column="DrugFlag" property="drugFlag" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getAllAcupoint" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+            DrugCode acupointCode,
+            DrugName acupointName,
+            IFNULL(InputCode, '') pinYinCode,
+            pointX,
+            pointY,
+            positionExplain,
+            PType
+        FROM
+            Gy_DrugDict
+        WHERE
+            DrugFlag = 1
+        <if test="searchText != null">
+            and (
+            DrugCode like '%${searchText}%' or
+            DrugName like '%${searchText}%' or
+            InputCode like '%${searchText}%'
+            )
+        </if>
+    </select>
+
+    <select id="getAcupointByPrescriptionCode" resultMap="BaseResultMap" parameterType="com.yyk.sz.zhzy.zjxt.bzlz.entity.Acupoint">
+        SELECT
+            Gy_DrugDict.DrugCode AS AcupointCode,
+            Gy_DrugDict.DrugName AS AcupointName,
+            InputCode AS PinYinCode,
+            DrugMeridian AS MeridianCode,
+            MeridianOrder,
+            PType,
+            Gy_DrugDict.PointX,
+            Gy_DrugDict.PointY,
+            Gy_DrugDict.PositionExplain
+        FROM
+            Gy_PrescriptionSub
+        LEFT JOIN Gy_DrugDict ON Gy_DrugDict.DrugCode = Gy_PrescriptionSub.DrugCode
+        WHERE
+            Gy_PrescriptionSub.PrescriptionCode = #{prescriptionCode}
+    </select>
+
+</mapper>

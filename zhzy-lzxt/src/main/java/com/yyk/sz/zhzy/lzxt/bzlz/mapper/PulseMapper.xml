@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.lzxt.bzlz.mapper.PulseMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.bzlz.entity.Pulse">
+        <result column="PulseCode" property="PulseCode" jdbcType="VARCHAR"/>
+        <result column="PulseName" property="PulseName" jdbcType="VARCHAR"/>
+        <result column="selPulse" property="selPulse" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getPulseTable" resultMap="BaseResultMap">
+       select 0 as selPulse,Gy_Pulse.PulseCode,Gy_Pulse.PulseName from  Gy_MainPulse left join
+       Gy_Pulse on Gy_Pulse.PulseCode=Gy_MainPulse.PulseCode where Gy_MainPulse.MainSymptomCode=#{mainSymptomCode}
+       order by Gy_Pulse.PulseName
+    </select>
+
+</mapper>

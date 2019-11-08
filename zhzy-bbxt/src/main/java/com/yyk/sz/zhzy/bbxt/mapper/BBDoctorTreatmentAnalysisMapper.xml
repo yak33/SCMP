@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.bbxt.mapper.BBDoctorTreatmentAnalysisMapper">
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.bbxt.entity.BBDoctorTreatmentAnalysis">
+      <result column="MecidalNum" property="mecidalnum" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="EmpBasicMainID" property="empbasicmainid" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <result column="RegistrationNum" property="registrationnum" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="EmName" property="emname" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="EmAge" property="emage" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <result column="EmAddress" property="emaddress" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="EmSex" property="emsex" javaType="java.lang.Boolean" jdbcType="BIT" />
+      <result column="EmSexName" property="emsexname" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="OnSetDate" property="onsetdate" javaType="java.util.Date" jdbcType="DATE" />
+      <result column="ChineseMedicineCode" property="chinesemedicinecode" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="WesternMedicineCode" property="westernmedicinecode" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="Weight" property="weight" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <result column="DialecticalCode" property="dialecticalcode" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="CureCode" property="curecode" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="UserCode" property="usercode" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="UserName" property="username" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="DeptCode" property="deptcode" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="DeptName" property="deptname" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="DialecticalName" property="dialecticalname" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="CureName" property="curename" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="ChineseMedicineName" property="chinesemedicinename" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="WesternMedicineName" property="westernmedicinename" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="OutpatientCount" property="outpatientcount" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <result column="HerbalMoney" property="herbalmoney" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <result column="AcupunctureMoney" property="acupuncturemoney" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <result column="WesternMoney" property="westernmoney" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <result column="InspectionMoney" property="inspectionmoney" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+      <result column="CheckMoney" property="checkmoney" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+        <result column="DeptNum" property="DeptNum" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="SumZMoney" property="SumZMoney" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="SumZJMoney" property="SumZJMoney" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="SumWMoney" property="SumWMoney" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="SumCheckMoney" property="SumCheckMoney" javaType="java.lang.String" jdbcType="VARCHAR" />
+        <result column="SumInspectionMoney" property="SumInspectionMoney" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </resultMap>
+  <!--<select id="getDoctorTreatmentRecord" resultMap="BaseResultMap">-->
+      <!--select * from CM_V_DoctorTreatmentAnalysis where 1=1 and CM_V_DoctorTreatmentAnalysis.UserCode in-->
+      <!--(select Gy_UserQueryRight.QueryUserCode from Gy_UserQueryRight where Gy_UserQueryRight.UserCode=#{userCode} and BusTypeCode='10' )-->
+    <!--<if test="beginDate != null">-->
+        <!--and OnSetDate &gt;= #{beginDate}-->
+    <!--</if>-->
+    <!--<if test="endDate != null">-->
+        <!--and OnSetDate &lt;= #{endDate}-->
+    <!--</if>-->
+      <!--<if test="searchText != null">-->
+          <!--and (-->
+          <!--RegistrationNum like #{searchText} or-->
+          <!--MecidalNum like #{searchText} or-->
+          <!--EmName like #{searchText} or-->
+          <!--EmSexName like #{searchText}-->
+          <!--)-->
+      <!--</if>-->
+      <!--order by CM_V_DoctorTreatmentAnalysis.UserCode-->
+  <!--</select>-->
+
+    <select id="getDoctorTreatmentRecord" resultMap="BaseResultMap">
+        select * from CM_V_DoctorTreatmentAnalysis where 1=1
+        <if test="userCode != null">
+            and CM_V_DoctorTreatmentAnalysis.UserCode =#{userCode}
+        </if>
+        <if test="beginDate != null">
+            and OnSetDate &gt;= #{beginDate}
+        </if>
+        <if test="endDate != null">
+            and OnSetDate &lt;= #{endDate}
+        </if>
+        <if test="searchText != null">
+            and (
+            RegistrationNum like #{searchText} or
+            MecidalNum like #{searchText} or
+            EmName like #{searchText} or
+            EmSexName like #{searchText}
+            )
+        </if>
+        order by CM_V_DoctorTreatmentAnalysis.UserCode
+    </select>
+
+    <!--<select id="getDoctorTreatmentMoney" resultMap="BaseResultMap">-->
+        <!--select UserCode,UserName,sum(ifnull(HerbalMoney,0)) as HerbalMoney,sum(ifnull(AcupunctureMoney,0)) as AcupunctureMoney,-->
+        <!--sum(ifnull(WesternMoney,0)) as WesternMoney,sum(ifnull(InspectionMoney,0)) as InspectionMoney,sum(ifnull(CheckMoney,0)) as CheckMoney,-->
+        <!--sum(OutpatientCount) as OutpatientCount-->
+        <!--from CM_V_DoctorTreatmentAnalysis where 1=1 and CM_V_DoctorTreatmentAnalysis.UserCode in-->
+        <!--(select Gy_UserQueryRight.QueryUserCode from Gy_UserQueryRight where Gy_UserQueryRight.UserCode=#{userCode} and BusTypeCode='10')-->
+        <!--<if test="beginDate != null">-->
+            <!--and OnSetDate &gt;= #{beginDate}-->
+        <!--</if>-->
+        <!--<if test="endDate != null">-->
+            <!--and OnSetDate &lt;= #{endDate}-->
+        <!--</if>-->
+        <!--Group by CM_V_DoctorTreatmentAnalysis.UserCode,UserName order by CM_V_DoctorTreatmentAnalysis.UserCode-->
+    <!--</select>-->
+
+    <select id="getDoctorTreatmentMoney" resultMap="BaseResultMap">
+        select UserCode,UserName,sum(ifnull(HerbalMoney,0)) as HerbalMoney,sum(ifnull(AcupunctureMoney,0)) as AcupunctureMoney,
+        sum(ifnull(WesternMoney,0)) as WesternMoney,sum(ifnull(InspectionMoney,0)) as InspectionMoney,sum(ifnull(CheckMoney,0)) as CheckMoney,
+        sum(OutpatientCount) as OutpatientCount
+        from CM_V_DoctorTreatmentAnalysis where 1=1
+        <if test="userCode != null">
+            and CM_V_DoctorTreatmentAnalysis.UserCode =#{userCode}
+        </if>
+        <if test="beginDate != null">
+            and OnSetDate &gt;= #{beginDate}
+        </if>
+        <if test="endDate != null">
+            and OnSetDate &lt;= #{endDate}
+        </if>
+        Group by CM_V_DoctorTreatmentAnalysis.UserCode,UserName order by CM_V_DoctorTreatmentAnalysis.UserCode
+    </select>
+
+    <select id="getDoctorWorkloadByDate" resultMap="BaseResultMap">
+        with ta as (select CM_EmpBasicMain.EmpBasicMainID,CM_EmpBasicMain.RegistrationNum,CM_EmpBasicMain.UserCode,Gy_User.UserName,1 as OutpatientCount
+        from CM_EmpBasicMain left join Gy_User on Gy_User.UserCode=CM_EmpBasicMain.UserCode where 1=1
+        <if test="beginDate != null">
+            and CM_EmpBasicMain.OnSetDate &gt;= #{beginDate}
+        </if>
+        <if test="endDate != null">
+            and CM_EmpBasicMain.OnSetDate &lt;= #{endDate}
+        </if>
+        ),
+        tb as (select sum(ifnull(WholeMoney,0)) as HerbalMoney,
+        CM_FangJiSub.EmpBasicMainID
+        from CM_FangJiDetailSub left join CM_FangJiSub on CM_FangJiSub.FangJiSubID=CM_FangJiDetailSub.FangJiSubID
+        left join ta on ta.EmpBasicMainID=CM_FangJiSub.EmpBasicMainID
+        where CM_FangJiSub.DrugFlag=0 group by CM_FangJiSub.EmpBasicMainID ),
+        tc as (select sum(ifnull(WholeMoney,0)) as AcupunctureMoney,
+        CM_FangJiSub.EmpBasicMainID
+        from CM_FangJiDetailSub left join CM_FangJiSub on CM_FangJiSub.FangJiSubID=CM_FangJiDetailSub.FangJiSubID
+        left join ta on ta.EmpBasicMainID=CM_FangJiSub.EmpBasicMainID
+        where CM_FangJiSub.DrugFlag=1 group by CM_FangJiSub.EmpBasicMainID),
+        td as (select sum(ifnull(WholeMoney,0)) as WesternMoney,
+        CM_FangJiSub.EmpBasicMainID
+        from CM_FangJiDetailSub left join CM_FangJiSub on CM_FangJiSub.FangJiSubID=CM_FangJiDetailSub.FangJiSubID
+        left join ta on ta.EmpBasicMainID=CM_FangJiSub.EmpBasicMainID
+        where CM_FangJiSub.DrugFlag=2 group by CM_FangJiSub.EmpBasicMainID) ,
+        te as (select sum(ifnull(Price,0)) as InspectionMoney,CM_CheckSub.EmpBasicMainID
+        from CM_CheckSub left join Gy_DetailItem on Gy_DetailItem.DetailItemCode=CM_CheckSub.DetailItemCode
+        where Gy_DetailItem.DetailItemFlag=1 group by CM_CheckSub.EmpBasicMainID),
+        tf as (select sum(ifnull(Price,0)) as CheckMoney,CM_CheckSub.EmpBasicMainID
+        from CM_CheckSub left join Gy_DetailItem on Gy_DetailItem.DetailItemCode=CM_CheckSub.DetailItemCode
+        where Gy_DetailItem.DetailItemFlag=0 group by CM_CheckSub.EmpBasicMainID)
+        select ta.UserCode,ta.UserName,sum(ta.OutpatientCount) as OutpatientCount,sum(tb.HerbalMoney) as HerbalMoney,sum(tc.AcupunctureMoney) as AcupunctureMoney,sum(td.WesternMoney) as WesternMoney,sum(te.InspectionMoney) as InspectionMoney,sum(tf.CheckMoney) as CheckMoney from ta left join tb on ta.EmpBasicMainID=tb.EmpBasicMainID
+        left join tc on ta.EmpBasicMainID=tc.EmpBasicMainID
+        left join td on ta.EmpBasicMainID=td.EmpBasicMainID
+        left join te on ta.EmpBasicMainID=te.EmpBasicMainID
+        left join tf on ta.EmpBasicMainID=tf.EmpBasicMainID
+        where 1=1
+        <if test="userCode != null">
+            and ta.UserCode = #{userCode}
+        </if>
+        group by ta.UserCode,ta.UserName
+    </select>
+
+    <select id="getDeptWorkloadByTime" resultMap="BaseResultMap">
+        SELECT CM_EmpBasicMain.DeptCode,Gy_DeptMent.DeptName,COUNT(CM_EmpBasicMain.RegistrationNum) AS DeptNum,
+        SUM(IFNULL(A.ZMoney,0)) AS SumZMoney,SUM(IFNULL(A.ZJMoney,0)) AS SumZJMoney,SUM(IFNULL(A.WMoney,0)) AS SumWMoney,
+        SUM(IFNULL(A.CheckMoney,0)) AS SumCheckMoney,SUM(IFNULL(A.InspectionMoney,0)) AS SumInspectionMoney,CM_EmpBasicMain.UserCode
+        FROM CM_EmpBasicMain
+        LEFT OUTER JOIN Gy_DeptMent ON Gy_DeptMent.DeptCode=CM_EmpBasicMain.DeptCode
+        LEFT OUTER JOIN ( SELECT EmpBasicMainID,SUM(ZMoney) AS ZMoney,SUM(ZJMoney) AS ZJMoney,SUM(WMoney) AS WMoney,  SUM(CheckMoney) AS CheckMoney,
+        SUM(InspectionMoney) AS InspectionMoney
+        FROM (SELECT CM_FangJiSub.EmpBasicMainID,
+        CASE WHEN DrugFlag=0 THEN IFNULL(WholeMoney,0) ELSE 0 END AS ZMoney,
+        CASE WHEN DrugFlag=1 THEN IFNULL(WholeMoney,0) ELSE 0 END AS ZJMoney,
+        CASE WHEN DrugFlag=2 THEN IFNULL(WholeMoney,0) ELSE 0 END AS WMoney,
+        0 AS CheckMoney,0 AS InspectionMoney
+        FROM CM_FangJiSub LEFT JOIN CM_FangJiDetailSub ON CM_FangJiSub.FangJiSubID=CM_FangJiDetailSub.FangJiSubID
+        UNION ALL
+        SELECT CM_CheckSub.EmpBasicMainID,0 AS ZMoney,0 AS ZJMoney,0 AS WMoney,
+        CASE WHEN Gy_DetailItem.DetailItemFlag=0 THEN IFNULL(Price,0) ELSE 0 END AS CheckMoney,
+        CASE WHEN Gy_DetailItem.DetailItemFlag=1 THEN IFNULL(Price,0) ELSE 0 END AS InspectionMoney
+        FROM CM_CheckSub LEFT OUTER JOIN Gy_DetailItem ON CM_CheckSub.DetailItemCode=Gy_DetailItem.DetailItemCode
+        ) f
+        GROUP BY EmpBasicMainID
+        ) A  ON CM_EmpBasicMain.EmpBasicMainID=A.EmpBasicMainID
+        WHERE 1=1
+        <if test="userCode != null">
+            and CM_EmpBasicMain.UserCode = #{userCode}
+        </if>
+        <if test="beginDate != null">
+            and CM_EmpBasicMain.MakeDate &gt;= #{beginDate}
+        </if>
+        <if test="endDate != null">
+            and CM_EmpBasicMain.MakeDate &lt;= #{endDate}
+        </if>
+        GROUP BY CM_EmpBasicMain.DeptCode,Gy_DeptMent.DeptName,CM_EmpBasicMain.UserCode
+        ORDER BY CM_EmpBasicMain.DeptCode
+    </select>
+</mapper>

@@ -1,0 +1,452 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yyk.sz.zhzy.lzxt.jyjc.mapper.SysFinancialMapper" >
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysFinancial" >
+    <id column="UUID" property="uuid" jdbcType="CHAR" />
+    <result column="EmpBasicMainID" property="empbasicmainid" jdbcType="INTEGER" />
+    <result column="PayItemCode" property="payitemcode" jdbcType="VARCHAR" />
+    <result column="PayItem" property="payitem" jdbcType="INTEGER" />
+    <result column="PayType" property="paytype" jdbcType="INTEGER" />
+    <result column="TotalMoney" property="totalmoney" jdbcType="DECIMAL" />
+    <result column="PayStatus" property="paystatus" jdbcType="INTEGER" />
+    <result column="SysCreateDate" property="syscreatedate" jdbcType="TIMESTAMP" />
+    <result column="SysCreateBy" property="syscreateby" jdbcType="VARCHAR" />
+    <result column="SysUpdateDate" property="sysupdatedate" jdbcType="TIMESTAMP" />
+    <result column="SysUpdateBy" property="sysupdateby" jdbcType="VARCHAR" />
+    <result column="VersionNum" property="versionnum" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    UUID, EmpBasicMainID, PayItemCode, PayItem, PayType, TotalMoney, PayStatus, SysCreateDate, 
+    SysCreateBy, SysUpdateDate, SysUpdateBy, VersionNum
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_financial
+    where UUID = #{uuid,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_financial
+    where UUID = #{uuid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysFinancial" >
+    insert into sys_financial (EmpBasicMainID, PayItemCode,
+      PayItem, PayType, TotalMoney, PayStatus
+      )
+    values (#{empbasicmainid,jdbcType=INTEGER}, #{payitemcode,jdbcType=VARCHAR},
+      #{payitem,jdbcType=INTEGER}, #{paytype,jdbcType=INTEGER}, #{totalmoney,jdbcType=DECIMAL}, 
+      #{paystatus,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysFinancial" >
+    insert into sys_financial
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uuid != null" >
+        UUID,
+      </if>
+      <if test="empbasicmainid != null" >
+        EmpBasicMainID,
+      </if>
+      <if test="payitemcode != null" >
+        PayItemCode,
+      </if>
+      <if test="payitem != null" >
+        PayItem,
+      </if>
+      <if test="paytype != null" >
+        PayType,
+      </if>
+      <if test="totalmoney != null" >
+        TotalMoney,
+      </if>
+      <if test="paystatus != null" >
+        PayStatus,
+      </if>
+      <if test="syscreatedate != null" >
+        SysCreateDate,
+      </if>
+      <if test="syscreateby != null" >
+        SysCreateBy,
+      </if>
+      <if test="sysupdatedate != null" >
+        SysUpdateDate,
+      </if>
+      <if test="sysupdateby != null" >
+        SysUpdateBy,
+      </if>
+      <if test="versionnum != null" >
+        VersionNum,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uuid != null" >
+        #{uuid,jdbcType=CHAR},
+      </if>
+      <if test="empbasicmainid != null" >
+        #{empbasicmainid,jdbcType=INTEGER},
+      </if>
+      <if test="payitemcode != null" >
+        #{payitemcode,jdbcType=VARCHAR},
+      </if>
+      <if test="payitem != null" >
+        #{payitem,jdbcType=INTEGER},
+      </if>
+      <if test="paytype != null" >
+        #{paytype,jdbcType=INTEGER},
+      </if>
+      <if test="totalmoney != null" >
+        #{totalmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="paystatus != null" >
+        #{paystatus,jdbcType=INTEGER},
+      </if>
+      <if test="syscreatedate != null" >
+        #{syscreatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="syscreateby != null" >
+        #{syscreateby,jdbcType=VARCHAR},
+      </if>
+      <if test="sysupdatedate != null" >
+        #{sysupdatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysupdateby != null" >
+        #{sysupdateby,jdbcType=VARCHAR},
+      </if>
+      <if test="versionnum != null" >
+        #{versionnum,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysFinancial" >
+    update sys_financial
+    <set >
+      <if test="empbasicmainid != null" >
+        EmpBasicMainID = #{empbasicmainid,jdbcType=INTEGER},
+      </if>
+      <if test="payitemcode != null" >
+        PayItemCode = #{payitemcode,jdbcType=VARCHAR},
+      </if>
+      <if test="payitem != null" >
+        PayItem = #{payitem,jdbcType=INTEGER},
+      </if>
+      <if test="paytype != null" >
+        PayType = #{paytype,jdbcType=INTEGER},
+      </if>
+      <if test="totalmoney != null" >
+        TotalMoney = #{totalmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="paystatus != null" >
+        PayStatus = #{paystatus,jdbcType=INTEGER},
+      </if>
+      <if test="syscreatedate != null" >
+        SysCreateDate = #{syscreatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="syscreateby != null" >
+        SysCreateBy = #{syscreateby,jdbcType=VARCHAR},
+      </if>
+      <if test="sysupdatedate != null" >
+        SysUpdateDate = #{sysupdatedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="sysupdateby != null" >
+        SysUpdateBy = #{sysupdateby,jdbcType=VARCHAR},
+      </if>
+      <if test="versionnum != null" >
+        VersionNum = #{versionnum,jdbcType=INTEGER},
+      </if>
+    </set>
+    where UUID = #{uuid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysFinancial" >
+    update sys_financial
+    set EmpBasicMainID = #{empbasicmainid,jdbcType=INTEGER},
+      PayItemCode = #{payitemcode,jdbcType=VARCHAR},
+      PayItem = #{payitem,jdbcType=INTEGER},
+      PayType = #{paytype,jdbcType=INTEGER},
+      TotalMoney = #{totalmoney,jdbcType=DECIMAL},
+      PayStatus = #{paystatus,jdbcType=INTEGER},
+      SysCreateDate = #{syscreatedate,jdbcType=TIMESTAMP},
+      SysCreateBy = #{syscreateby,jdbcType=VARCHAR},
+      SysUpdateDate = #{sysupdatedate,jdbcType=TIMESTAMP},
+      SysUpdateBy = #{sysupdateby,jdbcType=VARCHAR},
+      VersionNum = #{versionnum,jdbcType=INTEGER}
+    where UUID = #{uuid,jdbcType=CHAR}
+  </update>
+
+  <delete id="delFinancial" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysFinancial">
+        DELETE
+        FROM
+            sys_financial
+        WHERE
+            EmpBasicMainID = #{empbasicmainid}
+        AND PayItem = #{payitem}
+  </delete>
+
+  <select id="getAllList" resultMap="BaseResultMap" >
+    SELECT DISTINCT
+        a.EmpBasicMainID,
+        b.RegistrationNum,
+        b.MecidalNum,
+        b.EmName,
+        b.MakeDate,
+        b.UserName,
+        b.DeptName
+    FROM
+        sys_financial a
+    LEFT JOIN CM_EmpBasicMain b ON a.EmpBasicMainID = b.EmpBasicMainID
+    WHERE 1=1
+    <if test="searchText != null">
+      and (
+      b.MecidalNum like #{searchText} or
+      b.EmName like #{searchText} or
+      b.RegistrationNum like #{searchText} or
+      b.UserName like #{searchText}
+      )
+    </if>
+    <if test="sortName != null">
+      order by ${sortName} ${sortOrder}
+    </if>
+  </select>
+
+<!--部分付款-->
+  <select id="getBFFKList" resultMap="BaseResultMap" >
+    SELECT
+        a.EmpBasicMainID,
+        m.RegistrationNum,
+        m.MecidalNum,
+        m.EmName,
+        m.MakeDate,
+        m.UserName,
+        m.DeptName,
+        '部分缴费' paystatusstr
+    FROM
+        sys_financial a
+    LEFT JOIN CM_EmpBasicMain m ON a.EmpBasicMainID = m.EmpBasicMainID
+    WHERE
+        EXISTS (
+            SELECT
+                *
+            FROM
+                sys_financial b
+            WHERE
+                b.EmpBasicMainID = a.EmpBasicMainID
+            AND b.paystatus = '1'
+        )
+    AND EXISTS (
+        SELECT
+            *
+        FROM
+            sys_financial c
+        WHERE
+            c.EmpBasicMainID = a.EmpBasicMainID
+        AND c.paystatus = '0'
+    )
+    <if test="searchText != null">
+      AND (
+        m.MecidalNum like #{searchText} or
+        m.EmName like #{searchText} or
+        m.RegistrationNum like #{searchText} or
+        m.UserName like #{searchText}
+      )
+    </if>
+    GROUP BY
+        a.EmpBasicMainID
+    <if test="sortName != null">
+      ORDER BY ${sortName} ${sortOrder}
+    </if>
+  </select>
+
+  <!--未付款-->
+  <select id="getWFKList" resultMap="BaseResultMap" >
+    SELECT
+        a.EmpBasicMainID,
+        m.RegistrationNum,
+        m.MecidalNum,
+        m.EmName,
+        m.MakeDate,
+        m.UserName,
+        m.DeptName,
+      '未缴费' paystatusstr
+    FROM
+        sys_financial a
+    LEFT JOIN CM_EmpBasicMain m ON a.EmpBasicMainID = m.EmpBasicMainID
+    WHERE
+        a.PayStatus = '0'
+    AND a.EmpBasicMainID NOT IN (
+        SELECT
+            a.EmpBasicMainID
+        FROM
+            sys_financial a
+        WHERE
+            EXISTS (
+                SELECT
+                    *
+                FROM
+                    sys_financial b
+                WHERE
+                    b.EmpBasicMainID = a.EmpBasicMainID
+                AND b.PayStatus = '1'
+            )
+        AND EXISTS (
+            SELECT
+                *
+            FROM
+                sys_financial c
+            WHERE
+                c.EmpBasicMainID = a.EmpBasicMainID
+            AND c.PayStatus = '0'
+        )
+        GROUP BY
+            a.EmpBasicMainID
+    )
+    <if test="searchText != null">
+      AND (
+        m.MecidalNum like #{searchText} or
+        m.EmName like #{searchText} or
+        m.RegistrationNum like #{searchText} or
+        m.UserName like #{searchText}
+      )
+    </if>
+    GROUP BY
+        a.EmpBasicMainID
+    <if test="sortName != null">
+      ORDER BY ${sortName} ${sortOrder}
+    </if>
+  </select>
+
+  <!--已付款-->
+  <select id="getYFKList" resultMap="BaseResultMap" >
+    SELECT
+        a.EmpBasicMainID,
+        m.RegistrationNum,
+        m.MecidalNum,
+        m.EmName,
+        m.MakeDate,
+        m.UserName,
+        m.DeptName,
+      '已缴费' paystatusstr
+    FROM
+        sys_financial a
+    LEFT JOIN CM_EmpBasicMain m ON a.EmpBasicMainID = m.EmpBasicMainID
+    WHERE
+        a.PayStatus = '1'
+    AND a.EmpBasicMainID NOT IN (
+        SELECT
+            a.EmpBasicMainID
+        FROM
+            sys_financial a
+        WHERE
+            EXISTS (
+                SELECT
+                    *
+                FROM
+                    sys_financial b
+                WHERE
+                    b.EmpBasicMainID = a.EmpBasicMainID
+                AND b.PayStatus = '1'
+            )
+        AND EXISTS (
+            SELECT
+                *
+            FROM
+                sys_financial c
+            WHERE
+                c.EmpBasicMainID = a.EmpBasicMainID
+            AND c.PayStatus = '0'
+        )
+        GROUP BY
+            a.EmpBasicMainID
+    )
+    <if test="searchText != null">
+      AND (
+        m.MecidalNum like #{searchText} or
+        m.EmName like #{searchText} or
+        m.RegistrationNum like #{searchText} or
+        m.UserName like #{searchText}
+      )
+    </if>
+    GROUP BY
+        a.EmpBasicMainID
+    <if test="sortName != null">
+      ORDER BY ${sortName} ${sortOrder}
+    </if>
+  </select>
+
+
+  <select id="selectPayStatus" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    SELECT
+	    PayStatus
+    FROM
+        sys_financial
+    WHERE
+        EmpBasicMainID = #{empbasicmainid}
+    GROUP BY
+        PayStatus
+  </select>
+
+  <select id="getItemList" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select
+    <include refid="Base_Column_List" />
+    from sys_financial
+    where EmpBasicMainID = #{empbasicmainid}
+  </select>
+
+  <update id="updatePayStatus" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysFinancial" >
+    update sys_financial
+    <set >
+      <if test="empbasicmainid != null" >
+        EmpBasicMainID = #{empbasicmainid,jdbcType=INTEGER},
+      </if>
+      <if test="payitemcode != null" >
+        PayItemCode = #{payitemcode,jdbcType=VARCHAR},
+      </if>
+      <if test="payitem != null" >
+        PayItem = #{payitem,jdbcType=INTEGER},
+      </if>
+      <if test="paytype != null" >
+        PayType = #{paytype,jdbcType=INTEGER},
+      </if>
+      <if test="totalmoney != null" >
+        TotalMoney = #{totalmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="paystatus != null" >
+        PayStatus = #{paystatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where EmpBasicMainID = #{empbasicmainid}
+    and PayItem = #{payitem}
+  </update>
+
+  <update id="updatePayStatusAll" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysFinancial" >
+    update sys_financial
+    <set >
+      <if test="empbasicmainid != null" >
+        EmpBasicMainID = #{empbasicmainid,jdbcType=INTEGER},
+      </if>
+      <if test="payitemcode != null" >
+        PayItemCode = #{payitemcode,jdbcType=VARCHAR},
+      </if>
+      <if test="payitem != null" >
+        PayItem = #{payitem,jdbcType=INTEGER},
+      </if>
+      <if test="paytype != null" >
+        PayType = #{paytype,jdbcType=INTEGER},
+      </if>
+      <if test="totalmoney != null" >
+        TotalMoney = #{totalmoney,jdbcType=DECIMAL},
+      </if>
+      <if test="paystatus != null" >
+        PayStatus = #{paystatus,jdbcType=INTEGER},
+      </if>
+    </set>
+    where EmpBasicMainID = #{empbasicmainid}
+  </update>
+
+  <select id="selectRatio" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    SELECT
+	*
+    FROM
+        Gy_MecidalType
+    WHERE CheckFlag = 1
+    AND MecidalTypeCode = #{paytype,jdbcType=INTEGER}
+  </select>
+</mapper>

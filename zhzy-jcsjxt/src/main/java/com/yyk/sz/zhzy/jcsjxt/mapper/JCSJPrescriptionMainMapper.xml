@@ -1,0 +1,305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJPrescriptionMainMapper">
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJPrescriptionMain">
+      <id column="PrescriptionCode" property="prescriptioncode" javaType="java.lang.String" jdbcType="INTEGER" />
+      <result column="UUID" property="uuid" javaType="java.lang.String" jdbcType="CHAR" />
+      <result column="PrescriptionName" property="prescriptionname" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="PinYinCode" property="pinyincode" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="Effect" property="effect" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="Attend" property="attend" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="Calcite" property="calcite" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="Source" property="source" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="SysFlag" property="sysflag" javaType="java.lang.String" jdbcType="BIT" />
+      <result column="JRate" property="jrate" javaType="java.lang.String" jdbcType="DECIMAL" />
+      <result column="CRate" property="crate" javaType="java.lang.String" jdbcType="DECIMAL" />
+      <result column="ZRate" property="zrate" javaType="java.lang.String" jdbcType="DECIMAL" />
+      <result column="SRate" property="srate" javaType="java.lang.String" jdbcType="DECIMAL" />
+      <result column="Remark" property="remark" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="Maker" property="maker" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="MakeDate" property="makedate" javaType="java.lang.String" jdbcType="TIMESTAMP" />
+      <result column="DrugFlag" property="drugflag" javaType="java.lang.String" jdbcType="INTEGER" />
+      <result column="PCCode" property="pccode" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="EmpBasicMainID" property="empbasicmainid" javaType="java.lang.String" jdbcType="INTEGER" />
+      <result column="PersonalFlag" property="personalflag" javaType="java.lang.String" jdbcType="BIT" />
+      <result column="ZJPrescriptionCode" property="zjprescriptioncode" javaType="java.lang.String" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getPrescriptionMainTable" resultMap="BaseResultMap">
+    select Gy_PrescriptionMain.PrescriptionCode,Gy_PrescriptionMain.PrescriptionName,Gy_PrescriptionMain.PinYinCode,
+    Gy_PrescriptionMain.Effect,Gy_PrescriptionMain.Attend,Gy_PrescriptionMain.Calcite,Gy_PrescriptionMain.Source,
+    case when Gy_PrescriptionMain.SysFlag=0 then '系统' when Gy_PrescriptionMain.SysFlag=1 then '用户' end as SysFlag ,Gy_PrescriptionMain.JRate,Gy_PrescriptionMain.CRate,Gy_PrescriptionMain.ZRate,Gy_PrescriptionMain.SRate,
+    Gy_PrescriptionMain.Remark,Gy_PrescriptionMain.MakeDate,IFNULL(Gy_User.UserName,'超级用户') as MakeName
+    from Gy_PrescriptionMain left join Gy_User on Gy_User.UserCode=Gy_PrescriptionMain.Maker where 1=1
+    and DrugFlag=0
+    <if test="searchText != null">
+      and (
+      Gy_PrescriptionMain.PrescriptionCode like #{searchText} or
+      Gy_PrescriptionMain.PrescriptionName like #{searchText} or
+      Gy_PrescriptionMain.PinYinCode like #{searchText}
+      )
+    </if>
+    order by Gy_PrescriptionMain.PrescriptionCode desc
+  </select>
+
+  <select id="getPrescriptionZJTable" resultMap="BaseResultMap">
+    SELECT PrescriptionCode,PrescriptionName,PinYinCode,Effect,Attend,Calcite,Source,
+    Gy_PrescriptionMain.Remark,SysFlag,MakeDate,Gy_User.UserName
+    FROM Gy_PrescriptionMain
+    left join Gy_User on Gy_User.UserCode=Gy_PrescriptionMain.Maker
+    where DrugFlag=1
+    <if test="searchText != null">
+      and (
+      PrescriptionCode like #{searchText} or
+      PrescriptionName like #{searchText} or
+      PinYinCode like #{searchText}
+      )
+    </if>
+    order by PrescriptionCode desc
+  </select>
+
+  <delete id="deletePrescriptionMain" parameterType="java.lang.String">
+    delete from Gy_PrescriptionMain where DrugFlag=0
+     and PrescriptionCode = #{prescriptioncode,jdbcType=INTEGER}
+  </delete>
+  <delete id="deletePrescriptionSub" parameterType="java.lang.String">
+    delete from Gy_PrescriptionSub where PrescriptionCode = #{prescriptioncode,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insertPrescriptionMain" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJPrescriptionMain">
+    insert into Gy_PrescriptionMain
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="prescriptioncode != null">
+        PrescriptionCode,
+      </if>
+      <if test="prescriptionname != null">
+        PrescriptionName,
+      </if>
+      <if test="pinyincode != null">
+        PinYinCode,
+      </if>
+      <if test="effect != null">
+        Effect,
+      </if>
+      <if test="attend != null">
+        Attend,
+      </if>
+      <if test="calcite != null">
+        Calcite,
+      </if>
+      <if test="source != null">
+        Source,
+      </if>
+      <if test="sysflag != null">
+        SysFlag,
+      </if>
+      <if test="jrate != null">
+        JRate,
+      </if>
+      <if test="crate != null">
+        CRate,
+      </if>
+      <if test="zrate != null">
+        ZRate,
+      </if>
+      <if test="srate != null">
+        SRate,
+      </if>
+      <if test="remark != null">
+        Remark,
+      </if>
+      <if test="maker != null">
+        Maker,
+      </if>
+      <if test="makedate != null">
+        MakeDate,
+      </if>
+      <if test="drugflag != null">
+        DrugFlag,
+      </if>
+      <if test="pccode != null">
+        PCCode,
+      </if>
+      <if test="empbasicmainid != null">
+        EmpBasicMainID,
+      </if>
+      <if test="personalflag != null">
+        PersonalFlag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="prescriptioncode != null">
+        #{prescriptioncode,jdbcType=INTEGER},
+      </if>
+      <if test="prescriptionname != null">
+        #{prescriptionname,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null">
+        #{pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="effect != null">
+        #{effect,jdbcType=VARCHAR},
+      </if>
+      <if test="attend != null">
+        #{attend,jdbcType=VARCHAR},
+      </if>
+      <if test="calcite != null">
+        #{calcite,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null">
+        #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="sysflag != null">
+        #{sysflag,jdbcType=BIT},
+      </if>
+      <if test="jrate != null">
+        #{jrate,jdbcType=DECIMAL},
+      </if>
+      <if test="crate != null">
+        #{crate,jdbcType=DECIMAL},
+      </if>
+      <if test="zrate != null">
+        #{zrate,jdbcType=DECIMAL},
+      </if>
+      <if test="srate != null">
+        #{srate,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="maker != null">
+        #{maker,jdbcType=VARCHAR},
+      </if>
+      <if test="makedate != null">
+        #{makedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="drugflag != null">
+        #{drugflag,jdbcType=INTEGER},
+      </if>
+      <if test="pccode != null">
+        #{pccode,jdbcType=VARCHAR},
+      </if>
+      <if test="empbasicmainid != null">
+        #{empbasicmainid,jdbcType=INTEGER},
+      </if>
+      <if test="personalflag != null">
+        #{personalflag,jdbcType=BIT},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updatePrescriptionMain" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJPrescriptionMain">
+    update Gy_PrescriptionMain
+    <set>
+      <if test="prescriptionname != null">
+        PrescriptionName = #{prescriptionname,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null">
+        PinYinCode = #{pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="effect != null">
+        Effect = #{effect,jdbcType=VARCHAR},
+      </if>
+      <if test="attend != null">
+        Attend = #{attend,jdbcType=VARCHAR},
+      </if>
+      <if test="calcite != null">
+        Calcite = #{calcite,jdbcType=VARCHAR},
+      </if>
+      <if test="source != null">
+        Source = #{source,jdbcType=VARCHAR},
+      </if>
+      <if test="sysflag != null">
+        SysFlag = #{sysflag,jdbcType=BIT},
+      </if>
+      <if test="jrate != null">
+        JRate = #{jrate,jdbcType=DECIMAL},
+      </if>
+      <if test="crate != null">
+        CRate = #{crate,jdbcType=DECIMAL},
+      </if>
+      <if test="zrate != null">
+        ZRate = #{zrate,jdbcType=DECIMAL},
+      </if>
+      <if test="srate != null">
+        SRate = #{srate,jdbcType=DECIMAL},
+      </if>
+      <if test="remark != null">
+        Remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="maker != null">
+        Maker = #{maker,jdbcType=VARCHAR},
+      </if>
+      <if test="makedate != null">
+        MakeDate = #{makedate,jdbcType=TIMESTAMP},
+      </if>
+      <if test="pccode != null">
+        PCCode = #{pccode,jdbcType=VARCHAR},
+      </if>
+      <if test="empbasicmainid != null">
+        EmpBasicMainID = #{empbasicmainid,jdbcType=INTEGER},
+      </if>
+      <if test="personalflag != null">
+        PersonalFlag = #{personalflag,jdbcType=BIT},
+      </if>
+    </set>
+    where DrugFlag=1 and PrescriptionCode = #{prescriptioncode,jdbcType=INTEGER}
+  </update>
+
+  <select id="GetCMedicinePrescription" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select PrescriptionCode from Gy_CMedicinePrescription where 1=1
+    <if test="prescriptioncode != null" >
+      and PrescriptionCode = #{prescriptioncode}
+    </if>
+  </select>
+
+  <select id="checkPrescriptionMainExits" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select PrescriptionCode,PrescriptionName from Gy_PrescriptionMain where DrugFlag=0
+    <if test="prescriptioncode != null" >
+      and PrescriptionCode = #{prescriptioncode}
+    </if>
+    <if test="prescriptionname != null" >
+      and PrescriptionName = #{prescriptionname}
+    </if>
+  </select>
+
+  <select id="GetPrescriptionMedicine" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select Gy_PrescriptionMain.*,Gy_User.UserName from Gy_PrescriptionMain
+    left join Gy_User on Gy_PrescriptionMain.Maker = Gy_User.UserCode
+    where DrugFlag=0
+    <if test="prescriptioncode != null" >
+      and PrescriptionCode = #{prescriptioncode}
+    </if>
+  </select>
+
+  <select id="GetMaxPrescriptionCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select max(PrescriptionCode) PrescriptionCode from Gy_PrescriptionMain
+  </select>
+
+  <select id="CheckZJPreIsUsedOrNot" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select ZJPrescriptionCode from Gy_CureDialectical where ZJPrescriptionCode=#{prescriptioncode}
+  </select>
+
+  <select id="getBillCode" statementType="CALLABLE" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJPrescriptionMain">
+        <![CDATA[
+
+            {
+              call gy_sp_getidcode_test(
+                                  #{billCode,jdbcType=VARCHAR,mode=IN},
+                                  #{dateString,jdbcType=VARCHAR,mode=IN},
+                                  #{itemCode,jdbcType=VARCHAR,mode=IN},
+                                  #{option,jdbcType=INTEGER,mode=IN},
+                                  #{voucherCode,jdbcType=VARCHAR,mode=IN},
+                                  #{proUUID,jdbcType=VARCHAR,mode=IN})
+
+            }
+
+        ]]>
+    </select>
+
+  <select id="getBillCodeRst" resultType="com.yyk.sz.zhzy.jcsjxt.entity.GetBillCodeRst">
+       select *
+       from T_GetIdCodeRst
+       where UUID = #{proUUID}
+    </select>
+</mapper>

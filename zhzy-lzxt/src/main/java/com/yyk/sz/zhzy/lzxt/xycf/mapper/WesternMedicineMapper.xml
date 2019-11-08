@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.lzxt.xycf.mapper.WesternMedicineMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.xycf.entity.WesternMedicine">
+        <result column="DrugCode" property="DrugCode" jdbcType="VARCHAR"/>
+        <result column="DrugName" property="DrugName" jdbcType="VARCHAR"/>
+        <result column="PackageUnits" property="PackageUnits" jdbcType="VARCHAR"/>
+        <result column="SingleMeasure" property="SingleMeasure" jdbcType="VARCHAR"/>
+        <result column="SingleMeasureUnit" property="SingleMeasureUnit" jdbcType="VARCHAR"/>
+        <result column="SingleMeasureUnitName" property="SingleMeasureUnitName" jdbcType="VARCHAR"/>
+        <result column="DrugWayCode" property="DrugWayCode" jdbcType="VARCHAR"/>
+        <result column="TotalAmountUnitName" property="TotalAmountUnitName" jdbcType="VARCHAR"/>
+        <result column="PrescriptionUnit" property="PrescriptionUnit" jdbcType="VARCHAR"/>
+        <result column="PrescriptionUnitName" property="PrescriptionUnitName" jdbcType="VARCHAR"/>
+        <result column="LPrice" property="LPrice" jdbcType="VARCHAR"/>
+        <result column="Coefficient" property="Coefficient" jdbcType="VARCHAR"/>
+        <result column="UseDays" property="UseDays" jdbcType="VARCHAR"/>
+        <result column="MeasurementCoefficient" property="MeasurementCoefficient" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getWesternMedicine" resultMap="BaseResultMap">
+    select * from CM_V_DrugByDrugCode where 1=1
+        <if test="searchText != null">
+            and (
+            DrugCode like #{searchText} or
+            DrugName like #{searchText}
+            )
+        </if>
+</select>
+
+</mapper>

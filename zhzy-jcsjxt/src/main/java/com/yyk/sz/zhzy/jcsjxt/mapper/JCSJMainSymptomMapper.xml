@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJMainSymptomMapper">
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJMainSymptom">
+      <id column="MainSymptomCode" property="mainsymptomcode" javaType="java.lang.String" jdbcType="INTEGER" />
+      <result column="UUID" property="uuid" javaType="java.lang.String" jdbcType="CHAR" />
+      <result column="MainSymptomName" property="mainsymptomname" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="PinYinCode" property="pinyincode" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="MainSymptomTypeCode" property="mainsymptomtypecode" javaType="java.lang.String" jdbcType="INTEGER" />
+      <result column="ChineseMedicineCode" property="chinesemedicinecode" javaType="java.lang.String" jdbcType="VARCHAR" />
+  </resultMap>
+
+  <select id="getMainSymptomTable" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select Gy_MainSymptom.MainSymptomCode,Gy_MainSymptom.MainSymptomName,
+    Gy_MainSymptom.PinYinCode,Gy_MainSymptom.MainSymptomTypeCode,Gy_MainSymptomType.MainSymptomTypeName,Gy_MainSymptom.ChineseMedicineCode,
+    Gy_ChineseMedicine.ChineseMedicineName
+    from Gy_MainSymptom left join Gy_MainSymptomType on Gy_MainSymptomType.MainSymptomTypeCode = Gy_MainSymptom.MainSymptomTypeCode
+    left join Gy_ChineseMedicine on Gy_ChineseMedicine.ChineseMedicineCode=Gy_MainSymptom.ChineseMedicineCode
+    where 1=1
+    <if test="searchText != null">
+      and (
+      Gy_MainSymptom.MainSymptomCode like #{searchText} or
+      Gy_MainSymptom.PinYinCode like #{searchText} or
+      Gy_MainSymptomType.MainSymptomTypeName like #{searchText}
+      )
+    </if>
+    order by Gy_MainSymptom.MainSymptomCode
+  </select>
+  <delete id="deleteMainSymptom" parameterType="java.lang.String">
+    delete from ${strtable}
+    where MainSymptomCode = #{mainsymptomcode}
+  </delete>
+
+  <insert id="insertMainSymptomAll" parameterType="java.lang.String">
+    INSERT INTO ${strtable} (MainSymptomCode,${cloum})
+    values (#{mainsymptomcode},#{code})
+  </insert>
+
+  <insert id="insertMainSymptom" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJMainSymptom">
+    insert into Gy_MainSymptom
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="mainsymptomcode != null">
+        MainSymptomCode,
+      </if>
+      <if test="mainsymptomname != null">
+        MainSymptomName,
+      </if>
+      <if test="pinyincode != null">
+        PinYinCode,
+      </if>
+      <if test="mainsymptomtypecode != null">
+        MainSymptomTypeCode,
+      </if>
+      <if test="chinesemedicinecode != null">
+        ChineseMedicineCode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="mainsymptomcode != null">
+        #{mainsymptomcode,jdbcType=INTEGER},
+      </if>
+      <if test="mainsymptomname != null">
+        #{mainsymptomname,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode != null">
+        #{pinyincode,jdbcType=VARCHAR},
+      </if>
+      <if test="mainsymptomtypecode != null">
+        #{mainsymptomtypecode,jdbcType=INTEGER},
+      </if>
+      <if test="chinesemedicinecode != null">
+        #{chinesemedicinecode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateMainSymptom" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJMainSymptom">
+    update Gy_MainSymptom
+    <set>
+      <if test="mainsymptomname2 != null">
+        MainSymptomName = #{mainsymptomname2,jdbcType=VARCHAR},
+      </if>
+      <if test="pinyincode2 != null">
+        PinYinCode = #{pinyincode2,jdbcType=VARCHAR},
+      </if>
+      <if test="mainsymptomtypecode2 != null">
+        MainSymptomTypeCode = #{mainsymptomtypecode2,jdbcType=INTEGER},
+      </if>
+      <if test="chinesemedicinecode2 != null">
+        ChineseMedicineCode = #{chinesemedicinecode2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where MainSymptomCode = #{mainsymptomcode,jdbcType=INTEGER}
+  </update>
+
+  <select id="GetMainSymptomDeptRelation" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select MainSymptomCode from  Gy_SymptomOrDosage
+    where MainSymptomCode = #{mainsymptomcode}
+  </select>
+
+  <select id="GetMainSymptomDiseaseRelation" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select MainSymptomCode from  Gy_MainSymptomDisease
+    where MainSymptomCode = #{mainsymptomcode}
+  </select>
+
+  <select id="GetCureDialecticalByMainSymptomCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select MainSymptomCode from  Gy_CureDialectical
+    where MainSymptomCode = #{mainsymptomcode}
+  </select>
+
+  <select id="GetSingleMainSymptomByMainSymptomCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select MainSymptomCode from Gy_MainSymptom
+    where MainSymptomCode = #{mainsymptomcode}
+  </select>
+
+  <select id="GetMainSymptomByMainSymptomNameAndMainSymptomTypeCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+   select * from Gy_MainSymptom where MainSymptomTypeCode = #{mainsymptomtypecode}
+  </select>
+
+  <select id="GetMainSymptomByMainSymptomCode" parameterType="java.lang.String" resultMap="BaseResultMap">
+   select * from Gy_MainSymptom where MainSymptomCode = #{mainsymptomcode}
+  </select>
+
+</mapper>

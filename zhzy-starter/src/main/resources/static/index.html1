@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>
+            智慧中医后端
+        </title>
+    </head>
+    <body>
+        <a href="lz-bzlz.html">临症-辩证论治</a><br/>
+        <a href="lz-zxzf.html">临症-症型治法</a><br/>
+        <a href="lz-zjkf.html">临症-直接开房测试页</a><br/>
+        <a href="lz-lzjg.html">论治结果</a><br/>
+    </body>
+</html>

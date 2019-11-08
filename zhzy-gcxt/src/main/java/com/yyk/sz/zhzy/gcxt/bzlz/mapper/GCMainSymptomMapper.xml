@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.gcxt.bzlz.mapper.GCMainSymptomMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.gcxt.bzlz.entity.GCMainSymptom">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="MainSymptomCode" property="MainSymptomCode" jdbcType="VARCHAR"/>
+        <result column="MainSymptomName" property="MainSymptomName" jdbcType="VARCHAR"/>
+        <result column="PinYinCode" property="PinYinCode" jdbcType="VARCHAR"/>
+        <result column="MainSymptomTypeName" property="MainSymptomTypeName" jdbcType="VARCHAR"/>
+        <result column="Soue" property="Soue" jdbcType="VARCHAR"/>
+        <result column="DeptCode" property="DeptCode" jdbcType="VARCHAR"/>
+        <result column="createBy" property="createBy" jdbcType="VARCHAR"/>
+        <result column="createDate" property="createDate" jdbcType="DATE"/>
+        <result column="updateBy" property="updateBy" jdbcType="VARCHAR"/>
+        <result column="updateDate" property="updateDate" jdbcType="DATE"/>
+        <result column="versionNum" property="versionNum" jdbcType="INTEGER"/>
+        <result column="delFlag" property="delFlag" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id,MainSymptomCode,MainSymptomName,PinYinCode,MainSymptomTypeName,Soue,DeptCode,createBy,createDate,updateBy,updateDate,versionNum,delFlag
+    </sql>
+
+    <select id="getSelectMainSymptomByCode" resultMap="BaseResultMap">
+        select distinct Gy_DialectcalWesternMedicine.MainSymptomCode,
+        AA.MainSymptomName,AA.PinYinCode,AA.MainSymptomTypeName,AA.Soue,AA.DeptCode from Gy_DialectcalWesternMedicine
+        left join (select distinct Gy_MainSymptom.MainSymptomCode,Gy_MainSymptom.MainSymptomName,Gy_MainSymptom.PinYinCode,Gy_MainSymptomType.MainSymptomTypeName,
+        IFNULL(CM_MaxMainSymptom.Soue,0) as Soue,IFNULL(Gy_SymptomOrDosage.DeptCode,'') as DeptCode  from Gy_MainSymptom left join
+        Gy_SymptomOrDosage on Gy_SymptomOrDosage.MainSymptomCode=Gy_MainSymptom.MainSymptomCode and Gy_SymptomOrDosage.DeptCode=#{deptCode}  left join
+        Gy_MainSymptomType on Gy_MainSymptomType.MainSymptomTypeCode=Gy_MainSymptom.MainSymptomTypeCode left join
+        CM_MaxMainSymptom on CM_MaxMainSymptom.MainSymptomCode=Gy_MainSymptom.MainSymptomCode and CM_MaxMainSymptom.UserCode=#{userCode} ) AA
+        on Gy_DialectcalWesternMedicine.MainSymptomCode=AA.MainSymptomCode where Gy_DialectcalWesternMedicine.WesternMedicineCode=#{westernMedicineCode}
+        <if test="searchText != null">
+            and AA.PinYinCode like '%${searchText}%'
+        </if>
+        order by AA.Soue DESC,AA.DeptCode DESC
+    </select>
+
+</mapper>

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.lzxt.jyjc.mapper.CheckItemMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.jyjc.entity.CheckItem">
+        <id column="DetailItemFlag" property="detailItemFlag" jdbcType="INTEGER"/>
+        <result column="EmpBasicMainID" property="empBasicMainID" jdbcType="INTEGER"/>
+        <result column="SummaryCode" property="summaryCode" jdbcType="VARCHAR"/>
+        <result column="SummaryName" property="summaryName" jdbcType="VARCHAR"/>
+        <result column="PinYinCode" property="pinYinCode" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getCheckItemList" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+            SummaryCode,
+            SummaryName,
+            PinYinCode,
+            HISCode,
+            DetailItemFlag,
+            Remark
+        FROM
+            Gy_SummaryItem
+        <where>
+            <if test="detailItemFlag != null">
+               AND DetailItemFlag = #{detailItemFlag}
+            </if>
+        </where>
+    </select>
+
+    <select id="getCheckItemDetailList" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+            Gy_DetailItem.DetailItemCode,
+            Gy_DetailItem.DetailItemName,
+            Gy_DetailItem.PinYinCode,
+            Gy_DetailItem.SummaryCode,
+            Gy_SummaryItem.SummaryName,
+            AA.LPrice AS Price
+        FROM
+            Gy_DetailItem
+        LEFT JOIN (
+            SELECT
+                Gy_DetailItemSub.DetailItemCode,
+                SUM(
+                    IFNULL(
+                        Gy_MedicalCare.SinglePrice,
+                        0
+                    ) * Gy_DetailItemSub.Number
+                ) AS LPrice
+            FROM
+                Gy_DetailItemSub
+            INNER JOIN Gy_MedicalCare ON Gy_MedicalCare.MedicalCareCode = Gy_DetailItemSub.MedicalCareCode
+            GROUP BY
+                Gy_DetailItemSub.DetailItemCode
+        ) AA ON AA.DetailItemCode = Gy_DetailItem.DetailItemCode
+        LEFT JOIN Gy_SummaryItem ON Gy_DetailItem.SummaryCode = Gy_SummaryItem.SummaryCode
+        <where>
+            <if test="summaryCode != null">
+                AND Gy_DetailItem.SummaryCode = #{summaryCode}
+            </if>
+        </where>
+    </select>
+
+    <select id="getYiCunCheckItemList" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+            CM_CheckSub.CheckFlag,
+            CM_CheckSub.SummaryCode,
+            CM_CheckSub.Price,
+            Gy_SummaryItem.SummaryName,
+            CM_CheckSub.DetailItemCode,
+            Gy_DetailItem.DetailItemName
+        FROM
+            CM_CheckSub
+        INNER JOIN Gy_SummaryItem ON Gy_SummaryItem.SummaryCode = CM_CheckSub.SummaryCode
+        INNER JOIN Gy_DetailItem ON CM_CheckSub.DetailItemCode = Gy_DetailItem.DetailItemCode
+        <where>
+            <if test="empBasicMainID != null">
+                AND CM_CheckSub.EmpBasicMainID = #{empBasicMainID}
+            </if>
+            <if test="checkFlag != null">
+                AND CM_CheckSub.CheckFlag = #{checkFlag}
+            </if>
+        </where>
+        GROUP BY
+            CM_CheckSub.CheckFlag,
+            CM_CheckSub.SummaryCode,
+            CM_CheckSub.Price,
+            Gy_SummaryItem.SummaryName,
+            CM_CheckSub.DetailItemCode
+    </select>
+
+    <update id="updateRemark" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.CheckItem">
+        UPDATE CM_EmpBasicMain
+        SET ClinicalRemark =#{clinicalRemark},
+         LinRemark =#{linRemark}
+        WHERE
+            EmpBasicMainID =#{empBasicMainID}
+    </update>
+
+    <delete id="delCheckSub" >
+        DELETE
+        FROM
+            CM_CheckSub
+        WHERE
+            EmpBasicMainID = #{empBasicMainID}
+        AND CheckFlag = #{checkFlag}
+    </delete>
+
+    <insert id="insertCheckSub" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.CheckItem">
+        INSERT INTO CM_CheckSub (
+            EmpBasicMainID,
+            DetailItemCode,
+            SummaryCode,
+            Price,
+            CheckFlag,
+            CheckSubFlag
+        ) VALUES (
+            #{empBasicMainID},
+            #{detailItemCode},
+            #{summaryCode},
+            #{price},
+            #{checkFlag},
+            0
+        )
+    </insert>
+    <select id="getDetailItemName" resultType="java.lang.String" parameterType="java.lang.String">
+        SELECT
+        DetailItemName
+        FROM
+        Gy_DetailItem
+        where DetailItemCode = #{detailItemCode}
+    </select>
+</mapper>

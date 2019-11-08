@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.lzxt.zjkf.mapper.DirectPrescriptionMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.zjkf.entity.DirectPrescription">
+        <id column="PrescriptionCode" property="PrescriptionCode" jdbcType="INTEGER"/>
+        <result column="DrugCode" property="drugCode" jdbcType="INTEGER"/>
+        <result column="DrugName" property="drugName" jdbcType="VARCHAR"/>
+        <result column="InputCode" property="inputCode" jdbcType="VARCHAR"/>
+        <result column="OtherName" property="otherName" jdbcType="VARCHAR"/>
+        <result column="HISCorreCode" property="HISCorreCode" jdbcType="VARCHAR"/>
+        <result column="ChineseMedicineName" property="chineseMedicineName" jdbcType="VARCHAR"/>
+        <result column="ChineseMedicineCode" property="chineseMedicineCode" jdbcType="VARCHAR"/>
+        <result column="WesternMedicineCode" property="westernMedicineCode" jdbcType="VARCHAR"/>
+        <result column="WesternMedicineName" property="westernMedicineName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getDrugDictList" resultMap="BaseResultMap" parameterType="com.yyk.sz.zhzy.lzxt.zjkf.entity.DirectPrescription">
+        SELECT
+            DrugCode,
+            DrugName,
+            DrugTaste,
+            ltrim(rtrim(InputCode)) AS InputCode,
+            OtherName,
+            HISCorreCode
+        FROM
+            Gy_DrugDict
+        WHERE
+        1 = 1
+        <if test="inputCode != null and inputCode != ''">
+            and (DrugCode like '%${inputCode}%'
+            or DrugName like '%${inputCode}%'
+            or InputCode like '%${inputCode}%')
+        </if>
+        <if test="drugTaste != null and drugTaste != ''">
+            and DrugTaste like '%${drugTaste}%'
+        </if>
+        <if test="drugMeridian != null and drugMeridian != ''">
+            and DrugMeridian like '%${drugMeridian}%'
+        </if>
+        AND DrugModelCode = #{drugModelCode}
+        AND DrugFlag = 0
+        AND StopFlag = #{stopFlag}
+        ORDER BY
+        DrugCode DESC
+    </select>
+
+    <select id="getChineseMedicineList" resultMap="BaseResultMap" parameterType="com.yyk.sz.zhzy.lzxt.zjkf.entity.DirectPrescription">
+        SELECT
+            ltrim(rtrim(ChineseMedicineCode)) AS ChineseMedicineCode,
+            ltrim(rtrim(ChineseMedicineName)) AS ChineseMedicineName,
+            PinYinCode
+        FROM
+            Gy_ChineseMedicine
+        WHERE
+        1 = 1
+        <if test="searchText != null">
+            and (
+            ChineseMedicineCode like '%${searchText}%' or
+            ChineseMedicineName like '%${searchText}%' or
+            PinYinCode like '%${searchText}%'
+            )
+        </if>
+        <if test="chineseMedicineCode != null">
+            and ChineseMedicineCode like '%${chineseMedicineCode}%'
+        </if>
+        <if test="chineseMedicineName != null">
+            and ChineseMedicineName like '%${chineseMedicineName}%'
+        </if>
+        <if test="pinYinCode != null">
+            and PinYinCode like '%${pinYinCode}%'
+        </if>
+        ORDER BY
+            ChineseMedicineCode
+    </select>
+
+    <select id="getWesternMedicineList" resultMap="BaseResultMap" parameterType="com.yyk.sz.zhzy.lzxt.zjkf.entity.DirectPrescription">
+        SELECT
+            *
+        FROM
+            CM_V_GetAcupointWesternMedicine
+        WHERE
+        1 = 1
+        <if test="searchText != null">
+            and (
+            WesternMedicineCode like '%${searchText}%' or
+            WesternMedicineName like '%${searchText}%' or
+            PinYinCode like '%${searchText}%'
+            )
+        </if>
+        <if test="westernMedicineCode != null">
+            and WesternMedicineCode like '%${westernMedicineCode}%'
+        </if>
+        <if test="westernMedicineName != null">
+            and WesternMedicineName like '%${westernMedicineName}%'
+        </if>
+        <if test="pinYinCode != null">
+            and PinYinCode like '%${pinYinCode}%'
+        </if>
+        ORDER BY
+            WesternMedicineName
+    </select>
+
+    <select id="getTaste" resultMap="BaseResultMap">
+        SELECT
+            TasteCode,
+            TasteName
+        FROM
+            Gy_Taste
+    </select>
+
+    <select id="getMeridian" resultMap="BaseResultMap">
+        SELECT
+            MeridianCode,
+            MeridianName
+        FROM
+            Gy_Meridian
+        WHERE
+            ZJFlag = 0
+    </select>
+
+</mapper>

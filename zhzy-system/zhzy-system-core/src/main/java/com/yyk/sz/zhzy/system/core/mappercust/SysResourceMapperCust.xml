@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yyk.sz.zhzy.system.core.mappercust.SysResourceMapperCust" >
+  <sql id="Base_Column_List" >
+    UUID, code, name, sortNo, bizsysId, parentId, level, abbName, SysCreateDate, SysCreateBy,
+    SysUpdateDate, SysUpdateBy, VersionNum, SysDelFlag, sex
+  </sql>
+  <select id="listPage" resultType="com.yyk.sz.zhzy.system.core.entity.SysResource">
+    select
+    <include refid="Base_Column_List" />
+    from sys_resource
+    where SysDelFlag = '0'
+    order by ${sortType}
+  </select>
+</mapper>

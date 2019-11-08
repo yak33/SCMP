@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.lzxt.bzlz.mapper.GovernanceResultMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.bzlz.entity.GovernanceResult">
+        <id column="empBasicMainID" property="empBasicMainID" jdbcType="INTEGER"/>
+        <result column="OperationType" property="operationType" jdbcType="INTEGER"/>
+        <result column="DialecticalCode" property="dialecticalCode" jdbcType="VARCHAR"/>
+        <result column="CureCode" property="cureCode" jdbcType="VARCHAR"/>
+        <result column="PrescriptionCode" property="prescriptionCode" jdbcType="VARCHAR"/>
+        <result column="DrugCode" property="drugCode" jdbcType="INTEGER"/>
+        <result column="PrescriptionSubID" property="prescriptionSubID" jdbcType="INTEGER"/>
+        <result column="Quanitity" property="quanitity" jdbcType="DECIMAL"/>
+        <result column="SufferTypeCode" property="sufferTypeCode" jdbcType="VARCHAR"/>
+        <result column="JFlag" property="JFlag" jdbcType="VARCHAR"/>
+        <result column="CFlag" property="CFlag" jdbcType="VARCHAR"/>
+        <result column="ZFlag" property="ZFlag" jdbcType="VARCHAR"/>
+        <result column="SFlag" property="SFlag" jdbcType="VARCHAR"/>
+        <result column="Remark" property="remark" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <resultMap id="GRListRstMap" type="com.yyk.sz.zhzy.lzxt.bzlz.entity.GRListRst">
+        <id column="UUID" property="UUID" jdbcType="VARCHAR"/>
+        <result column="ChineseMedicineCode" property="chineseMedicineCode" jdbcType="VARCHAR"/>
+        <result column="ChineseMedicineName" property="chineseMedicineName" jdbcType="VARCHAR"/>
+        <result column="CureCode" property="cureCode" jdbcType="VARCHAR"/>
+        <result column="CureName" property="cureName" jdbcType="VARCHAR"/>
+        <result column="DialecticalCode" property="dialecticalCode" jdbcType="VARCHAR"/>
+        <result column="DialecticalName" property="dialecticalName" jdbcType="VARCHAR"/>
+        <result column="PrescriptionCode" property="prescriptionCode" jdbcType="VARCHAR"/>
+        <result column="PrescriptionName" property="prescriptionName" jdbcType="VARCHAR"/>
+        <result column="Score" property="score" jdbcType="VARCHAR"/>
+        <result column="SubID" property="subID" jdbcType="VARCHAR"/>
+        <result column="WesternMedicineCode" property="westernMedicineCode" jdbcType="VARCHAR"/>
+        <result column="WesternMedicineName" property="westernMedicineName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getGRList" statementType="CALLABLE" parameterType="com.yyk.sz.zhzy.lzxt.bzlz.entity.GovernanceResult">
+        <![CDATA[
+            {
+              call CM_Sp_Dialectical_test(
+                                  #{empBasicMainID,jdbcType=INTEGER,mode=IN},
+                                  #{operationType,jdbcType=INTEGER,mode=IN},
+                                  #{dialecticalCode,jdbcType=VARCHAR,mode=IN},
+                                  #{cureCode,jdbcType=VARCHAR,mode=IN},
+                                  #{proUUID,jdbcType=VARCHAR,mode=IN})
+            }
+        ]]>
+    </select>
+
+    <select id="getGRListRst" resultMap="GRListRstMap">
+        select *
+        from T_DialecticalRst
+        where UUID = #{proUUID}
+    </select>
+
+    <select id="getDrugByPrescriptionCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+            *
+        FROM
+            CM_V_DrugByPrescription
+        <where>
+            <if test="prescriptionCode != null">
+                PrescriptionCode = #{prescriptionCode}
+            </if>
+        </where>
+        ORDER BY
+            PrescriptionSubID ASC
+    </select>
+
+    <select id="getCalciteByPrescriptionCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+            PrescriptionCode,
+            PrescriptionName,
+            Calcite,
+            Source,
+            Effect,
+            Attend
+        FROM
+            Gy_PrescriptionMain
+        <where>
+            <if test="prescriptionCode != null">
+                PrescriptionCode = #{prescriptionCode}
+            </if>
+        </where>
+    </select>
+
+    <select id="getMeridian" resultMap="BaseResultMap">
+        SELECT
+            *
+        FROM
+            Gy_Meridian
+        WHERE
+            ZJFlag = 0
+        ORDER BY
+            MeridianCode
+    </select>
+
+    <select id="getMeridianScore" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+            *
+        FROM
+            CM_V_InterrogationMeridianCode
+        <where>
+            <if test="empBasicMainID != null">
+                EmpBasicMainID = #{empBasicMainID}
+            </if>
+        </where>
+    </select>
+
+    <select id="getTasteScore" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+        SELECT
+        *
+        FROM
+        CM_V_TasteMeridianCode
+        <where>
+            <if test="empBasicMainID != null">
+                EmpBasicMainID = #{empBasicMainID}
+            </if>
+        </where>
+    </select>
+
+    <select id="getDTZXTData" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        Gy_DrugOrMeridian.MeridianCode,
+        Gy_Meridian.MeridianName,
+        sum(
+        CASE
+        WHEN IFNULL(
+        Gy_DrugOrMeridian.MeridianCode,
+        ''
+        )  <![CDATA[ <> ]]> '' THEN
+        1
+        ELSE
+        0
+        END
+        ) AS TasteScore
+        FROM
+        Gy_DrugOrMeridian
+        LEFT JOIN Gy_Meridian ON Gy_Meridian.MeridianCode = Gy_DrugOrMeridian.MeridianCode
+        <where>
+            <if test="drugCodeStr != null">
+                Gy_DrugOrMeridian.DrugCode IN (${drugCodeStr})
+            </if>
+        </where>
+        GROUP BY
+        Gy_DrugOrMeridian.MeridianCode,
+        Gy_Meridian.MeridianName
+
+    </select>
+
+    <select id="getHRWP" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+            DrugCode,
+            DrugName,
+            IFNULL(DrugTaste, "") DrugTaste
+        FROM
+            Gy_DrugDict
+        WHERE
+            DrugCode IN (${DCStr})
+    </select>
+
+</mapper>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.common.mapper.MecidalTypeMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.common.entity.MecidalType">
+        <id column="MecidalTypeCode" property="MecidalTypeCode" jdbcType="VARCHAR"/>
+        <result column="MecidalTypeName" property="MecidalTypeName" jdbcType="VARCHAR"/>
+        <result column="ratio" property="ratio" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        MecidalTypeCode,MecidalTypeName,ratio
+    </sql>
+
+    <select id="getMecidalType" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select
+        <include refid="Base_Column_List"/>
+        from Gy_MecidalType
+        where CheckFlag = #{checkFlag,jdbcType=VARCHAR}
+        order by MecidalTypeCode
+    </select>
+
+</mapper>

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJDetailItemSubMapper">
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDetailItemSub">
+      <id column="DetailItemCode" property="detailitemcode" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <id column="MedicalCareCode" property="medicalcarecode" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="MedicalCareName" property="medicalcarename" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="UUID" property="uuid" javaType="java.lang.String" jdbcType="CHAR" />
+      <result column="Number" property="number" javaType="java.math.BigDecimal" jdbcType="DECIMAL" />
+  </resultMap>
+  <delete id="deleteDetailItemSub" parameterType="java.lang.String">
+    delete from Gy_DetailItemSub
+    where DetailItemCode = #{detailItemCode,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insertDetailItemSub" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDetailItemSub">
+    insert into Gy_DetailItemSub
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="detailitemcode != null">
+        DetailItemCode,
+      </if>
+      <if test="medicalcarecode != null">
+        MedicalCareCode,
+      </if>
+      <if test="number != null">
+        `Number`,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="detailitemcode != null">
+        #{detailitemcode,jdbcType=VARCHAR},
+      </if>
+      <if test="medicalcarecode != null">
+        #{medicalcarecode,jdbcType=VARCHAR},
+      </if>
+      <if test="number != null">
+        #{number,jdbcType=DECIMAL},
+      </if>
+    </trim>
+  </insert>
+
+  <select id="getFromDetailItemSubByDetailItemCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    SELECT Gy_DetailItemSub.MedicalCareCode,`Number`,MedicalCareName,DetailItemCode from Gy_DetailItemSub LEFT JOIN Gy_MedicalCare
+    on Gy_DetailItemSub.MedicalCareCode=Gy_MedicalCare.MedicalCareCode
+    <if test="detailItemCode != null" >
+      where DetailItemCode = #{detailItemCode}
+    </if>
+  </select>
+</mapper>

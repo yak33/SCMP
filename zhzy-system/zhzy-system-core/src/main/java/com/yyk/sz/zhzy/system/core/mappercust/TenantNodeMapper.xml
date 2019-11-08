@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yyk.sz.zhzy.system.core.mappercust.TenantNodeMapper" >
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.system.core.mappercust.TenantNode" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="UUID" property="uuid" jdbcType="VARCHAR" />
+    <result column="node" property="node" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="VARCHAR" />
+    <result column="startDate" property="startdate" jdbcType="TIMESTAMP" />
+    <result column="endDate" property="enddate" jdbcType="TIMESTAMP" />
+    <result column="address" property="address" jdbcType="VARCHAR" />
+    <result column="mail" property="mail" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="phone" property="phone" jdbcType="VARCHAR" />
+    <result column="invitationCode" property="invitationCode" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="type" property="type" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    ID, UUID, node, status, startDate, endDate, address, mail, name, phone, remark, type, invitationCode
+  </sql>
+  <update id="updateByInvitationCode" parameterType="com.yyk.sz.zhzy.system.core.mappercust.TenantNode" >
+    update Tenant_Node
+    <set >
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where invitationCode = #{invitationCode,jdbcType=VARCHAR}
+  </update>
+  <select id="getByInvitationCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select * from Tenant_Node
+    where invitationCode = #{invitationCode,jdbcType=VARCHAR}
+  </select>
+  <select id="getAllHospital" resultMap="BaseResultMap">
+    select ID,name,node from Tenant_Node
+  </select>
+  <select id="getBeUsedOrNo" resultMap="BaseResultMap" parameterType="java.lang.String">
+    SELECT
+	t1.account,
+	t1.PID,
+	t1.node,
+	t2.node AS nodedd,
+	t2.name,
+	t2.invitationCode
+    FROM
+        Tenant_UserNode t1
+    LEFT JOIN Tenant_Node t2 ON t1.node = t2.node
+    WHERE t2.invitationCode = #{invitationCode,jdbcType=VARCHAR}
+  </select>
+  <select id="getByNode" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select <include refid="Base_Column_List" /> from Tenant_Node
+    where node = #{node,jdbcType=VARCHAR}
+  </select>
+</mapper>

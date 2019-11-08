@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.common.mapper.DeptMentMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.common.entity.DeptMent">
+        <id column="UUID" property="id" jdbcType="VARCHAR"/>
+        <result column="DeptCode" property="DeptCode" jdbcType="VARCHAR"/>
+        <result column="DeptName" property="DeptName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getKeShi" resultMap="BaseResultMap">
+       select UUID, DeptCode,DeptName from Gy_DeptMent order by DeptCode
+    </select>
+
+</mapper>

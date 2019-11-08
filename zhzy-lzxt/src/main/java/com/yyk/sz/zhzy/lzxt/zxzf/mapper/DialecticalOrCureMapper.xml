@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.lzxt.zxzf.mapper.DialecticalOrCureMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.zxzf.entity.DialecticalOrCure">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="ChineseMedicineName" property="ChineseMedicineName" jdbcType="VARCHAR"/>
+        <result column="ChineseMedicineCode" property="ChineseMedicineCode" jdbcType="VARCHAR"/>
+        <result column="CureName" property="CureName" jdbcType="VARCHAR"/>
+        <result column="MainSymptomCode" property="MainSymptomCode" jdbcType="VARCHAR"/>
+        <result column="CurePinYinCode" property="CurePinYinCode" jdbcType="VARCHAR"/>
+        <result column="DialecticalPinYinCode" property="DialecticalPinYinCode" jdbcType="VARCHAR"/>
+        <result column="DialecticalName" property="DialecticalName" jdbcType="VARCHAR"/>
+        <result column="MainSymptomName" property="MainSymptomName" jdbcType="VARCHAR"/>
+        <result column="WesternMedicineName" property="WesternMedicineName" jdbcType="VARCHAR"/>
+        <result column="createBy" property="createBy" jdbcType="VARCHAR"/>
+        <result column="createDate" property="createDate" jdbcType="DATE"/>
+        <result column="updateBy" property="updateBy" jdbcType="VARCHAR"/>
+        <result column="updateDate" property="updateDate" jdbcType="DATE"/>
+        <result column="versionNum" property="versionNum" jdbcType="INTEGER"/>
+        <result column="delFlag" property="delFlag" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getSelectDCTable" resultMap="BaseResultMap">
+        select
+            CC.ChineseMedicineName,CC.CureName,CC.MainSymptomCode,CC.CurePinYinCode,
+            CC.DialecticalPinYinCode,CC.DialecticalName,CC.MainSymptomName,
+            CC.WesternMedicineName
+            ,CC.ChineseMedicinePinYinCode,CC.DialecticalCode,
+        CC.CureCode
+        from
+            (select distinct AA.MainSymptomName,Gy_Cure.CureName,Gy_Cure.CureCode,
+                Gy_Cure.PinYinCode as CurePinYinCode,Gy_Dialectical.DialecticalName,Gy_Dialectical.DialecticalCode,
+                Gy_Dialectical.PinYinCode as DialecticalPinYinCode,
+                ifnull(Gy_ChineseMedicine.ChineseMedicineName,'') ChineseMedicineName,
+                Soue,ifnull(Gy_WesternMedicine.WesternMedicineName,'') WesternMedicineName,
+                AA.MainSymptomCode
+                ,Gy_ChineseMedicine.PinYinCode as ChineseMedicinePinYinCode
+             from
+                (select distinct Gy_MainSymptom.MainSymptomCode,Gy_MainSymptom.MainSymptomName,
+                    Gy_MainSymptom.PinYinCode,Gy_MainSymptomType.MainSymptomTypeName,
+                    ifnull(CM_MaxMainSymptom.Soue,0) as Soue
+                from Gy_MainSymptom
+                left join Gy_SymptomOrDosage
+                    on Gy_SymptomOrDosage.MainSymptomCode=Gy_MainSymptom.MainSymptomCode
+                    and Gy_SymptomOrDosage.DeptCode=#{deptCode}
+                left join Gy_MainSymptomType
+                    on Gy_MainSymptomType.MainSymptomTypeCode=Gy_MainSymptom.MainSymptomTypeCode
+                left join CM_MaxMainSymptom
+                    on CM_MaxMainSymptom.MainSymptomCode=Gy_MainSymptom.MainSymptomCode
+                    and CM_MaxMainSymptom.UserCode=#{userCode}
+                ) AA
+                right join Gy_DialecticalMainSymptom
+                    on Gy_DialecticalMainSymptom.MainSymptomCode=AA.MainSymptomCode
+                inner join Gy_CureDialectical
+                    on Gy_CureDialectical.DialecticalCode=Gy_DialecticalMainSymptom.DialecticalCode
+                    and Gy_DialecticalMainSymptom.MainSymptomCode=Gy_CureDialectical.MainSymptomCode
+                inner join Gy_Dialectical
+                    on Gy_Dialectical.DialecticalCode=Gy_CureDialectical.DialecticalCode
+                inner join Gy_Cure
+                    on Gy_Cure.CureCode=Gy_CureDialectical.CureCode
+                left join Gy_MainSymptom
+                    on Gy_MainSymptom.MainSymptomCode=AA.MainSymptomCode
+                left join Gy_ChineseMedicine
+                    on Gy_MainSymptom.ChineseMedicineCode=Gy_ChineseMedicine.ChineseMedicineCode
+                left join Gy_WesternMedicine
+                    on Gy_DialecticalMainSymptom.WesternMedicineCode=Gy_WesternMedicine.WesternMedicineCode
+            ) CC
+        where
+            1 = 1
+            <if test="dialectical != null">
+                and ( DialecticalPinYinCode like '%${dialectical}%' or DialecticalName like '%${dialectical}%' )
+            </if>
+            <if test="chineseMedicine != null">
+                and ( ChineseMedicinePinYinCode like '%${chineseMedicine}%' or ChineseMedicineName like '%${chineseMedicine}%' )
+            </if>
+        <if test="searchText != null">
+            and (
+                DialecticalName like #{searchText} or
+                CureName like #{searchText} or
+                MainSymptomName like #{searchText} or
+                ChineseMedicineName like #{searchText}
+            )
+        </if>
+        <if test="sortName != null">
+            order by ${sortName} ${sortOrder}
+        </if>
+        <if test="sortName == null">
+            order by CC.Soue DESC
+        </if>
+    </select>
+
+</mapper>

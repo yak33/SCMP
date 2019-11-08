@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.lzxt.zjkf.mapper.TasteMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.zjkf.entity.Taste">
+        <id column="DrugCode" property="DrugCode" jdbcType="VARCHAR"/>
+        <result column="TasteCode" property="TasteCode" jdbcType="VARCHAR"/>
+        <result column="TasteName" property="TasteName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getTasteList" resultMap="BaseResultMap">
+        SELECT
+            TasteName
+        FROM
+            Gy_Taste
+        INNER JOIN Gy_DrugOrTaste ON Gy_DrugOrTaste.TasteCode = Gy_Taste.TasteCode
+        WHERE
+            Gy_DrugOrTaste.DrugCode = #{drugCode}
+    </select>
+
+</mapper>

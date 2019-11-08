@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJUnitMapper" >
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJUnit" >
+      <id column="UnitCode" property="unitcode" jdbcType="INTEGER" javaType="java.lang.Integer" />
+      <result column="UUID" property="uuid" jdbcType="CHAR" javaType="java.lang.String" />
+      <result column="UnitName" property="unitname" jdbcType="VARCHAR" javaType="java.lang.String" />
+  </resultMap>
+
+  <select id="getUnitList" resultMap="BaseResultMap">
+    select * from Gy_Unit where 1=1
+    <if test="unitCode != null" >
+      and Gy_Unit.UnitCode like #{unitCode}
+    </if>
+    <if test="unitName != null" >
+      and Gy_Unit.UnitName like #{unitName}
+    </if>
+    <if test="searchText != null">
+      and (
+      Gy_Unit.UnitCode like #{searchText} or
+      Gy_Unit.UnitName like #{searchText}
+      )
+    </if>
+      order by Gy_Unit.UnitCode desc
+  </select>
+
+  <delete id="deleteUnit" parameterType="java.lang.Integer">
+    delete from Gy_Unit
+    where UnitCode = #{unitCode,jdbcType=INTEGER}
+  </delete>
+
+  <insert id="insertUnit" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJUnit" >
+    insert into Gy_Unit
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="unitcode != null" >
+        UnitCode,
+      </if>
+      <if test="unitname != null" >
+        UnitName
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="unitcode != null" >
+        #{unitcode,jdbcType=INTEGER},
+      </if>
+      <if test="unitname != null" >
+        #{unitname,jdbcType=VARCHAR}
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateUnit" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJUnit" >
+    update Gy_Unit
+    <set >
+      <if test="unitname2 != null" >
+        UnitName = #{unitname2,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where UnitCode = #{unitcode,jdbcType=INTEGER}
+  </update>
+
+  <select id="GetUnitByUnitCode" resultMap="BaseResultMap" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJUnit">
+    select * from Gy_Unit where 1=1
+    <if test="unitcode != null" >
+      and Gy_Unit.UnitCode = #{unitcode}
+    </if>
+    order by Gy_Unit.UnitCode desc
+  </select>
+
+  <select id="GetUnitByUnitName" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select * from Gy_Unit where 1=1
+    <if test="unitName != null" >
+      and Gy_Unit.UnitName = #{unitName}
+    </if>
+    order by Gy_Unit.UnitCode desc
+  </select>
+
+  <select id="GetDrugByUnitCode" resultType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDrugDict" parameterType="java.lang.Integer">
+    select * from Gy_DrugDict where Units=#{unitCode}
+  </select>
+</mapper>

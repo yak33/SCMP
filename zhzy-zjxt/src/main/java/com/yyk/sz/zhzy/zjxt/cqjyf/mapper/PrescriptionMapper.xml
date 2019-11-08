@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.zjxt.cqjyf.mapper.PrescriptionMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.zjxt.cqjyf.entity.Prescription">
+        <id column="PrescriptionCode" property="prescriptionCode" jdbcType="VARCHAR"/>
+        <result column="PrescriptionName" property="prescriptionName" jdbcType="VARCHAR"/>
+        <result column="PinYinCode" property="pinYinCode" jdbcType="VARCHAR"/>
+        <result column="Effect" property="effect" jdbcType="VARCHAR"/>
+        <result column="Attend" property="attend" jdbcType="VARCHAR"/>
+        <result column="Calcite" property="calcite" jdbcType="VARCHAR"/>
+        <result column="Source" property="source" jdbcType="VARCHAR"/>
+        <result column="SysFlag" property="sysFlag" jdbcType="VARCHAR"/>
+        <result column="JRate" property="JRate" jdbcType="VARCHAR"/>
+        <result column="CRate" property="CRate" jdbcType="VARCHAR"/>
+        <result column="ZRate" property="ZRate" jdbcType="VARCHAR"/>
+        <result column="SRate" property="SRate" jdbcType="VARCHAR"/>
+        <result column="Remark" property="remark" jdbcType="VARCHAR"/>
+        <result column="Maker" property="userCode" jdbcType="VARCHAR"/>
+        <result column="MakeDate" property="makeDate" jdbcType="DATE"/>
+        <result column="DrugFlag" property="drugFlag" jdbcType="VARCHAR"/>
+        <result column="PCCode" property="PCCode" jdbcType="VARCHAR"/>
+        <result column="EmpBasicMainID" property="empBasicMainID" jdbcType="VARCHAR"/>
+        <result column="PersonalFlag" property="personalFlag" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getPrescription" resultMap="BaseResultMap" parameterType="com.yyk.sz.zhzy.zjxt.cqjyf.entity.Prescription">
+        SELECT
+            ltrim(
+                rtrim(
+                    Gy_PrescriptionMain.PrescriptionCode
+                )
+            ) AS PrescriptionCode,
+            Gy_PrescriptionMain.PrescriptionName,
+            Gy_PrescriptionMain.PinYinCode,
+            Gy_PrescriptionMain.Effect,
+            Gy_PrescriptionMain.Attend,
+            Gy_PrescriptionMain.Calcite,
+            Gy_PrescriptionMain.Source,
+            Gy_User.UserName AS MakeName
+        FROM
+            Gy_PrescriptionMain
+        LEFT JOIN Gy_User ON Gy_User.UserCode = Gy_PrescriptionMain.Maker
+        WHERE
+            Gy_PrescriptionMain.DrugFlag = #{drugFlag}
+        AND ( Gy_PrescriptionMain.Maker IN (
+                    SELECT
+                        QueryUserCode
+                    FROM
+                        Gy_UserQueryRight
+                    WHERE
+                        UserCode = #{userCode}
+                    AND BusTypeCode = '20'
+                )
+                OR Gy_PrescriptionMain.DrugFlag = #{drugFlag}
+            )
+        <if test="searchText != null">
+            AND (
+            Gy_PrescriptionMain.PrescriptionName like '%${searchText}%' or
+            Gy_PrescriptionMain.PinYinCode like '%${searchText}%' or
+            Gy_PrescriptionMain.Calcite like '%${searchText}%'
+            )
+        </if>
+        ORDER BY
+            Gy_PrescriptionMain.SysFlag DESC,
+            Gy_PrescriptionMain.PrescriptionCode
+    </select>
+
+    <insert id="savePrescriptionZJ" parameterType="com.yyk.sz.zhzy.zjxt.cqjyf.entity.Prescription">
+        INSERT INTO Gy_PrescriptionMain (
+            PrescriptionName,
+            PinYinCode,
+            Attend,
+            Effect,
+            Calcite,
+            Source,
+            Remark,
+            SysFlag,
+            Maker,
+            MakeDate,
+            DrugFlag,
+            PCCode,
+            PersonalFlag
+        )
+        VALUES
+            (
+                #{prescriptionName}, #{pinYinCode}, #{attend}, #{effect},
+                #{calcite}, #{source},#{remark}, 1, #{userCode},
+                #{makeDate}, 1, '002', 0
+            )
+    </insert>
+
+    <select id="getMaxCode" resultMap="BaseResultMap">
+        SELECT
+            MAX(PrescriptionCode)
+        FROM
+            Gy_PrescriptionMain
+        WHERE
+            DrugFlag = 1
+    </select>
+    <select id="getWantCode" resultMap="BaseResultMap" parameterType="com.yyk.sz.zhzy.zjxt.cqjyf.entity.Prescription">
+        SELECT
+            *
+        FROM
+            Gy_PrescriptionMain
+        WHERE
+            DrugFlag = 1
+        AND PrescriptionName = #{prescriptionName}
+        AND Calcite = #{calcite}
+    </select>
+
+    <delete id="delPrescriptionZJ" parameterType="com.yyk.sz.zhzy.zjxt.cqjyf.entity.Prescription">
+        DELETE
+        FROM
+            Gy_PrescriptionMain
+        WHERE
+            DrugFlag = 1
+        AND PrescriptionName = #{prescriptionName}
+        AND Calcite = #{calcite}
+    </delete>
+    <delete id="delPrescriptionSubZJ" parameterType="com.yyk.sz.zhzy.zjxt.cqjyf.entity.Prescription">
+        DELETE
+        FROM
+            Gy_PrescriptionSub
+        WHERE
+            PrescriptionCode IN (
+                SELECT
+                    PrescriptionCode
+                FROM
+                    Gy_PrescriptionMain
+                WHERE
+                    DrugFlag = 1
+                AND PrescriptionName = #{prescriptionName}
+                AND Calcite = #{calcite}
+            )
+    </delete>
+
+    <insert id="savePrescriptionSubZJ" parameterType="com.yyk.sz.zhzy.zjxt.cqjyf.entity.Prescription">
+        INSERT INTO Gy_PrescriptionSub (
+            PrescriptionCode,
+            DrugCode,
+            PrescriptionSubID,
+            Quanitity,
+            JFlag,
+            CFlag,
+            ZFlag,
+            SFlag,
+            Remark,
+            MainFlag
+        )
+        VALUES
+            (
+                #{prescriptionCode}, #{drugCode}, 0, 1,
+                1, 0, 0, 0, '', 0
+            )
+    </insert>
+
+    <select id="getFangJie" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+            PrescriptionCode,
+            PrescriptionName,
+            Calcite,
+            Source,
+            Effect,
+            Attend
+        FROM
+            Gy_PrescriptionMain
+        WHERE
+            PrescriptionCode = #{prescriptionCode}
+        AND DrugFlag = 1
+    </select>
+
+</mapper>

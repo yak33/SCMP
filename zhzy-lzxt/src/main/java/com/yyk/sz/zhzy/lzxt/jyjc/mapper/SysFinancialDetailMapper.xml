@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.yyk.sz.zhzy.lzxt.jyjc.mapper.SysFinancialDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysFinancialDetail" >
+    <id column="UUID" property="uuid" jdbcType="CHAR" />
+    <result column="DetailItemCode" property="detailitemcode" jdbcType="VARCHAR" />
+    <result column="DetailItemName" property="detailitemname" jdbcType="VARCHAR" />
+    <result column="Quantity" property="quantity" jdbcType="DECIMAL" />
+    <result column="UnitPrice" property="unitprice" jdbcType="DECIMAL" />
+    <result column="PayItemCode" property="payitemcode" jdbcType="VARCHAR" />
+    <result column="EmpBasicMainID" property="empbasicmainid" jdbcType="INTEGER" />
+    <result column="PayItem" property="payitem" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    UUID, DetailItemCode, DetailItemName, Quantity, UnitPrice, PayItemCode, EmpBasicMainID, PayItem
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from sys_financial_detail
+    where UUID = #{uuid,jdbcType=CHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from sys_financial_detail
+    where UUID = #{uuid,jdbcType=CHAR}
+  </delete>
+  <insert id="insert" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysFinancialDetail" >
+    insert into sys_financial_detail (DetailItemCode, DetailItemName,
+      Quantity, UnitPrice, PayItemCode, EmpBasicMainID, PayItem
+      )
+    values (#{detailitemcode,jdbcType=VARCHAR}, #{detailitemname,jdbcType=VARCHAR},
+      #{quantity,jdbcType=DECIMAL}, #{unitprice,jdbcType=DECIMAL}, #{payitemcode,jdbcType=VARCHAR}, #{empbasicmainid,jdbcType=INTEGER},
+      #{payitem,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysFinancialDetail" >
+    insert into sys_financial_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="uuid != null" >
+        UUID,
+      </if>
+      <if test="detailitemcode != null" >
+        DetailItemCode,
+      </if>
+      <if test="detailitemname != null" >
+        DetailItemName,
+      </if>
+      <if test="quantity != null" >
+        Quantity,
+      </if>
+      <if test="unitprice != null" >
+        UnitPrice,
+      </if>
+      <if test="payitemcode != null" >
+        PayItemCode,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="uuid != null" >
+        #{uuid,jdbcType=CHAR},
+      </if>
+      <if test="detailitemcode != null" >
+        #{detailitemcode,jdbcType=VARCHAR},
+      </if>
+      <if test="detailitemname != null" >
+        #{detailitemname,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null" >
+        #{quantity,jdbcType=DECIMAL},
+      </if>
+      <if test="unitprice != null" >
+        #{unitprice,jdbcType=DECIMAL},
+      </if>
+      <if test="payitemcode != null" >
+        #{payitemcode,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysFinancialDetail" >
+    update sys_financial_detail
+    <set >
+      <if test="detailitemcode != null" >
+        DetailItemCode = #{detailitemcode,jdbcType=VARCHAR},
+      </if>
+      <if test="detailitemname != null" >
+        DetailItemName = #{detailitemname,jdbcType=VARCHAR},
+      </if>
+      <if test="quantity != null" >
+        Quantity = #{quantity,jdbcType=DECIMAL},
+      </if>
+      <if test="unitprice != null" >
+        UnitPrice = #{unitprice,jdbcType=DECIMAL},
+      </if>
+      <if test="payitemcode != null" >
+        PayItemCode = #{payitemcode,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where UUID = #{uuid,jdbcType=CHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysFinancialDetail" >
+    update sys_financial_detail
+    set DetailItemCode = #{detailitemcode,jdbcType=VARCHAR},
+      DetailItemName = #{detailitemname,jdbcType=VARCHAR},
+      Quantity = #{quantity,jdbcType=DECIMAL},
+      UnitPrice = #{unitprice,jdbcType=DECIMAL},
+      PayItemCode = #{payitemcode,jdbcType=VARCHAR}
+    where UUID = #{uuid,jdbcType=CHAR}
+  </update>
+  <delete id="delFinancialDetail" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysFinancialDetail">
+        DELETE
+        FROM
+            sys_financial_detail
+        WHERE
+            EmpBasicMainID = #{empbasicmainid}
+        AND PayItem = #{payitem}
+  </delete>
+
+  <select id="getItemDetail" resultMap="BaseResultMap" parameterType="com.yyk.sz.zhzy.lzxt.jyjc.entity.SysFinancialDetail" >
+    select
+    <include refid="Base_Column_List" />
+    from sys_financial_detail
+    where EmpBasicMainID = #{empbasicmainid}
+    and PayItem = #{payitem}
+  </select>
+
+</mapper>

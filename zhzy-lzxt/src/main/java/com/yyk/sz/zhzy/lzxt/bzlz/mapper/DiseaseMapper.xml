@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.lzxt.bzlz.mapper.DiseaseMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.bzlz.entity.Disease">
+        <result column="DiseaseCode" property="DiseaseCode" jdbcType="VARCHAR"/>
+        <result column="DiseaseName" property="DiseaseName" jdbcType="VARCHAR"/>
+        <result column="selDisease" property="selDisease" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getDiseaseTable" resultMap="BaseResultMap">
+        select 0 as selDisease,Gy_Disease.DiseaseCode,Gy_Disease.DiseaseName from  Gy_MainSymptomDisease left join
+        Gy_Disease on Gy_Disease.DiseaseCode=Gy_MainSymptomDisease.DiseaseCode where Gy_MainSymptomDisease.MainSymptomCode=#{mainSymptomCode}
+        order by Gy_Disease.DiseaseName
+    </select>
+
+</mapper>

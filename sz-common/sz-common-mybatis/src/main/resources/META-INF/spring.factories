@@ -1,0 +1,2 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=
+com.yyk.sz.common.mybatis.autoconfigure.SZMyBatisAutoConfiguration

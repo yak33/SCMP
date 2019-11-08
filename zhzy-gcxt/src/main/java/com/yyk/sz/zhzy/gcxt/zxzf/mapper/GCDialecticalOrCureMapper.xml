@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.gcxt.zxzf.mapper.GCDialecticalOrCureMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.gcxt.zxzf.entity.GCDialecticalOrCure">
+        <id column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="ChineseMedicineName" property="ChineseMedicineName" jdbcType="VARCHAR"/>
+        <result column="ChineseMedicineCode" property="ChineseMedicineCode" jdbcType="VARCHAR"/>
+        <result column="CureName" property="CureName" jdbcType="VARCHAR"/>
+        <result column="MainSymptomCode" property="MainSymptomCode" jdbcType="VARCHAR"/>
+        <result column="CurePinYinCode" property="CurePinYinCode" jdbcType="VARCHAR"/>
+        <result column="DialecticalPinYinCode" property="DialecticalPinYinCode" jdbcType="VARCHAR"/>
+        <result column="DialecticalName" property="DialecticalName" jdbcType="VARCHAR"/>
+        <result column="MainSymptomName" property="MainSymptomName" jdbcType="VARCHAR"/>
+        <result column="WesternMedicineName" property="WesternMedicineName" jdbcType="VARCHAR"/>
+        <result column="CureCode" property="CureCode" jdbcType="VARCHAR"/>
+        <result column="DialecticalCode" property="DialecticalCode" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getSelectAnorectalDialecticalCure" resultMap="BaseResultMap">
+        select * from CM_V_DCW where WesternMedicineName=#{westernMedicineName}
+        <if test="searchText != null">
+            and (
+                DialecticalName like '%${searchText}%' or
+                CureName like '%${searchText}%' or
+                MainSymptomName like '%${searchText}%' or
+                ChineseMedicineName like '%${searchText}%'
+            )
+        </if>
+        <if test="sortName != null">
+            order by ${sortName} ${sortOrder}
+        </if>
+        <if test="sortName == null">
+            order by Soue DESC
+        </if>
+    </select>
+
+</mapper>

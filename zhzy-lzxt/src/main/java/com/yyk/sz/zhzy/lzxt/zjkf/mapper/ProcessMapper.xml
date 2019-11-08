@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.lzxt.zjkf.mapper.ProcessMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.zjkf.entity.Process">
+        <id column="DrugCode" property="DrugCode" jdbcType="VARCHAR"/>
+        <result column="ProcessCode" property="ProcessCode" jdbcType="VARCHAR"/>
+        <result column="ProcessName" property="ProcessName" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getProcessList" resultMap="BaseResultMap">
+        SELECT
+            ProcessName
+        FROM
+            Gy_Process
+        INNER JOIN Gy_DrugOrProcess ON Gy_DrugOrProcess.ProcessCode = Gy_Process.ProcessCode
+        WHERE
+            Gy_DrugOrProcess.DrugCode = #{drugCode}
+    </select>
+
+</mapper>

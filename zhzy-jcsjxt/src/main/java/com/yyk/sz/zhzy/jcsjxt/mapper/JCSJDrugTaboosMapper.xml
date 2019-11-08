@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.jcsjxt.mapper.JCSJDrugTaboosMapper">
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDrugTaboos">
+      <result column="UUID" property="uuid" javaType="java.lang.String" jdbcType="CHAR" />
+      <result column="DrugTaboosType" property="drugtaboostype" javaType="java.lang.String" jdbcType="INTEGER" />
+      <result column="DrugCode" property="drugcode" javaType="java.lang.String" jdbcType="INTEGER" />
+      <result column="DrugCodeOne" property="drugcodeone" javaType="java.lang.String" jdbcType="INTEGER" />
+      <result column="Quanitity" property="quanitity" javaType="java.lang.String" jdbcType="INTEGER" />
+      <result column="DrugFlag" property="drugflag" javaType="java.lang.String" jdbcType="INTEGER" />
+    <result column="DrugTaboosTypeName" property="drugtaboostypename" javaType="java.lang.String" jdbcType="CHAR" />
+    <result column="DrugName" property="drugname" javaType="java.lang.String" jdbcType="CHAR" />
+    <result column="DrugNameOne" property="drugnameone" javaType="java.lang.String" jdbcType="CHAR" />
+    <result column="DrugFlagName" property="drugflagname" javaType="java.lang.String" jdbcType="CHAR" />
+  </resultMap>
+  <select id="getDrugTaboosTable" resultMap="BaseResultMap">
+    select case when Gy_DrugTaboos.DrugTaboosType = '10' then '十八反'
+    when Gy_DrugTaboos.DrugTaboosType = '20' then '十九畏'
+    when Gy_DrugTaboos.DrugTaboosType = '30' then '孕妇禁忌'
+    when Gy_DrugTaboos.DrugTaboosType = '40' then '药量禁忌' else '' end as DrugTaboosTypeName,
+    A.DrugName,B.DrugName as DrugNameOne,
+    case when Gy_DrugTaboos.DrugFlag='10' then '禁用' when Gy_DrugTaboos.DrugFlag='20' then '慎用' end as DrugFlagName,
+    Gy_DrugTaboos.Quanitity,
+    Gy_DrugTaboos.DrugTaboosType,Gy_DrugTaboos.DrugCode,Gy_DrugTaboos.DrugCodeOne,Gy_DrugTaboos.DrugFlag
+
+    from Gy_DrugTaboos left join Gy_DrugDict A on A.DrugCode = Gy_DrugTaboos.DrugCode
+    left join Gy_DrugDict B on B.DrugCode = Gy_DrugTaboos.DrugCodeOne where 1=1
+    <if test="drugtaboostype != null">
+      and Gy_DrugTaboos.DrugTaboosType = #{drugtaboostype}
+    </if>
+    <if test="drugname != null">
+      and A.DrugName like #{drugname}
+    </if>
+    order by Gy_DrugTaboos.DrugCode desc
+  </select>
+
+  <delete id="deleteDrugTaboos" parameterType="java.lang.String">
+    delete from Gy_DrugTaboos where DrugTaboosType=#{drugtaboostype} and DrugCode=#{drugcode}
+    <if test='drugtaboostype == "20" or drugtaboostype == "10"'>
+      and DrugCodeOne=#{drugcodeone}
+    </if>
+  </delete>
+
+  <insert id="insertDrugTaboos" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDrugTaboos">
+    insert into Gy_DrugTaboos
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="drugtaboostype != null">
+        DrugTaboosType,
+      </if>
+      <if test="drugcode != null">
+        DrugCode,
+      </if>
+      <if test="drugcodeone != null">
+        DrugCodeOne,
+      </if>
+      <if test="quanitity != null">
+        Quanitity,
+      </if>
+      <if test="drugflag != null">
+        DrugFlag,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="drugtaboostype != null">
+        #{drugtaboostype,jdbcType=INTEGER},
+      </if>
+      <if test="drugcode != null">
+        #{drugcode,jdbcType=INTEGER},
+      </if>
+      <if test="drugcodeone != null">
+        #{drugcodeone,jdbcType=INTEGER},
+      </if>
+      <if test="quanitity != null">
+        #{quanitity,jdbcType=INTEGER},
+      </if>
+      <if test="drugflag != null">
+        #{drugflag,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+
+  <update id="updateDrugTaboos" parameterType="com.yyk.sz.zhzy.jcsjxt.entity.JCSJDrugTaboos">
+    update Gy_DrugTaboos
+    <set>
+      <if test="drugcodeone != null">
+        DrugCodeOne = #{drugcodeone,jdbcType=INTEGER},
+      </if>
+      <if test="quanitity != null">
+        Quanitity = #{quanitity,jdbcType=INTEGER},
+      </if>
+      <if test="drugflag != null">
+        DrugFlag = #{drugflag,jdbcType=INTEGER},
+      </if>
+    </set>
+    where DrugTaboosType = #{drugtaboostype} and DrugCode = #{drugcode}
+  </update>
+
+  <select id="GetDrugAnti" resultMap="BaseResultMap">
+    select * from Gy_DrugTaboos where Gy_DrugTaboos.DrugTaboosType = #{drugtaboostype}
+    <if test='drugtaboostype == "10" or drugtaboostype == "20"'>
+      and ((Gy_DrugTaboos.DrugCode = #{drugcode} and Gy_DrugTaboos.DrugCodeOne = #{drugcodeone}) or
+      (Gy_DrugTaboos.DrugCode = #{drugcodeone} and Gy_DrugTaboos.DrugCodeOne = #{drugcode}))
+    </if>
+  </select>
+
+  <select id="GetDrugSM" resultMap="BaseResultMap">
+    select * from Gy_DrugTaboos where Gy_DrugTaboos.DrugTaboosType = #{drugtaboostype}
+    <if test='drugtaboostype == "30"'>
+      and Gy_DrugTaboos.DrugCode = #{drugcode} and  DrugFlag is not null
+    </if>
+  </select>
+
+  <select id="GetDrugToaboosQuanitity" resultMap="BaseResultMap">
+    select * from Gy_DrugTaboos where Gy_DrugTaboos.DrugTaboosType = #{drugtaboostype}
+    <if test='drugtaboostype == "40"'>
+      and Gy_DrugTaboos.DrugCode = #{drugcode} and  Quanitity > 0
+    </if>
+  </select>
+</mapper>

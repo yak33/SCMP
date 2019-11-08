@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.lzxt.zjkf.mapper.DrugTaboosMapper">
+  <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.zjkf.entity.DrugTaboos">
+      <result column="UUID" property="uuid" javaType="java.lang.String" jdbcType="CHAR" />
+      <result column="DrugTaboosType" property="drugtaboostype" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <result column="DrugCode" property="drugcode" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <result column="DrugCodeOne" property="drugcodeone" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <result column="Quanitity" property="quanitity" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <result column="DrugFlag" property="drugflag" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <result column="DrugName" property="drugname" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <result column="DrugOneName" property="drugonename" javaType="java.lang.String" jdbcType="VARCHAR" />
+  </resultMap>
+  <select id="getDrugTaboosList" resultMap="BaseResultMap">
+    select Gy_DrugTaboos.DrugTaboosType,Gy_DrugTaboos.DrugCode,Gy_DrugTaboos.DrugCodeOne,Gy_DrugTaboos.Quanitity,Gy_DrugTaboos.DrugFlag,Gy_DrugDict.DrugName,DrugDictOne.DrugName as DrugOneName from Gy_DrugTaboos
+    left join Gy_DrugDict on Gy_DrugDict.DrugCode=Gy_DrugTaboos.DrugCode
+    left join Gy_DrugDict DrugDictOne on DrugDictOne.DrugCode=Gy_DrugTaboos.DrugCodeOne
+  </select>
+</mapper>

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.lzxt.bzlz.mapper.TongueMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.bzlz.entity.Tongue">
+        <result column="TongueCode" property="TongueCode" jdbcType="VARCHAR"/>
+        <result column="TongueName" property="TongueName" jdbcType="VARCHAR"/>
+        <result column="TongueImage" property="TongueImage" jdbcType="VARCHAR"/>
+        <result column="selTongue" property="selTongue" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getTongueTable" resultMap="BaseResultMap">
+        select 0 as selTongue,Gy_Tongue.TongueCode,Gy_Tongue.TongueName,Gy_Tongue.TongueImage from  Gy_MainTongue left join
+        Gy_Tongue on Gy_Tongue.TongueCode=Gy_MainTongue.TongueCode where Gy_MainTongue.MainSymptomCode=#{mainSymptomCode}
+        order by Gy_Tongue.TongueName
+    </select>
+
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.lzxt.blmb.mapper.ModelMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.lzxt.blmb.entity.Model">
+        <id column="UUID" property="id" jdbcType="VARCHAR"/>
+        <result column="UsedPhrasesType" property="UsedPhrasesType" jdbcType="INTEGER"/>
+        <result column="UsedPhrasesName" property="UsedPhrasesName" jdbcType="VARCHAR"/>
+        <result column="PinYinCode" property="PinYinCode" jdbcType="VARCHAR"/>
+        <result column="UsedPhrasesContent" property="UsedPhrasesContent" jdbcType="VARCHAR"/>
+        <result column="RemarkSub" property="RemarkSub" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="getModelTable" resultMap="BaseResultMap">
+    select UUID,UsedPhrasesType,UsedPhrasesName,PinYinCode,UsedPhrasesContent,RemarkSub
+                    from CM_UsedPhrases  where UsedPhrasesType=#{usedPhrasesType} and DeptCode like '%${deptCode}%'
+         <if test="searchText != null">
+             and ( UsedPhrasesName like '%${searchText}%' or  PinYinCode like '%${searchText}%' or  UsedPhrasesContent like '%${searchText}%'
+             or  RemarkSub like '%${searchText}%')
+          </if>
+    </select>
+
+    <insert id="insertModel" parameterType="com.yyk.sz.zhzy.lzxt.blmb.entity.Model">
+    INSERT INTO CM_UsedPhrases(UsedPhrasesType,UsedPhrasesName,PinYinCode,UsedPhrasesContent,RemarkSub,DeptCode) VALUES
+    (#{UsedPhrasesType},#{UsedPhrasesName},#{PinYinCode},#{UsedPhrasesContent},#{RemarkSub},#{DeptCode})
+    </insert>
+
+    <select id="selectModel" parameterType="com.yyk.sz.zhzy.lzxt.blmb.entity.Model" resultMap="BaseResultMap">
+    select CM_UsedPhrases.*,Gy_DeptMent.DeptName from CM_UsedPhrases left join Gy_DeptMent
+    on Gy_DeptMent.DeptCode=CM_UsedPhrases.DeptCode where 1=1
+    and CM_UsedPhrases.UsedPhrasesType = #{UsedPhrasesType}
+    and CM_UsedPhrases.UsedPhrasesName = #{UsedPhrasesName}
+    </select>
+
+    <update id="updateModel" parameterType="com.yyk.sz.zhzy.lzxt.blmb.entity.Model">
+   update CM_UsedPhrases set UsedPhrasesType = #{UsedPhrasesType},UsedPhrasesName = #{UsedPhrasesName},PinYinCode=#{PinYinCode},
+   UsedPhrasesContent=#{UsedPhrasesContent},RemarkSub = #{RemarkSub},DeptCode=#{DeptCode}
+   where UUID = #{id}
+    </update>
+
+    <delete id="deleteModel" parameterType="com.yyk.sz.zhzy.lzxt.blmb.entity.Model">
+   delete from Gy_UsedPhrasesOrDeptCode where UsedPhrasesType=#{UsedPhrasesType};
+   delete from CM_UsedPhrases where UUID = #{id}
+    </delete>
+</mapper>

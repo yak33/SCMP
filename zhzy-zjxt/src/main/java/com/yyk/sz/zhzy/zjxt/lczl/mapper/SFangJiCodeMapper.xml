@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yyk.sz.zhzy.zjxt.lczl.mapper.SFangJiCodeMapper">
+    <resultMap id="BaseResultMap" type="com.yyk.sz.zhzy.zjxt.lczl.entity.SFangJiCode">
+        <id column="DrugName" property="DrugName" jdbcType="VARCHAR"/>
+        <result column="HISCorreCode" property="HISCorreCode" jdbcType="VARCHAR"/>
+        <result column="OtherName" property="OtherName" jdbcType="VARCHAR"/>
+        <result column="InputCode" property="InputCode" jdbcType="VARCHAR"/>
+        <result column="DrugCode" property="DrugCode" jdbcType="VARCHAR"/>
+        <result column="DrugWayCode" property="DrugWayCode" jdbcType="VARCHAR"/>
+        <result column="DrugWayName" property="DrugWayName" jdbcType="VARCHAR"/>
+        <result column="FrequencyCode" property="FrequencyCode" jdbcType="VARCHAR"/>
+        <result column="FrequencyName" property="FrequencyName" jdbcType="VARCHAR"/>
+        <result column="PinYinCode" property="PinYinCode" jdbcType="VARCHAR"/>
+        <result column="Coefficient" property="Coefficient" jdbcType="VARCHAR"/>
+        <result column="v_GetBillCode" property="v_GetBillCode" jdbcType="VARCHAR"/>
+        <result column="v_GetBillID" property="v_GetBillID" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="GetFangJiCode" statementType="CALLABLE" parameterType="com.yyk.sz.zhzy.zjxt.lczl.entity.SFangJiCode">
+       <![CDATA[
+
+            {
+              call gy_sp_getidcode_test(
+                                  #{billCode,jdbcType=VARCHAR,mode=IN},
+                                  #{dateString,jdbcType=VARCHAR,mode=IN},
+                                  #{itemCode,jdbcType=VARCHAR,mode=IN},
+                                  #{option,jdbcType=INTEGER,mode=IN},
+                                  #{voucherCode,jdbcType=VARCHAR,mode=IN},
+                                  #{proUUID,jdbcType=VARCHAR,mode=IN})
+            }
+
+        ]]>
+</select>
+
+    <select id="GetFangJiZJCodeRst" resultType="com.yyk.sz.zhzy.zjxt.lczl.entity.FangJiZJCodeRst">
+       select *
+       from T_GetIdCodeRst
+       where UUID = #{proUUID}
+    </select>
+
+</mapper>
